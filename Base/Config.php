@@ -15,6 +15,20 @@ class Config
         $this->config = include('../config/config.php');
     }
 
+    public function setConfig(array $config): void
+    {
+        if (empty($config)) {
+            return;
+        }
+
+        $this->config = $config;
+    }
+
+    public function getConfig(): ?array
+    {
+        return $this->config;
+    }
+
     public function getDbConfig(): ?array
     {
         return $this->config['db'] ?? null;
