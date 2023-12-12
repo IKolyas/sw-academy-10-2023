@@ -2,26 +2,48 @@
 
 include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 
-//use app\Example\Config\Config;
-//use app\Example\Models\ExampleModel;
-//use app\Example\Models\TestModel;
+use app\Base\Config;
 
-//$config = Config::getInstance();
-//$config->setConfig(['host' => 'localhost', 'port' => '3306']);
-//
-//print_r($config->getDbData());
-//$modelTest1 = new ExampleModel(1);
+function getItems(array $arr): string {
+    $html = '';
+    foreach ($arr as $key => $value) {
+        $html .= '<li>' . $key . ': ' . $value . '</li>';
+    }
+    return $html;
+}
 
-//$modelTest2 = new ExampleModel(2);
+$config = Config::getInstance();
+$dbConfig = $config->getDbConfig();
+$envCongig = $config->getEnvConfig();
 
-//var_dump($modelTest1->getDbData()->getDbData());
-//echo '<br>';
-//var_dump($modelTest2->getDbData()->getDbData());
+?>
 
-//$request = new app\Example\Requests\ExampleRequest();
-//print_r($request->config->getDbData());
-//die();
-
-echo 'hello bro!';
-
-echo phpinfo();
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Config</title>
+    <style>
+        ul {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+<?php if ($dbConfig):?>
+<h3>DB Config:</h3>
+<ul>
+    <?= getItems($dbConfig) ?>
+</ul>
+<?php endif?>
+<?php if ($envCongig):?>
+<h3>ENV Config:</h3>
+<ul>
+    <?= getItems($envCongig) ?>
+</ul>
+<?php endif?>
+</body>
+</html>
