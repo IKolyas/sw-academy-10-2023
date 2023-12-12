@@ -1,0 +1,15 @@
+{
+  "require": {
+    "php": "^8.2",
+    "ext-pdo": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  },
+  "config": {
+    "platform-check": false
+  }
+}
