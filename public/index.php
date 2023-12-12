@@ -2,6 +2,21 @@
 
 include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 
+use app\Base\Config;
+$config = Config::getInstance();
+
+print_r($config->getConfigBD());
+print_r('<br>');
+print_r($config->getConfigUser());
+
+print_r('<br>');
+print_r('<br>');
+
+$config->setConfigBD([]);
+print_r($config->getConfigBD());
+print_r('<br>');
+print_r($config->getConfigUser());
+
 //use app\Example\Config\Config;
 //use app\Example\Models\ExampleModel;
 //use app\Example\Models\TestModel;
@@ -22,6 +37,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 //print_r($request->config->getDbData());
 //die();
 
-echo 'hello bro!';
+//echo 'hello bro!';
 
 echo phpinfo();
