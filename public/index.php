@@ -2,26 +2,20 @@
 
 include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 
-//use app\Example\Config\Config;
-//use app\Example\Models\ExampleModel;
-//use app\Example\Models\TestModel;
+use app\Base\Config;
 
-//$config = Config::getInstance();
-//$config->setConfig(['host' => 'localhost', 'port' => '3306']);
-//
-//print_r($config->getDbData());
-//$modelTest1 = new ExampleModel(1);
+$config = Config::getInstance();
+$dbConfig = $config->getDbConfig();
+$envConfig = $config->getEnvConfig();
 
-//$modelTest2 = new ExampleModel(2);
+$allConfig = $config->getConfig();
 
-//var_dump($modelTest1->getDbData()->getDbData());
-//echo '<br>';
-//var_dump($modelTest2->getDbData()->getDbData());
+foreach ($allConfig as $propertyGroup => $properties) {
+    echo "$propertyGroup:<br>";
+    foreach ($properties as $key => $value) {
+        echo "'$key': '$value'<br>";
+    }
+}
 
-//$request = new app\Example\Requests\ExampleRequest();
-//print_r($request->config->getDbData());
-//die();
 
-echo 'hello bro!';
 
-echo phpinfo();

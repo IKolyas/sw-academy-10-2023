@@ -1,53 +1,33 @@
 <?php
 
-namespace app\Base\Config;
+namespace app\Base;
 
+use app\Traits\Singleton;
 class Config
 {
-    private ?string $dbHost = null;
-    private ?string $dbPort = null;
-    private ?string $dbName = null;
-    private ?string $dbUser = null;
-    private ?string $dbPassword = null;
-    static Config|null $instance = null;
+    use Singleton;
+    private $config;
 
     public function __construct()
     {
-        $this->setConfig([
-            'host' => 'localhost',
-            'port' => '3306',
-            'name' => 'UserName',
-            'password' => '33333',
-        ]);
+        $this->config = require '../config/config.php';
     }
 
-    public function setConfig(array $dbConfig): void
+    public function getDbConfig(): ?array
     {
-        $this->dbHost = !empty($dbConfig['host']) ? $dbConfig['host'] : null;
-        $this->dbPort = !empty($dbConfig['port']) ? $dbConfig['port'] : null;
-        $this->dbName = !empty($dbConfig['name']) ? $dbConfig['name'] : null;
-        $this->dbUser = !empty($dbConfig['user']) ? $dbConfig['user'] : null;
-        $this->dbPassword = !empty($dbConfig['password']) ? $dbConfig['password'] : null;
+        return $this->config['db'] ?? null;
     }
 
-    function getDbData()
+    public function getEnvConfig()
     {
-        return [
-            'host' => $this->dbHost,
-            'port' => $this->dbPort,
-            'name' => $this->dbName,
-            'user' => $this->dbUser,
-            'password' => $this->dbPassword,
-        ];
+        $this->config['env'] = parse_ini_file('../.env');
+
+        return $this->config['env'] ?? null;
     }
 
-    public static function getInstance(): Config
-    {
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
+    public function getConfig() {
+        return $this->config;
     }
+
 }
 
