@@ -1,12 +1,28 @@
 <?php
 
 include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
+// $configData = include $_SERVER['DOCUMENT_ROOT'] . '/../config/config.php';
+// // use config\config as config;
+// print_r($configData);
 
-//use app\Example\Config\Config;
-//use app\Example\Models\ExampleModel;
-//use app\Example\Models\TestModel;
+use app\Singleton\Config;
 
-//$config = Config::getInstance();
+// $config = Config::getInstance();
+$array = Config::getInstance()->getData();
+print_r($array);
+
+// echo $_SERVER['DOCUMENT_ROOT'];
+
+// foreach ($array as $row) {
+//     print_r($row . "\r\n");
+//     }
+
+
+
+
+// use app\Example\Models\ExampleModel;
+// use app\Example\Models\TestModel;
+
 //$config->setConfig(['host' => 'localhost', 'port' => '3306']);
 //
 //print_r($config->getDbData());
@@ -22,6 +38,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 //print_r($request->config->getDbData());
 //die();
 
-echo 'hello bro!';
+// echo 'hello bro!';
 
-echo phpinfo();
+// echo phpinfo();
