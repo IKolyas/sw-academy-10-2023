@@ -3,14 +3,16 @@
 namespace app\Base;
 
 use app\Traits\Singleton;
+
 class Config
 {
     use Singleton;
+
     private $config;
 
     public function __construct()
     {
-        $this->config = require '../config/config.php';
+        $this->config = include '../config/config.php';
     }
 
     public function getDbConfig(): ?array
@@ -25,7 +27,8 @@ class Config
         return $this->config['env'] ?? null;
     }
 
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 

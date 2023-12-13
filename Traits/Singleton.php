@@ -2,10 +2,12 @@
 
 namespace app\Traits;
 
-trait Singleton {
+trait Singleton
+{
     private static $instance;
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (static::$instance === null) {
             static::$instance = new static();
         }
