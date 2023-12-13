@@ -10,7 +10,7 @@ class Config
     use Singleton;
 
     private ?array $config;
-    private ?array $env;
+    private ?array $envData;
 
     public function __construct()
     {
@@ -29,7 +29,7 @@ class Config
         $envConfig = parse_ini_file($envFile);
 
         if (!empty($envConfig) && is_array($envConfig)) {
-            $this->env = $envConfig;
+            $this->envData = $envConfig;
         }
 
         if (!empty($config) && is_array($config)) {
@@ -53,6 +53,6 @@ class Config
 
     public function getEnvData(): ?array
     {
-        return $this->env ?? null;
+        return $this->envData ?? null;
     }
 }
