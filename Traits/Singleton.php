@@ -4,17 +4,13 @@ namespace app\Traits;
 
 trait Singleton
 {
-    private static ?array $instance;
+    private static ?self $instance;
 
-    protected function  __construct() { }
-    final protected function  __clone() { }
-
-    final public static function getInstance()
+    public static function getInstance(): static
     {
-        $calledClass = get_called_class();
-        if (!isset(static::$instance[ $calledClass ])) {
-            static::$instance[$calledClass] = new $calledClass();
+        if (!isset(static::$instance)) {
+            static::$instance = new static();
         }
-        return static::$instance[$calledClass];
+        return static::$instance;
     }
 }
