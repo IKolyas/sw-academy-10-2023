@@ -22,7 +22,8 @@ class Cookie
 
     public function setCookie(string $key, string $value): void
     {
-        $expDate = time() + Config::getInstance()->getEnvData()['COOKIE_EXP_DATE'];
+        $expDate = time() + Config::getInstance()->getEnvData('COOKIE_EXP_DATE');
         setcookie($key, $value, $expDate, '/');
+        $this->cookies = $_COOKIE;
     }
 }
