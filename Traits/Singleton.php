@@ -1,6 +1,7 @@
 <?php
 
 namespace app\Traits;
+
 trait Singleton
 {
     private static ?array $instance;
@@ -16,5 +17,4 @@ trait Singleton
         }
         return static::$instance[$calledClass];
     }
-
 }
