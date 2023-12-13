@@ -3,8 +3,10 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 
 use app\Base\Config;
+use app\Base\Request;
+use app\Base\Cookie;
 
-$config = Config::getInstance();
+/* $config = Config::getInstance();
 $dbConfig = $config->getDbConfig();
 $envConfig = $config->getEnvData();
 
@@ -15,6 +17,16 @@ foreach ($allConfig as $propertyGroup => $properties) {
     foreach ($properties as $key => $value) {
         echo "'$key': '$value'<br>";
     }
-}
+} */
 
 
+//$request = new Request();
+//print_r($request->data);
+
+
+
+/* var_dump($_SERVER['REQUEST_METHOD']); */
+
+//$cookie = new Cookie();
+//$cookie->setCookie('name', 'Katya');
+//print_r($cookie->getCookie());
