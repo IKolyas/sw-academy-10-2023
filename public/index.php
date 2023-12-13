@@ -1,20 +1,21 @@
 <?php
 
-include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
+use App\Base\Application;
+use App\Base\Env;
 
-use app\Base\Config;
+require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
 
-$config = Config::getInstance();
-$dbConfig = $config->getDbConfig();
-$envConfig = $config->getEnvData();
+$config = require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "../config/main.php";
 
-$allConfig = $config->getConfig();
-
-foreach ($allConfig as $propertyGroup => $properties) {
-    echo "$propertyGroup:<br>";
-    foreach ($properties as $key => $value) {
-        echo "'$key': '$value'<br>";
-    }
+function env($key, $default = null)
+{
+    return Env::getInstance()->get($key) ?? $default;
 }
 
+function app(): Application
+{
+    return Application::getInstance();
+}
+
+app()->run($config);
 
