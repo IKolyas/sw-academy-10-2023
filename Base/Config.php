@@ -10,53 +10,31 @@ class Config
     use Singleton;
 
     private ?array $config;
+    private ?array $env;
 
     public function __construct()
     {
-        $configFile = '../config/config.php';
-        $envFile = '../.env';
-        try {
-            $this->loadData($configFile, 'include');
-            $this->loadData($envFile, 'parse', 'env');
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
+        $this->loadData();
     }
 
     /**
-     * @param string $path Путь до файла, который нужно загрузить
-     * @param string $method Метод парсинга
-     * @param string|null $key Ключ конфига
      * @throws Exception
      */
-    private function loadData(
-        string $path,
-        string $method,
-        ?string $key = null
-    ): void
+    private function loadData(): void
     {
-        if (!file_exists($path)) {
-            throw new Exception($key . ' file not found');
+        $configFile = '../config/config.php';
+        $envFile = '../.env';
+
+        $config = require $configFile;
+        $envConfig = parse_ini_file($envFile);
+
+        if (!empty($envConfig) && is_array($envConfig)) {
+            $this->env = $envConfig;
         }
 
-        $data = [];
-
-        if ($method === 'parse') {
-            $data = parse_ini_file($path, true);
-        } else {
-            $data = include($path);
+        if (!empty($config) && is_array($config)) {
+            $this->config = $config;
         }
-
-        if (!is_array($data) || empty($data)) {
-            throw new Exception($key . ' file is empty');
-        }
-
-        if ($key) {
-            $this->config[$key] = $data;
-            return;
-        }
-
-        $this->config = $data;
     }
 
     public function setConfig(array $config): void
@@ -73,14 +51,8 @@ class Config
         return $this->config;
     }
 
-    public function getDbConfig(): ?array
+    public function getEnvData(): ?array
     {
-        return $this->config['db'] ?? null;
-    }
-
-    // решено парсить именно тут, чтобы не засорять config файл
-    public function getEnvConfig(): ?array
-    {
-        return $this->config['env'] ?? null;
+        return $this->env ?? null;
     }
 }

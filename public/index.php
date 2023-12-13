@@ -5,8 +5,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 use app\Base\Config;
 
 $config = Config::getInstance();
-$dbConfig = $config->getDbConfig();
-$envCongig = $config->getEnvConfig();
+$configData = $config->getConfig();
+$envConfig = $config->getEnvData();
 
 function template($__view, $__data)
 {
@@ -18,8 +18,9 @@ function template($__view, $__data)
 }
 
 $items = [
-    'DB Config' => $dbConfig,
-    'Env Config' => $envCongig
+    'DB Config' => $configData['db'],
+    'Tokenization Config' => $configData['tokenization'],
+    'Env Config' => $envConfig
 ];
 
 $listContent = template('../view/list.php', $items);
