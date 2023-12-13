@@ -12,7 +12,13 @@ class Config
 
     public function __construct()
     {
-        $this->config = include('../config/config.php');
+        $configData = include('../config/config.php');
+
+        if (is_array($configData)) {
+            $this->config = $configData;
+        } else {
+            throw new Exception('Error: config file not found');
+        }
     }
 
     public function setConfig(array $config): void
