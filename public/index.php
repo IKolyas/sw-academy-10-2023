@@ -5,17 +5,31 @@ include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 use app\Base\Config;
 $config = Config::getInstance();
 
-print_r($config->getConfigBD());
-print_r('<br>');
-print_r($config->getConfigUser());
+function showConsig(array $configAll) 
+{
+    foreach($configAll as $conf) {
 
-print_r('<br>');
-print_r('<br>');
+        $group = $conf['Group'];
+        $value = $conf['value'];
 
-$config->setConfigBD([]);
-print_r($config->getConfigBD());
-print_r('<br>');
-print_r($config->getConfigUser());
+        print_r("`$group`:");
+        if (is_null($value)) {
+            print_r("<br><span style='margin-left:20px'>NULL</span>");
+        } else {
+            foreach($value as $key=>$val) {
+                print_r("<br><span style='margin-left:20px'>'$key':'$val'</span>");
+            }
+        }
+        echo "<br><br>";
+        
+    }
+}
+
+showConsig([
+    ['Group' => 'ConfigBD', 'value' => $config->getConfigBD()],
+    ['Group' => 'ConfigUser', 'value' => $config->getConfigUser()],
+    ['Group' => 'ConfigEnv', 'value' => $config->getConfigEnv()],
+]);
 
 //use app\Example\Config\Config;
 //use app\Example\Models\ExampleModel;

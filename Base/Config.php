@@ -1,77 +1,77 @@
 <?php
 
 namespace app\Base;
+use app\Traits\SingleTon;
 
 class Config
 {
-    /* private ?string $dbHost = null;
-    private ?string $dbPort = null;
-    private ?string $dbDataBase = null;
-    private ?string $usrName = null;
-    private ?string $usrPass = null; */
+
+    use SingleTon;
 
     private ?array $dataDB = null;
     private ?array $dataUser = null;
 
     private ?array $config = null;
+    private ?array $env = null;
 
-    static Config|null $instance = null;
+
+    //static Config|null $instance = null;
 
     function __construct() {
         $this->config = require_once('../config/config.php');
 
         $this->setConfigBD($this->config['db']);
         $this->setConfigUser($this->config['user']);
+
+        $this->env = parse_ini_file('../.env');
     }
+
+    public function setConfigEnv(array $envConfig) 
+    {
+        $this->env = !empty($envConfig) ? $envConfig : null;
+
+    } 
+    public function getConfigEnv(): array|null
+    {
+        return $this->env;
+    }
+
 
     public function setConfigBD(array $dbConfig) 
     {
-        //$this->dataDB = $dbConfig ?? $dbConfig ;
-        /* $this->dataDB = [
-            'host' => !empty($dbConfig['host']) ? $dbConfig['host'] : null,
-            'database' => !empty($dbDataBase['database']) ? $dbDataBase['database'] : null,
-            'port' => !empty($dbConfig['port']) ? $dbConfig['port'] : null,
-        ]; */
+        $this->dataDB = !empty($dbConfig) ? $dbConfig : null;
 
-        /* $this->dbHost = !empty($dbConfig['host']) ? $dbConfig['host'] : null;
-        $this->dbDataBase = !empty($dbDataBase['database']) ? $dbDataBase['database'] : null;
-        $this->dbPort = !empty($dbConfig['port']) ? $dbConfig['port'] : null; */
+    }
+    public function getConfigBD(): array|null
+    {
+        return $this->dataDB;
     }
 
     public function setConfigUser(array $usrConfig) 
-    {
-        $this->dataUser = [
-            'name' => !empty($usrConfig['name']) ? $usrConfig['name'] : null,
-            'passwd' => !empty($usrConfig['passwd']) ? $usrConfig['passwd'] : null,
-        ];
-    }
+    {   
+        $this->dataUser = !empty($usrConfig) ? $usrConfig : null;
 
-    public function getConfigBD(): array
-    {
-        return $this->dataDB;
-        /* return [
-            'host' => $this->dbHost,
-            'port' => $this->dbPort,
-            'database' => $this->dbDataBase,
-        ]; */
+        /* if (!empty($dbConfig['name']) && !empty($dbDataBase['passwd'])) {
+            $this->dataUser = [
+                'name' => $usrConfig['name'],
+                'passwd' =>$usrConfig['passwd'],
+            ];
+        } else {
+            $this->dataUser = null;
+        }; */
     }
-    
-    public function getConfigUser(): array
+    public function getConfigUser(): array|null
     {
-        /* return [
-            'name' => $this->usrName,
-            'passwd' => $this->usrPass,
-        ]; */
         return $this->dataUser;
     }
 
 
-    public static function getInstance(): Config
+    /* public static function getInstance(): Config
     {
         if (is_null(static::$instance)) {
             static::$instance = new static();
         }
 
         return static::$instance;
-    }
+    } */
 }
