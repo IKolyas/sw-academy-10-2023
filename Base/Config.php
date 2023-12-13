@@ -3,6 +3,7 @@
 namespace app\Base;
 
 use app\Traits\Singleton;
+use app\Base\Cookie;
 
 class Config
 {
@@ -14,11 +15,9 @@ class Config
     {
         $configFilePath = '../config/config.php';
 
-        if (file_exists($configFilePath))
-        {
+        if (file_exists($configFilePath)) {
             $configData = include $configFilePath;
-            if ($configData && is_array($configData))
-            {
+            if ($configData && is_array($configData)) {
                 $this->config = $configData;
             }
         }
@@ -33,17 +32,14 @@ class Config
     {
         $envFilePath = '../.env';
 
-        if (file_exists($envFilePath))
-        {
+        if (file_exists($envFilePath)) {
             $envData = parse_ini_file($envFilePath);
-            if ($envData !== false && is_array($envData))
-            {
+            if ($envData !== false && is_array($envData)) {
                 $this->config['env'] = $envData;
                 return $this->config['env'];
             }
         }
         return null;
-
     }
 
     public function getConfig(): ?array
