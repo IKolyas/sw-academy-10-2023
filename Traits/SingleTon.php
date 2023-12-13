@@ -2,9 +2,9 @@
 namespace app\Traits;
 trait SingleTon 
 {
-    static object|null $instance = null;
+    private static ?self $instance = null;
 
-    public static function getInstance():object
+    public static function getInstance(): static
     {
         if (is_null(static::$instance)) {
             static::$instance = new static();

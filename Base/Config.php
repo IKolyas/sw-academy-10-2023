@@ -8,70 +8,53 @@ class Config
 
     use SingleTon;
 
-    private ?array $dataDB = null;
-    private ?array $dataUser = null;
-
     private ?array $config = null;
     private ?array $env = null;
-
-
-    //static Config|null $instance = null;
 
     function __construct() {
         $this->config = require_once('../config/config.php');
 
-        $this->setConfigBD($this->config['db']);
-        $this->setConfigUser($this->config['user']);
-
-        $this->env = parse_ini_file('../.env');
+        if (parse_ini_file('../.env')) {
+            $this->env['env'] = parse_ini_file('../.env');
+        } else {
+            echo "<p style='color:red'>env-файл не найден!</p>";
+        }
+       
     }
 
-    public function setConfigEnv(array $envConfig) 
+    public function setConfigEnv(array $envConfig): void
     {
         $this->env = !empty($envConfig) ? $envConfig : null;
 
     } 
-    public function getConfigEnv(): array|null
+    public function getConfigEnv(): ?array
     {
         return $this->env;
     }
 
 
-    public function setConfigBD(array $dbConfig) 
+    public function setConfig(string $configName, array $config): void
     {
-        $this->dataDB = !empty($dbConfig) ? $dbConfig : null;
+        $nameConfig = $this->config[$configName];
 
-    }
-    public function getConfigBD(): array|null
-    {
-        return $this->dataDB;
-    }
-
-    public function setConfigUser(array $usrConfig) 
-    {   
-        $this->dataUser = !empty($usrConfig) ? $usrConfig : null;
-
-        /* if (!empty($dbConfig['name']) && !empty($dbDataBase['passwd'])) {
-            $this->dataUser = [
-                'name' => $usrConfig['name'],
-                'passwd' =>$usrConfig['passwd'],
-            ];
+        if (!empty($nameConfig)) {
+            foreach ($config as $key=>$val) {
+                $this->config[$configName][$key] = $val;
+            }
         } else {
-            $this->dataUser = null;
-        }; */
-    }
-    public function getConfigUser(): array|null
-    {
-        return $this->dataUser;
-    }
-
-
-    /* public static function getInstance(): Config
-    {
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
+            $this->config[$configName] = $config;
         }
 
-        return static::$instance;
-    } */
+    }
+
+    public function getConfigAll(): ?array
+    {
+        return $this->config;
+    }
+
+    public function getConfigOne(string $nameGroup): ?array
+    {
+        return $this->config[$nameGroup];
+    }
+
 }

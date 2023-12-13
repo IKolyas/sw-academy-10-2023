@@ -5,12 +5,12 @@ include $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
 use app\Base\Config;
 $config = Config::getInstance();
 
-function showConsig(array $configAll) 
+function showConfigAll(array $configAll) 
 {
-    foreach($configAll as $conf) {
+    foreach($configAll as $nameGroup=>$conf) {
 
-        $group = $conf['Group'];
-        $value = $conf['value'];
+        $group = $nameGroup;
+        $value = $conf;
 
         print_r("`$group`:");
         if (is_null($value)) {
@@ -25,32 +25,12 @@ function showConsig(array $configAll)
     }
 }
 
-showConsig([
-    ['Group' => 'ConfigBD', 'value' => $config->getConfigBD()],
-    ['Group' => 'ConfigUser', 'value' => $config->getConfigUser()],
-    ['Group' => 'ConfigEnv', 'value' => $config->getConfigEnv()],
-]);
 
-//use app\Example\Config\Config;
-//use app\Example\Models\ExampleModel;
-//use app\Example\Models\TestModel;
+$config->setConfig('db', ['host' => 'Ghost','port' => '3307']);
 
-//$config = Config::getInstance();
-//$config->setConfig(['host' => 'localhost', 'port' => '3306']);
-//
-//print_r($config->getDbData());
-//$modelTest1 = new ExampleModel(1);
+showConfigAll($config->getConfigAll());
+echo '<br>';
+showConfigAll($config->getConfigEnv());
 
-//$modelTest2 = new ExampleModel(2);
-
-//var_dump($modelTest1->getDbData()->getDbData());
-//echo '<br>';
-//var_dump($modelTest2->getDbData()->getDbData());
-
-//$request = new app\Example\Requests\ExampleRequest();
-//print_r($request->config->getDbData());
-//die();
-
-//echo 'hello bro!';
 
 echo phpinfo();
