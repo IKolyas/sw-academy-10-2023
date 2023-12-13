@@ -15,12 +15,12 @@ class Cookie
         $this->cookies = $_COOKIE;
     }
 
-    public function get(string $key): ?string
+    public function getCookie(string $key): ?string
     {
         return $this->cookies[$key] ?? null;
     }
 
-    public function write(string $key, string $value): void
+    public function setCookie(string $key, string $value): void
     {
         $expDate = time() + Config::getInstance()->getEnvData()['COOKIE_EXP_DATE'];
         setcookie($key, $value, $expDate, '/');
