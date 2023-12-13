@@ -1,5 +1,7 @@
 <?php
+
 namespace app\Traits;
+
 trait SingleTon 
 {
     private static ?self $instance = null;
