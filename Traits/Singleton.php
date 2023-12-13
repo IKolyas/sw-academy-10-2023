@@ -6,7 +6,7 @@ trait Singleton
 {
     private static $instance;
 
-    public static function getInstance()
+    public static function getInstance(): static
     {
         if (static::$instance === null) {
             static::$instance = new static();
@@ -14,4 +14,6 @@ trait Singleton
 
         return static::$instance;
     }
+
+
 }

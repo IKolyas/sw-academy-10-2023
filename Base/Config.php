@@ -8,11 +8,20 @@ class Config
 {
     use Singleton;
 
-    private $config;
+    private ?array $config;
 
     public function __construct()
     {
-        $this->config = include '../config/config.php';
+        $configFilePath = '../config/config.php';
+
+        if (file_exists($configFilePath))
+        {
+            $configData = include $configFilePath;
+            if ($configData && is_array($configData))
+            {
+                $this->config = $configData;
+            }
+        }
     }
 
     public function getDbConfig(): ?array
@@ -20,14 +29,24 @@ class Config
         return $this->config['db'] ?? null;
     }
 
-    public function getEnvConfig()
+    public function getEnvData(): ?array
     {
-        $this->config['env'] = parse_ini_file('../.env');
+        $envFilePath = '../.env';
 
-        return $this->config['env'] ?? null;
+        if (file_exists($envFilePath))
+        {
+            $envData = parse_ini_file($envFilePath);
+            if ($envData !== false && is_array($envData))
+            {
+                $this->config['env'] = $envData;
+                return $this->config['env'];
+            }
+        }
+        return null;
+
     }
 
-    public function getConfig()
+    public function getConfig(): ?array
     {
         return $this->config;
     }

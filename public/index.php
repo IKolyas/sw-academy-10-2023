@@ -6,7 +6,7 @@ use app\Base\Config;
 
 $config = Config::getInstance();
 $dbConfig = $config->getDbConfig();
-$envConfig = $config->getEnvConfig();
+$envConfig = $config->getEnvData();
 
 $allConfig = $config->getConfig();
 
@@ -16,6 +16,5 @@ foreach ($allConfig as $propertyGroup => $properties) {
         echo "'$key': '$value'<br>";
     }
 }
-
 
 
