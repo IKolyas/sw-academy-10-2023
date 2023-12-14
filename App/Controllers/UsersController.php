@@ -7,7 +7,7 @@ use Exception;
 
 class UsersController extends AbstractController
 {
-//    protected string $mainTemplate = 'layouts/auth';
+ protected string $mainTemplate = 'layouts/users';
 
     /**
      * @throws Exception
