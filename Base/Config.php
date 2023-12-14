@@ -34,7 +34,7 @@ class Config
             return $this->config['env'][$key] ?? null;
         }
 
-        $envFilePath = '../.env';
+        $envFilePath = $_SERVER['DOCUMENT_ROOT'] . '/../.env';
 
         if (file_exists($envFilePath)) {
             $envData = parse_ini_file($envFilePath);

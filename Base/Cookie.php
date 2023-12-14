@@ -23,6 +23,5 @@ class Cookie
     {
         $expDate = Config::getInstance()->getEnvData('COOKIE_EXP');
         setcookie($key, $value, $expDate, '/');
-        $this->cookie[$key] = $value;
     }
 }

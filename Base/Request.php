@@ -7,13 +7,13 @@ class Request
     private ?array $requestBody;
     private ?string $method;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $requestBody = file_get_contents('php://input');
         if ($requestBody) {
             $this->requestBody = json_decode($requestBody, true);
         }
-
     }
 
     private function getDataPost(): ?array
@@ -25,11 +25,14 @@ class Request
     {
         return $_GET ?? null;
     }
-    public function getRequestMethod(): ?string {
+
+    public function getRequestMethod(): ?string
+    {
         return $this->method;
     }
 
-    public function getRequestBody(): ?array {
+    public function getRequestBody(): ?array
+    {
         return $this->requestBody;
     }
 
