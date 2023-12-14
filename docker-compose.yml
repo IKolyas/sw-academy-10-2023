@@ -12,7 +12,11 @@ services:
     links:
       - php-fpm
   php-fpm:
-    build: docker/php-fpm
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+      args:
+        APP_MODE: ${APP_MODE}
     volumes:
       - .:/var/www/html
   sw-mysql:
