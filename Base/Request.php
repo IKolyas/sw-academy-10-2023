@@ -8,32 +8,34 @@ class Request
 {
     use Singleton;
 
-    public ?string $postName = null;
-    public ?string $postMessage = null;
-    public ?string $getName = null;
-    public ?string $getMessage = null;
+    public ?string $methodRequest = null;
 
+    public ?array $bodyRequest = null;
+
+    public ?array $paramsRequest = null;
 
     public function __construct()
     {
-        $this->postName = $_POST["name"] ?? "NO NAME";
-        // print_r($this->postName);
-        $this->postMessage = $_POST["message"] ?? "NO MESSAGE";
-        // print_r($this->postMessage);
-        $this->getName = $_GET["name"] ?? "NO NAME";
-        // print_r($this->getName);
-        $this->getMessage = $_GET["message"] ?? "NO MESSAGE";
-        // print_r($this->getMessage);
 
+        $this->methodRequest = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+        $this->paramsRequest = $_REQUEST;
+
+        $input = file_get_contents('php://input');
+        $this->bodyRequest = json_decode($input, true);
     }
 
-    public function getRequest()
+    public function getMethodRequest(): ?string
     {
-        return [
-            'postName' => $this->postName,
-            'postMessage' => $this->postMessage,
-            'getName' => $this->getName,
-            'getMessage' => $this->getMessage,
-        ];
+        return $this->methodRequest;
+    }
+    public function getBody(): ?array
+    {
+        return $this->bodyRequest;
+    }
+
+    public function getParams(): ?array
+    {
+        return $this->paramsRequest;
     }
 }
