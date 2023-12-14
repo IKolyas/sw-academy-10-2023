@@ -964,7 +964,6 @@ default_socket_timeout = 60
 ;extension=zip
 
 ;zend_extension=opcache
-zend_extension=xdebug.so
 ;;;;;;;;;;;;;;;;;;;
 ; Module Settings ;
 ;;;;;;;;;;;;;;;;;;;
