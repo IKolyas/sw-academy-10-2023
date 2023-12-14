@@ -7,9 +7,9 @@ use App\Services\Renderers\RendererInterface;
 abstract class AbstractController
 {
     protected const DEFAULT_ACTION = 'index';
-    protected const DEFAULT_TEMPLATE = 'layouts/main';
     protected const NOT_FOUND_PAGE_NAME = '404';
 
+    protected string $mainTemplate = 'layouts/main';
     protected bool $useMainTemplate = true;
     protected string $action;
     protected RendererInterface $renderer;
@@ -23,7 +23,7 @@ abstract class AbstractController
     {
         $this->action = $action ?: self::DEFAULT_ACTION;
 
-//      Добавляет префикс 'action' к названию для поиска метода
+//      Добавляет префикс 'action' к названию для поиска метода ///actionAll
         $method = "action" . ucfirst($this->action);
 
         if (method_exists($this, $method)) {
@@ -47,7 +47,7 @@ abstract class AbstractController
 //            TODO: Создать клас для работы с сессиями. Добавить класс в апп. Получить из сессии пользователя.
 //            $auth_user = app()->session->IsAuth();
 
-            return $this->renderer->render(self::DEFAULT_TEMPLATE, compact('content'));
+            return $this->renderer->render($this->mainTemplate, compact('content'));
         }
 
         return $content;
