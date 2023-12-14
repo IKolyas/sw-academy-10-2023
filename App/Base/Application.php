@@ -30,6 +30,7 @@ class Application
 
         /**
          * Получаем имя класса контроллера с пространством имён
+         * App\Controllers\UsersController\
          */
         $controllerClass = $this->config['CONTROLLER_NAMESPACE'] . ucfirst($controllerName) . "Controller";
 
