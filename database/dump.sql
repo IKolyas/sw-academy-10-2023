@@ -8,3 +8,14 @@ CREATE TABLE IF NOT EXISTS `users`
     `email`         VARCHAR(255) UNIQUE NOT NULL,
     `is_admin`      BOOLEAN DEFAULT FALSE
 );
+
+CREATE TABLE IF NOT EXISTS `records`
+(
+    `id`                    BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `user_id`               BIGINT NOT NULL,
+    `date`                  DATE NOT NULL UNIQUE,
+    `created_at`            DATE NOT NULL,
+    `updated_at`            DATE NOT NULL,
+    `is_completed`          BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+);
