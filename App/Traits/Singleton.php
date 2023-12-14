@@ -6,7 +6,7 @@ use Exception;
 
 trait Singleton
 {
-    static ?self $instance = null;
+    protected static ?self $instance = null;
 
     public static function getInstance(): ?self
     {
@@ -16,11 +16,11 @@ trait Singleton
         return static::$instance;
     }
 
-    public function __construct()
+    private function __construct()
     {
     }
 
-    public function __clone()
+    private function __clone()
     {
         // TODO: Implement __clone() method.
     }
