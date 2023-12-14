@@ -4,23 +4,29 @@ namespace app\Base;
 
 class Request
 {
-    private ?array $requestParams;
     private ?array $requestBody;
     private ?string $method;
 
     public function __construct() {
         $this->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $requestBody = file_get_contents('php://input');
-        $this->requestBody = json_decode($requestBody, true);
-        $this->requestParams = $_REQUEST;
+        if ($requestBody) {
+            $this->requestBody = json_decode($requestBody, true);
+        }
+
     }
 
+    private function getDataPost(): ?array
+    {
+        return $_POST ?? null;
+    }
+
+    private function getDataGet(): ?array
+    {
+        return $_GET ?? null;
+    }
     public function getRequestMethod(): ?string {
         return $this->method;
-    }
-
-    public function getRequestParams(): ?array {
-        return $this->requestParams;
     }
 
     public function getRequestBody(): ?array {

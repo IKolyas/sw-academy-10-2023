@@ -22,4 +22,3 @@ foreach ($allConfig as $propertyGroup => $properties) {
 $cookie = new Cookie();
 $request = new Request();
 
-print_r($request->getRequestBody());

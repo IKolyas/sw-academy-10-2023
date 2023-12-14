@@ -28,8 +28,12 @@ class Config
         return $this->config['db'] ?? null;
     }
 
-    public function getEnvData(): ?array
+    public function getEnvData(?string $key = null): ?array
     {
+        if($key) {
+            return $this->config['env'][$key] ?? null;
+        }
+
         $envFilePath = '../.env';
 
         if (file_exists($envFilePath)) {
