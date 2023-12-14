@@ -15,6 +15,12 @@ class Request
             case 'POST':
                 $this->data = $this->getDataPost();
                 break;
+            case 'PUT':
+                $this->data = $this->processAjax();
+                break;
+            case 'DELETE':
+                $this->data = $this->processAjax();
+                break;
         }
 
     }
@@ -34,5 +40,20 @@ class Request
         return $_GET ?? null;
     }
 
-    
+    public function processAjax()
+    {
+
+        switch ($this->getRequestMethod()) {
+            case 'PUT':
+                $dataPut = file_get_contents("php://input");
+                $this->data = $this->processAjax();
+                break;
+            case 'DELETE':
+                $this->data = $this->processAjax();
+                break;
+        }
+
+        $putData = file_get_contents("php://input");
+        $data = json_decode($putData);
+    }
 }
