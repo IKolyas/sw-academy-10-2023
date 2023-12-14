@@ -7,7 +7,6 @@ use App\Base\Env;
 require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
 
 $config = require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "../config/main.php";
-// if env_mode == prod call class
 
 function env($key, $default = null)
 {
