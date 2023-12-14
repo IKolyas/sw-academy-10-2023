@@ -12,13 +12,10 @@ services:
     links:
       - php-fpm
   php-fpm:
-    build:
-      context: ./docker/php-fpm
-      dockerfile: Dockerfile
-      args:
-        APP_MODE: ${APP_MODE}
+    build: docker/php-fpm
     volumes:
       - .:/var/www/html
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
   sw-mysql:
     image: mysql:latest
     restart: always
