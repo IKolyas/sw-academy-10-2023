@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Models\Record;
 
+//TODO:УБРАТЬ
+use App\Enums\RequestData;
+
 class RecordsController extends AbstractController
 {
     
@@ -28,6 +31,10 @@ class RecordsController extends AbstractController
      */
     public function actionRecords(array $params): void
     {
+
+        //TODO:УБРАТЬ
+        //var_dump($params);die;
+
         $record = new Record();
         
         //TODO: ЕСЛИ ВЫВОД ВСЕХ ТУТ НУЖЕН------------------------------------------
@@ -62,14 +69,13 @@ class RecordsController extends AbstractController
             throw new \Exception('not found');
         } */
 
-        if (!empty($params['id'])) {
+        if (!empty($params)) {
 
             $calendars = $record->find($params['id']);
 
             if ($calendars) {
                 header('Content-Type: application/json');
                 echo json_encode($calendars);
-                //echo $this->render('calendars/index', ['calendars' => $calendars]);
 
             } else {
             //TODO: Добавить обработку ошибок
@@ -77,7 +83,7 @@ class RecordsController extends AbstractController
             }
 
         } else {
-            throw new \Exception('not found');
+            throw new \Exception('not found: id');
         }
     }
 
@@ -94,9 +100,7 @@ class RecordsController extends AbstractController
 
                 //TODO: Сделать проверку
 
-                //TODO: При конфликте в бд сервер падает с 500 ошибкой| Обработчик!
-
-                if ($record->add($params) == 1) {
+                if ($record->add($params)) {
                     header('Content-Type: application/json');
                     echo json_encode([
                         'status' => true,
@@ -107,5 +111,61 @@ class RecordsController extends AbstractController
             }
         }
     }
+
+    /**
+     * PUT-запрос
+     */
+    public function actionEdit(array $params): void
+    {
+        //var_dump($params);die;
+
+        if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+
+            if (!empty($params['id'])) {
+                $putData = file_get_contents('php://input');
+                $data = (array)json_decode($putData);
+
+                $data['id'] = $params['id'];
+
+                $record = new Record();
+
+                if ($record->edit($data) == 1) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'status' => true,
+                        'message' => "Пользователь с id:{$data['id']} обновлен",
+                    ]);
+                }
+            } else {
+                throw new \Exception('not found: id');
+            }
+
+            
+        }
+    }
+
+    /**
+     * DELETE-запрос
+     */
+    /* public function actionDelete(array $data): void
+    {
+        //var_dump($data);die;
+        if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+
+            if (!empty($params['id'])) {
+                $record = new Record();
+
+                if ($record->edit($data) == 1) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'status' => true,
+                        'message' => "Пользователь с id:{$data['id']} обновлен",
+                    ]);
+                }
+            } else {
+                throw new \Exception('not found: id');
+            }
+        }
+    } */
     
 }

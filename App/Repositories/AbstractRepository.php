@@ -58,6 +58,8 @@ abstract class AbstractRepository implements RepositoryInterface
 
     public function update(array $params): int
     {
+
+        //var_dump($params);die;
         $paramsList = [];
         $columns = [];
 

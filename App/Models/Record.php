@@ -28,7 +28,7 @@ class Record extends AbstractModel
         return true;
     } */
 
-    public function add(array $data)/* : int */
+    public function add(array $data): int
     {
         $created_at = (new \DateTime('now'))->format('Y-m-d');
         $updated_at = (new \DateTime('now'))->format('Y-m-d');
@@ -40,9 +40,14 @@ class Record extends AbstractModel
             'created_at' => $created_at,
             'updated_at' => $updated_at,
         ];
-        $repository = new RecordRepository();
+        return parent::create($list);
+    }
 
-        //var_dump($repository->create($list));
-        return $repository->create($list);
+    public function edit(array $data): int
+    {
+        $updated_at = (new \DateTime('now'))->format('Y-m-d');
+        $data['updated_at'] = $updated_at;
+
+        return parent::update($data);
     }
 }
