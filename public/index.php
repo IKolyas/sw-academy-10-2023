@@ -4,7 +4,6 @@ use App\Base\Application;
 use App\Base\Env;
 use App\Enums\EnvModeType;
 use App\Services\AppEnvMode;
-use App\Services\Validation;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
 
