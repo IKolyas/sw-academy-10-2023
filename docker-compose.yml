@@ -15,6 +15,7 @@ services:
     build: docker/php-fpm
     volumes:
       - .:/var/www/html
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
   sw-mysql:
     image: mysql:latest
     restart: always
