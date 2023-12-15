@@ -19,7 +19,7 @@ abstract class AbstractModel
 
     }
 
-    public function findById($id): ?AbstractModel
+    public function findById(int $id): ?AbstractModel
     {
         return $this->repository->getOne($id);
     }

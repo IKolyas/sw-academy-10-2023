@@ -25,9 +25,4 @@ class UsersController extends AbstractController
         }
     }
 
-    public function actionAll(array $params): void
-    {
-        var_dump('test');
-    }
-
 }
