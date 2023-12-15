@@ -18,7 +18,7 @@ class UsersController extends AbstractController
         $users = $user->findAll();
 
         if ($users) {
-            echo $this->render('users/index', ['users' => $users]);
+            echo $this->render('users/users', ['users' => $users]);
         } else {
 //            TODO: Добавить обработку ошибок
             throw new Exception('Users not found');
