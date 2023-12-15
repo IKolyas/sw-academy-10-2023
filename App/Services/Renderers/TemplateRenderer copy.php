@@ -9,8 +9,8 @@ class TemplateRenderer implements RendererInterface
     {
 //      TODO: вынести директорию представления в конфиг. Получать из конфига
         ob_start(); // Включение буферизации вывода
-        // $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/../views/' . $template . ".php";
-        $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/../views/layouts/calendar.html';
+        $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/../views/' . $template . ".php";
+        // $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/../views/layouts/calendar.html';
         // /var/www/html/public/../views/layouts/main.php
         // /var/www/html/public/../views/layouts/calendar.html
 

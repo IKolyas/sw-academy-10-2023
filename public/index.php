@@ -37,22 +37,22 @@ app()->run($config);
 // $app->run($config);
 
 // print_r(DIRECTORY_SEPARATOR);
-echo '<br>';
+// echo '<br>';
 // print_r($GLOBALS);
 
 // foreach ($GLOBALS as $key => $value) {
 //     print_r($key);
 // }
-echo '<br>';
-echo '*********************************';
-echo '<br>';
+// echo '<br>';
+// echo '*********************************';
+// echo '<br>';
 
 // foreach ($GLOBALS as $key => $value) {
 //     print_r($value);
 // }
-echo '<br>';
+// echo '<br>';
 // print_r($_SERVER['DOCUMENT_ROOT']);
-echo '<br>';
+// echo '<br>';
 // print_r($config);
 
 // :my code
