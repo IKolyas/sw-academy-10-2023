@@ -33,7 +33,7 @@ class Application
          * App\Controllers\UsersController\
          */
         $controllerClass = $this->config['CONTROLLER_NAMESPACE'] . ucfirst($controllerName) . "Controller";
-        print_r($controllerClass);
+        // print_r($controllerClass);
 
         /**
          * Попытка вызвать у контроллера соответствующий метод
