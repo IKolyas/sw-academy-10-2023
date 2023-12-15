@@ -9,7 +9,7 @@ class RecordRepository extends AbstractRepository
 
     public function getTableName(): string
     {
-        return 'calendars';
+        return 'records';
     }
 
     public function getModelClassName(): string

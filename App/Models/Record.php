@@ -28,28 +28,21 @@ class Record extends AbstractModel
         return true;
     } */
 
-    public function add(array $data): bool
+    public function add(array $data)/* : int */
     {
+        $created_at = (new \DateTime('now'))->format('Y-m-d');
+        $updated_at = (new \DateTime('now'))->format('Y-m-d');
 
-        if ($this->isValid($data)) {
+        $list = [
+            'user_id' => $data['user_id'],
+            'date' => $data['date'],
+            'is_completed' => $data['is_completed'],
+            'created_at' => $created_at,
+            'updated_at' => $updated_at,
+        ];
+        $repository = new RecordRepository();
 
-
-            return true;
-        } else {
-
-            return false;
-        }
-
-        
-    }
-
-    private function isValid(array $data): bool
-    {
-        //TODO: ПРОВЕРКА ВСЕ ЛИ ДАННЫЕ ОТПРАВЛЕНЫ
-        foreach ($data as $key=>$record) {
-
-        }
-    
-        return true;
+        //var_dump($repository->create($list));
+        return $repository->create($list);
     }
 }
