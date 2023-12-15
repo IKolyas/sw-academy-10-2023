@@ -11,6 +11,7 @@ use ReflectionException;
  * @property Request $request
  * @property Response $response
  * @property RendererInterface $renderer
+ * @property Session $session
  */
 class Application
 {

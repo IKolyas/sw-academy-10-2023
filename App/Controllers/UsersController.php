@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\FormRequests\UserAuthRequest;
 use App\Models\User;
 use Exception;
 
@@ -14,6 +15,7 @@ class UsersController extends AbstractController
      */
     public function actionIndex(): void
     {
+
         $user = new User();
         $users = $user->findAll();
 
@@ -23,6 +25,17 @@ class UsersController extends AbstractController
 //            TODO: Добавить обработку ошибок
             throw new Exception('Users not found');
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function actionAuth(): void
+    {
+        $request = new UserAuthRequest();
+        $data = $request->validated();
+
+        var_dump($data);
     }
 
     public function actionAll(array $params): void

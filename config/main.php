@@ -11,6 +11,7 @@
 use App\Base\Cookie;
 use App\Base\Request;
 use App\Base\Response;
+use App\Base\Session;
 use App\Services\DataBase;
 use App\Services\Renderers\TemplateRenderer;
 
@@ -33,6 +34,9 @@ return [
         ],
         'db' => [
             'class' => DataBase::class,
+        ],
+        'session' => [
+            'class' => Session::class,
         ]
     ]
 ];

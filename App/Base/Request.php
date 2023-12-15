@@ -66,7 +66,7 @@ class Request
     }
 
     //  Получить параметр из запроса
-    public function getParam(string $key): ?array
+    public function getParam(string $key): ?string
     {
         $method = $this->getMethod()?->getData();
 
@@ -74,7 +74,7 @@ class Request
             return null;
         }
 
-        return [$key => $method[$key]];
+        return $method[$key];
     }
 
     //  Получить все параметры
