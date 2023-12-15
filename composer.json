@@ -2,7 +2,8 @@
   "require": {
     "php": "^8.2",
     "ext-pdo": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-xdebug": "*"
   },
   "autoload": {
     "psr-4": {
