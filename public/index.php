@@ -20,7 +20,6 @@ function env($key, $default = null)
 
 function app(): Application
 {
-    Validation::getInstance();
     return Application::getInstance();
 }
 
