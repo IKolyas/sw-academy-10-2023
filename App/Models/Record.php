@@ -18,16 +18,6 @@ class Record extends AbstractModel
         $this->repository = new RecordRepository();
     }
 
-    /* public function update($fields): int
-    {
-        if (isset($fields['password'])) {
-            unset($fields['password']);
-        }
-        parent::update($fields);
-
-        return true;
-    } */
-
     public function add(array $data): int
     {
         $created_at = (new \DateTime('now'))->format('Y-m-d');

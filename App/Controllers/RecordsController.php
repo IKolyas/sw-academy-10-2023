@@ -118,6 +118,7 @@ class RecordsController extends AbstractController
     public function actionEdit(array $params): void
     {
         //var_dump($params);die;
+        //TODO: если измененяемое значнение равняется значнению из базы, изменение не происходит и нет оповещения!
 
         if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
@@ -125,6 +126,7 @@ class RecordsController extends AbstractController
                 $putData = file_get_contents('php://input');
                 $data = (array)json_decode($putData);
 
+                //TODO: Проверка на id(int)
                 $data['id'] = $params['id'];
 
                 $record = new Record();
@@ -147,25 +149,28 @@ class RecordsController extends AbstractController
     /**
      * DELETE-запрос
      */
-    /* public function actionDelete(array $data): void
+    public function actionDelete(array $params): void
     {
-        //var_dump($data);die;
+        //TODO: если не находит в бд, то никак не оповещает об этом!
+
         if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 
             if (!empty($params['id'])) {
+
+                //TODO: проверка на id(int)
                 $record = new Record();
 
-                if ($record->edit($data) == 1) {
+                if ($record->delete($params['id']) == 1) {
                     header('Content-Type: application/json');
                     echo json_encode([
                         'status' => true,
-                        'message' => "Пользователь с id:{$data['id']} обновлен",
+                        'message' => "Пользователь с id:{$params['id']} удалён",
                     ]);
                 }
             } else {
                 throw new \Exception('not found: id');
             }
         }
-    } */
+    }
     
 }
