@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Base\Session;
 use App\Exceptions\ValidationException;
 use App\FormRequests\UserAuthRequest;
 use App\FormRequests\UserRegisterRequest;
@@ -14,25 +15,49 @@ class AuthController extends AbstractController
     {
         $request = new UserAuthRequest();
 
-
         if ($request->isGet()) {
             echo $this->render('auth/index');
             return;
         }
 
-        try {
-            $user = $request->authenticate();
+        $data = $request->validated();
+        $session = new Session();
+        $errors = $request->errors();
 
-            $_SESSION['user_id'] = $user->id;
-            $userToken = md5(uniqid());
-
-            // add cookie to params
-            app()->cookie->setCookie('token', $userToken);
-
-            header('Location: /');
-        } catch (ValidationException $e) {
-            echo $this->render('auth/index', ['errors' => $e->getErrors()]);
+        if (!empty($errors)) {
+            $errors['user'] = 'Неверные данные';
+            $session->set('errors', $errors);
+            header('Location: /auth');
         }
+
+        $users = new User();
+
+        $user = $users->find($data['login'], 'login');
+
+
+        $session = new Session();
+
+        if (!$user) {
+            $errors['user'] = 'Неверные данные';
+            $session->set('errors', $errors);
+            header('Location: /auth');
+        }
+
+        $passMatch = password_verify($data['password'], $user->password);
+
+        if (!$passMatch) {
+            $errors = $session->get('errors');
+            $errors['user'] = 'Неверные данные';
+            $session->set('errors', $errors);
+        }
+
+        (new Session())->set('user_id', $user->id);
+        $userToken = md5(uniqid());
+
+        // add cookie to params
+        app()->cookie->setCookie('token', $userToken);
+
+        header('Location: /');
     }
 
     public function actionRegister(): void
@@ -43,15 +68,32 @@ class AuthController extends AbstractController
             return;
         }
 
-        try {
-            $isCreated = $request->register();
+        $data = $request->validated();
 
-            if ($isCreated) {
-                header('Location: /');
-            }
-        } catch (ValidationException $e) {
-            http_response_code(422);
-            echo $this->render('auth/register', ['errors' => $e->getErrors()]);
+        $user = new User();
+
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+        $matchLogin = $user->find($data['login'], 'login');
+
+        if ($matchLogin) {
+            throw new ValidationException(['user' => 'Пользователь с таким логином уже существует']);
+        }
+
+        $matchEmail = $user->find($data['email'], 'email');
+
+        if ($matchEmail) {
+            throw new ValidationException(['user' => 'Пользователь с таким email уже существует']);
+        }
+
+        $isCreated = $user->create($data);
+
+        if ($isCreated) {
+            $_SESSION['user_login'] = $data['login'];
+        }
+
+        if ($isCreated) {
+            header('Location: /');
         }
     }
 }
