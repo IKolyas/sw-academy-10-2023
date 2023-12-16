@@ -3,6 +3,7 @@
     "php": "^8.2",
     "ext-pdo": "*",
     "ext-json": "*",
+    "ext-xdebug": "*",
     "twig/twig": "^3.0"
   },
   "autoload": {
