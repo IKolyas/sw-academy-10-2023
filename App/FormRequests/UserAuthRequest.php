@@ -13,6 +13,7 @@ class UserAuthRequest extends Request
 
     public function validated(): array
     {
+        $session = new Session();
 
         $fields = [
             'login' => $this->getParam('login') ?? null,
@@ -20,11 +21,11 @@ class UserAuthRequest extends Request
         ];
 
         if (!UserAuthValidator::validatePassword($fields['password'])) {
-            $this->errors['password'] = 'Password is not valid';
+            $session->add('errors', ['password' => 'Некорректный пароль']);
         }
 
         if (!UserAuthValidator::validateLogin($fields['login'])) {
-            $this->errors['login'] = 'Login is not valid';
+            $session->add('errors', ['login' => 'Некорректный логин']);
         }
 
         if (!empty($this->errors)) {
