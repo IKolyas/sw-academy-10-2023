@@ -11,6 +11,7 @@ use ReflectionException;
  * @property Request $request
  * @property Response $response
  * @property RendererInterface $renderer
+ * @property array $config
  */
 class Application
 {
@@ -65,5 +66,10 @@ class Application
         }
 
         return $this->components[$name];
+    }
+
+    public function getConfig(string $key): mixed
+    {
+        return $this->config[$key] ?? null;
     }
 }

@@ -12,14 +12,13 @@ use App\Base\Cookie;
 use App\Base\Request;
 use App\Base\Response;
 use App\Services\DataBase;
-use App\Services\Renderers\TemplateCalendar;
-use App\Services\Renderers\TemplateRenderer;
+use App\Services\Renderers\TwigRenderer;
 
 return [
     'DEFAULT_CONTROLLER' => env('DEFAULT_CONTROLLER', '/'),
     'CONTROLLER_NAMESPACE' => 'App\Controllers\\',
     'COOKIE_TIME' => env('COOKIE_TIME', 3600),
-    'VIEW_DIR' => __DIR__ . '/../views',
+    'VIEWS_DIR' => __DIR__ . '/../views/',
     'COMPONENTS' => [
         'request' => [
             'class' => Request::class,
@@ -28,9 +27,7 @@ return [
             'class' => Response::class,
         ],
         'renderer' => [
-            // 'class' => TemplateRenderer::class,
-            'class' => TemplateCalendar::class,
-
+            'class' => TwigRenderer::class,
         ],
         'cookie' => [
             'class' => Cookie::class,

@@ -1,0 +1,12 @@
+<div>
+    <h2>Я TWIG</h2>
+    {% for user in users %}
+        <ul>
+            <li>{{ user.id|e }}</li>
+            <li>{{ user.first_name|e }}</li>
+            <li>{{ user.last_name|e }}</li>
+            <li>{{ user.email|e }}</li>
+            <li>{{ user.login|e }}</li>
+        </ul>
+    {% endfor %}
+</div>
