@@ -14,9 +14,9 @@ class User extends AbstractModel
     public string $email;
     public int $is_admin;
     public ?string $access_token;
+    public bool $status;
     public string $created_at;
     public string $updated_at;
-    public int $status;
 
     public function __construct()
     {
@@ -32,5 +32,4 @@ class User extends AbstractModel
 
         return true;
     }
-
 }
