@@ -1,9 +1,3 @@
-<?php
-function redirect(string $url) {
-    header('Location: ' . $url);
-    exit;
-}
-?>
 <form class="form" action="" method="post">
     <div class="form__heading">
         <h2>Авторизация</h2>
@@ -13,25 +7,25 @@ function redirect(string $url) {
         </h2>
     </div>
     <div class="form__input-wrapper">
-        <?php if (isset($errors['user'])): ?>
-            <span class="error"><?= $errors['user'] ?></span>
-        <?php endif; ?>
+        {% if errors.user %}
+            <span class="error">{{ errors.user }}</span>
+        {% endif %}
         <label class="form__input">
             Логин
             <input class="input" type="text" name="login">
         </label>
-        <?php if (isset($errors['login'])): ?>
-            <span class="error"><?= $errors['login'] ?></span>
-        <?php endif; ?>
+        {% if errors.login %}
+            <span class="error">{{ errors.login }}</span>
+        {% endif %}
     </div>
     <div class="form__input-wrapper">
         <label class="form__input">
             Пароль
             <input class="input" type="password" name="password">
         </label>
-        <?php if (isset($errors['password'])): ?>
-            <span class="error"><?= $errors['password'] ?></span>
-        <?php endif; ?>
+        {% if errors.password %}
+            <span class="error">{{ errors.password }}</span>
+        {% endif %}
     </div>
     <button class="button" type="submit">Войти</button>
 </form>
