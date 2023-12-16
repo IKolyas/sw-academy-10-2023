@@ -3,61 +3,48 @@
 namespace App\Controllers;
 
 use App\Base\Session;
-use App\Exceptions\ValidationException;
 use App\FormRequests\UserAuthRequest;
 use App\FormRequests\UserRegisterRequest;
 use App\Models\User;
+use App\Services\Auth;
+use App\Services\Renderers\RendererInterface;
 
 class AuthController extends AbstractController
 {
+    private Session $session;
+    private Auth $auth;
 
-    public function actionIndex(): void
+    public function __construct(RendererInterface $renderer)
     {
-        $request = new UserAuthRequest();
+        parent::__construct($renderer);
 
-        if ($request->isGet()) {
-            echo $this->render('auth/index');
+        $this->session = new Session();
+
+        if ($this->session->get('user_id')) {
+            header('Location: /');
             return;
         }
 
+        $this->auth = new Auth();
+    }
+
+    public function actionIndex(): void
+    {
+        echo $this->render('auth/login');
+    }
+
+    public function actionAuth(): void
+    {
+        $request = new UserAuthRequest();
+
         $data = $request->validated();
-        $session = new Session();
-        $errors = $request->errors();
 
-        if (!empty($errors)) {
-            $errors['user'] = 'Неверные данные';
-            $session->set('errors', $errors);
-            header('Location: /auth');
+        if ($this->auth->authorized($data)) {
+            header('Location: /');
+        } else {
+            $errors = $this->session->get('errors');
+            echo $this->render('auth/login', ['errors' => $errors]);
         }
-
-        $users = new User();
-
-        $user = $users->find($data['login'], 'login');
-
-
-        $session = new Session();
-
-        if (!$user) {
-            $errors['user'] = 'Неверные данные';
-            $session->set('errors', $errors);
-            header('Location: /auth');
-        }
-
-        $passMatch = password_verify($data['password'], $user->password);
-
-        if (!$passMatch) {
-            $errors = $session->get('errors');
-            $errors['user'] = 'Неверные данные';
-            $session->set('errors', $errors);
-        }
-
-        (new Session())->set('user_id', $user->id);
-        $userToken = md5(uniqid());
-
-        // add cookie to params
-        app()->cookie->setCookie('token', $userToken);
-
-        header('Location: /');
     }
 
     public function actionRegister(): void
