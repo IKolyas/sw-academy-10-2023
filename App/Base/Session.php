@@ -12,12 +12,12 @@ class Session implements SessionInterface
         session_start();
     }
 
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $_SESSION[$key] ?? null;
     }
 
-    public function set(string $key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;
     }
