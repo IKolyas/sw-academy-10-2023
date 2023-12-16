@@ -3,9 +3,7 @@
 namespace App\FormRequests;
 
 use App\Base\Request;
-use App\Exceptions\ValidationException;
 use App\FormRequests\Validators\UserAuthValidator;
-use App\Models\User;
 
 class UserRegisterRequest extends Request
 {
@@ -19,9 +17,6 @@ class UserRegisterRequest extends Request
         'email' => 'Email указан неверно',
     ];
 
-    /**
-     * @throws ValidationException
-     */
     public function validated(): array
     {
 
@@ -41,43 +36,15 @@ class UserRegisterRequest extends Request
         }
 
         if (!empty($this->errors)) {
-            throw new ValidationException($this->errors);
+            return [];
         }
 
         unset($fields['confirm_password']);
         return $fields;
     }
 
-    /**
-     * @throws ValidationException
-     */
-    public function register(): int
+    public function errors(): array
     {
-        $data = $this->validated();
-
-        $user = new User();
-
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-
-        $matchLogin = $user->find($data['login'], 'login');
-
-        if ($matchLogin) {
-            throw new ValidationException(['user' => 'Пользователь с таким логином уже существует']);
-        }
-
-        $matchEmail = $user->find($data['email'], 'email');
-
-        if ($matchEmail) {
-            throw new ValidationException(['user' => 'Пользователь с таким email уже существует']);
-        }
-
-        $isCreated = $user->create($data);
-
-        if ($isCreated) {
-            $_SESSION['user_login'] = $data['login'];
-        }
-        return $isCreated;
+        return $this->errors;
     }
-
-
 }
