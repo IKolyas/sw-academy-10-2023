@@ -4,9 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Record;
 
-//TODO:УБРАТЬ
-use App\Enums\RequestData;
-
 class RecordsController extends AbstractController
 {
     
@@ -31,44 +28,8 @@ class RecordsController extends AbstractController
      */
     public function actionRecords(array $params): void
     {
-
-        //TODO:УБРАТЬ
-        //var_dump($params);die;
-
         $record = new Record();
         
-        //TODO: ЕСЛИ ВЫВОД ВСЕХ ТУТ НУЖЕН------------------------------------------
-        /* if (count($params) == 1) {
-            $records = $record->findAll();
-            
-            if ($records) {
-                header('Content-Type: application/json');
-                echo json_encode($records);
-                //echo $this->render('calendars/index', ['calendars' => $calendars]);
-    
-            } else {
-                //TODO: Добавить обработку ошибок
-                throw new \Exception('Calendars not found');
-            }
-            
-        } elseif (!empty($params['id'])) {
-
-            $calendars = $record->find($params['id']);
-
-            if ($calendars) {
-                header('Content-Type: application/json');
-                echo json_encode($calendars);
-                //echo $this->render('calendars/index', ['calendars' => $calendars]);
-
-            } else {
-            //TODO: Добавить обработку ошибок
-                throw new \Exception('Calendars not found');
-            }
-
-        } else {
-            throw new \Exception('not found');
-        } */
-
         if (!empty($params)) {
 
             $calendars = $record->find($params['id']);
@@ -160,7 +121,7 @@ class RecordsController extends AbstractController
                 //TODO: проверка на id(int)
                 $record = new Record();
 
-                if ($record->delete($params['id']) == 1) {
+                if ($record->delete($params['id'])) {
                     header('Content-Type: application/json');
                     echo json_encode([
                         'status' => true,

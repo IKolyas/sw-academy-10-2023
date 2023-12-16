@@ -2,8 +2,6 @@
 
 namespace App\Base;
 
-//TODO:УБРАТЬ
-use App\Enums\RequestData;
 use App\Enums\RequestMethodType;
 
 class Request
