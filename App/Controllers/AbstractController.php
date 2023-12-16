@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Services\Renderers\RendererInterface;
-use Twig\Environment; // настройки Twig
-use Twig\Loader\FilesystemLoader; // настройки Twig
 
 abstract class AbstractController
 {
@@ -16,20 +14,9 @@ abstract class AbstractController
     protected string $action;
     protected RendererInterface $renderer;
 
-    public $loader = null;
-    public $twig = null;
-
     public function __construct(RendererInterface $renderer)
     {
         $this->renderer = $renderer;
-        // $this->loader = new FilesystemLoader($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '../templates'); // настройки Twig
-        // $this->twig = new Environment($this->loader, [ // настройки Twig
-        //     'debug' => true, // отладка
-        //     'auto_reload' => true,
-        //     'cache' => $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '../Cache', // кэширование
-        // ]);
-        // $template = $twig->load('index.html'); Загрузка темплейта
-        // echo $template->render(['the' => 'variables', 'go' => 'here']); Вывод темплейта
     }
 
     public function runAction($action = null, $params = []): void
@@ -54,16 +41,12 @@ abstract class AbstractController
     protected function render(string $template, array $params = []): string
     {
         $content = $this->renderer->render($template, $params);
-        // print_r($template);
-        
-        
-        //      Если включена главная страница (шаблон главной страницы) useMainTemplate
+
+//      Если включена главная страница (шаблон главной страницы) useMainTemplate
         if ($this->useMainTemplate) {
-            //            TODO: Создать клас для работы с сессиями. Добавить класс в апп. Получить из сессии пользователя.
-            //            $auth_user = app()->session->IsAuth();
-            
-            // print_r($this->mainTemplate);
-            // exit();
+//            TODO: Создать клас для работы с сессиями. Добавить класс в апп. Получить из сессии пользователя.
+//            $auth_user = app()->session->IsAuth();
+
             return $this->renderer->render($this->mainTemplate, compact('content'));
         }
 

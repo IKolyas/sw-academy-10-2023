@@ -16,6 +16,8 @@
     <?= /** @var string $content */
     $content
     ?>
+
+    <div id='calendar'></div>
 </main>
 
 <footer>

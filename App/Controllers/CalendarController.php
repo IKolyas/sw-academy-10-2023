@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Record;
-use App\Services\Renderers\TemplateCalendar;
-use Twig\Template;
 
 class CalendarController extends AbstractController
 {
@@ -21,8 +19,8 @@ class CalendarController extends AbstractController
 
         if ($records) {
             header('Content-Type: application/json');
-            echo json_encode($records);
-            echo $this->render('calendars/index', ['calendars' => $records]);
+            // echo json_encode($records);
+            echo $this->render('layouts/calendar', ['calendars' => $records]);
 
         } else {
             //TODO: Добавить обработку ошибок
