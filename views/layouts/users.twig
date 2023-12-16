@@ -58,8 +58,7 @@
 <main class="content">
     <h1>ПОЛЬЗОВАТЕЛИ "АКАДЕМИЯ 2023"</h1>
     <a href="http://localhost:8080/edit/show?id=1" class="btn-edit">Редактировать</a>
-    <?= /** @var string $content */
-    $content ?>
+    {{ content | raw }}
 </main>
 
 <footer>

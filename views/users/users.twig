@@ -1,0 +1,22 @@
+<h2>Страница пользователей</h2>
+<div class="table">
+    <div class="table-row">
+        <div class="table-head">ID</div>
+        <div class="table-head">Имя</div>
+        <div class="table-head">Фамилия</div>
+        <div class="table-head">Email</div>
+        <div class="table-head">Логин</div>
+        <div class="table-head">Пароль</div>
+    </div>
+    {% for user in users %}
+        <div class="table-row">
+            <div class="table-cell">{{ user.id|e }}</div>
+            <div class="table-cell">{{ user.first_name|e }}</div>
+            <div class="table-cell">{ user.last_name|e }}</div>
+            <div class="table-cell">{ user.email|e }}</div>
+            <div class="table-cell">{{ user.login|e }}</div>
+            <div class="table-cell">{{ user.password|e }}</div>
+        </div>
+    {% endfor %}
+</div>
+
