@@ -15,6 +15,7 @@ class EditController extends AbstractController
     public function actionShow(array $params): void
     {
         $this->mainTemplate = 'layouts/edit-users';
+
         $user = new Edit();
         $userData = $user->findById($params['id']);
         if ($userData) {
