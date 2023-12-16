@@ -2,42 +2,27 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
-use Exception;
-use Twig\Environment; // настройки Twig
-use Twig\Loader\FilesystemLoader; // настройки Twig
-
-
-
-
-
-
+use App\Models\Record;
 
 class CalendarController extends AbstractController
 {
-
-/**
- * @throws Exception
- */
-public function actionIndex(): void
-{
-    $user = new User();
-    $users = $user->findAll();
-    
-    if ($users) {
-
-        
-            echo $this->twig->render('index.twig', ['name' => 'ALEXXXXXX', 'go' => 'here']); // вывод всего сразу
-            echo $this->render('users/index', ['users' => $users]);
-        } else {
-//            TODO: Добавить обработку ошибок
-            throw new Exception('Users not found');
-        }
-    }
-
-    public function actionAll(array $params): void
+    /**
+     * @throws \Exception
+     */
+    public function actionIndex(): void
     {
-        var_dump('test');
+        $record = new Record();
+        $records = $record->findAll();
+
+        if ($records) {
+            header('Content-Type: application/json');
+            echo json_encode($records);
+            //echo $this->render('calendars/index', ['calendars' => $calendars]);
+
+        } else {
+            //TODO: Добавить обработку ошибок
+            throw new \Exception('Calendars not found');
+        }
     }
 
 }
