@@ -3,22 +3,40 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users`
 (
-    `id`            BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `first_name`    VARCHAR(255) NOT NULL,
-    `last_name`     VARCHAR(255) NOT NULL,
-    `login`         VARCHAR(255) NOT NULL UNIQUE,
-    `password`      VARCHAR(255) NOT NULL,
-    `email`         VARCHAR(255) UNIQUE NOT NULL,
-    `is_admin`      BOOLEAN DEFAULT FALSE
+    `id`           BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `login`        VARCHAR(45)        NOT NULL,
+    `password`     VARCHAR(255)       NOT NULL,
+    `email`        VARCHAR(45)        NOT NULL,
+    `first_name`   VARCHAR(45)        NULL,
+    `last_name`    VARCHAR(45)        NULL,
+    `access_token` VARCHAR(255)       NULL,
+    `is_admin`     BOOL               NOT NULL DEFAULT false,
+    `status`       INTEGER            NOT NULL DEFAULT 1,
+    `created_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS `records`
+CREATE TABLE `records`
 (
-    `id`                    BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `user_id`               BIGINT NOT NULL,
-    `date`                  DATE NOT NULL UNIQUE,
-    `created_at`            DATE NOT NULL,
-    `updated_at`            DATE NOT NULL,
-    `is_completed`          BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+    `id`      BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT             NOT NULL,
+    `status`  INTEGER            NOT NULL DEFAULT 1,
+    `date`    DATE               NOT NULL,
+    `type`    integer            NOT NULL DEFAULT 1,
+    `note`    TEXT               NULL,
+    KEY `fk_records_users_user_id` (`user_id`),
+    CONSTRAINT `fk_records_users_user_id` FOREIGN KEY `fk_records_users_user_id` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
+
+INSERT INTO `users` (`login`, `password`, `email`, `first_name`, `last_name`, `access_token`, `is_admin`, `status`)
+VALUES ('admin', 'admin', 'admin@localhost', 'admin', 'admin', null, true, 1),
+       ('anton', 'password', 'anton@localhost', null, null, null, false, 1),
+       ('nikita', 'password', 'nikita@localhost', null, null, null, false, 1),
+       ('nastya', 'password', 'nastya@localhost', null, null, null, false, 1),
+       ('aleksandr', 'password', 'aleksandr@localhost', null, null, null, false, 1);
+
+INSERT INTO `records` (`user_id`, `status`, `date`, `type`, `note`)
+VALUES (2, 1, DATE_ADD(NOW(), INTERVAL +1 DAY), 1, 'test note'),
+       (3, 1, DATE_ADD(NOW(), INTERVAL +2 DAY), 1, 'test note'),
+       (4, 1, DATE_ADD(NOW(), INTERVAL +3 DAY), 1, 'test note'),
+       (5, 1, DATE_ADD(NOW(), INTERVAL +4 DAY), 1, 'test note');

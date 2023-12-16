@@ -9,9 +9,11 @@ class Record extends AbstractModel
     public int $id;
     public int $user_id ;
     public string $date;
-    public int $is_completed;
-    public string $created_at;
-    public string $updated_at;
+    public int $status;
+    public int $type;
+    public ?string $note;
+    /* public string $created_at;
+    public string $updated_at; */
 
     public function __construct()
     {
