@@ -2,17 +2,20 @@
 
 namespace App\Controllers;
 
-use App\Models\EditUser;
+use App\Models\Edit;
 
 use Exception;
 
-class EditUserController extends AbstractController
+class EditController extends AbstractController
 {
-    protected string $mainTemplate = 'layouts/edit-users';
 
+    /**
+     * @throws Exception
+     */
     public function actionShow(array $params): void
     {
-        $user = new EditUser();
+        $this->mainTemplate = 'layouts/edit-users';
+        $user = new Edit();
         $userData = $user->findById($params['id']);
         if ($userData) {
             echo $this->render('users/edit-user', ['user' => $userData]);
@@ -20,4 +23,6 @@ class EditUserController extends AbstractController
             throw new Exception('User not found');
         }
     }
+
+
 }

@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\EditUser;
+use App\Models\Edit;
 
-class EditUserRepository extends AbstractRepository
+class EditRepository extends AbstractRepository
 {
 
     public function getTableName(): string
@@ -14,7 +14,7 @@ class EditUserRepository extends AbstractRepository
 
     public function getModelClassName(): string
     {
-        return EditUser::class;
+        return Edit::class;
     }
 
     public function findById(int $id): ?\App\Models\AbstractModel

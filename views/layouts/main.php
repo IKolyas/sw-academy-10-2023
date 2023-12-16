@@ -13,9 +13,9 @@
 </header>
 
 <main class="content">
-    <?= /** @var string $content */
-    $content
-    ?>
+<!--    --><?php //= /** @var string $content */
+//    $content
+//    ?>
 </main>
 
 <footer>

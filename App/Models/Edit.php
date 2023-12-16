@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Repositories\UserRepository;
+use App\Repositories\EditRepository;
+use Exception;
 
-class User extends AbstractModel
+class Edit extends AbstractModel
 {
     public int $id;
     public ?string $first_name;
@@ -20,17 +21,17 @@ class User extends AbstractModel
 
     public function __construct()
     {
-        $this->repository = new UserRepository();
+        $this->repository = new EditRepository();
     }
 
-    public function update($fields): int
+    public function findById(int $id): ?AbstractModel
     {
-        if (isset($fields['password'])) {
-            unset($fields['password']);
+        $user = $this->repository->findById($id);
+
+        if ($user === null) {
+            throw new Exception('User not found');
         }
-        parent::update($fields);
 
-        return true;
+        return $user;
     }
-
 }

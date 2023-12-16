@@ -7,13 +7,13 @@ use Exception;
 
 class UsersController extends AbstractController
 {
- protected string $mainTemplate = 'layouts/users';
 
     /**
      * @throws Exception
      */
     public function actionIndex(): void
     {
+        $this->mainTemplate = 'layouts/users';
         $user = new User();
         $users = $user->findAll();
 
