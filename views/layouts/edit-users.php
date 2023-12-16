@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ПОЛЬЗОВАТЕЛЬ</title>
 </head>
+<<<<<<< HEAD
 <style>
     .content{
         display: flex;
@@ -55,6 +56,14 @@
 
 <main class="content">
     <h1>ПОЛЬЗОВАТЕЛЬ</h1>
+=======
+<body>
+<header>
+    <h1>ПОЛЬЗОВАТЕЛЬ</h1>
+</header>
+
+<main class="content">
+>>>>>>> origin/3/users-page-anton
     <?= /** @var string $content */
     $content ?>
 </main>

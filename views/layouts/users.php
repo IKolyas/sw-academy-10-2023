@@ -6,6 +6,7 @@
     <title>ПОЛЬЗОВАТЕЛИ АКАДЕМИЯ 2023</title>
 </head>
 <style>
+<<<<<<< HEAD
 
     .content{
         display: flex;
@@ -14,6 +15,8 @@
         justify-content: center;
         margin: 0 120px;
     }
+=======
+>>>>>>> origin/3/users-page-anton
     .btn-edit {
         display: inline-block;
         padding: 5px 10px;
@@ -23,6 +26,7 @@
         border-radius: 4px;
         transition: background-color 0.3s ease;
         margin-bottom: 40px;
+<<<<<<< HEAD
         align-self: flex-end;
         cursor: pointer;
     }
@@ -50,18 +54,32 @@
     .table-head {
         font-weight: bold;
         background-color: #f2f2f2;
+=======
+>>>>>>> origin/3/users-page-anton
     }
 </style>
 <body>
 <header>
+<<<<<<< HEAD
 </header>
 <main class="content">
     <h1>ПОЛЬЗОВАТЕЛИ "АКАДЕМИЯ 2023"</h1>
     <a href="http://localhost:8080/edit/show?id=1" class="btn-edit">Редактировать</a>
+=======
+    <h1>ПОЛЬЗОВАТЕЛИ "АКАДЕМИЯ 2023"</h1>
+</header>
+
+<main class="content">
+    <a href="http://localhost:8080/editUser/show?id=3" class="btn-edit">Редактировать</a>
+>>>>>>> origin/3/users-page-anton
     <?= /** @var string $content */
     $content
     ?>
 </main>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/3/users-page-anton
 <footer>
 </footer>
 </body>
