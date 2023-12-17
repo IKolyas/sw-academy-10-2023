@@ -9,7 +9,6 @@ use App\Models\User;
 
 class UserAuthRequest extends Request
 {
-    protected array $errors = [];
 
     public function validated(): array
     {
@@ -21,15 +20,13 @@ class UserAuthRequest extends Request
         ];
 
         if (!UserAuthValidator::validatePassword($fields['password'])) {
-            $session->add('errors', ['password' => 'Некорректный пароль']);
+            $session->addToArray('errors', ['password' => 'Некорректный пароль']);
+            unset($fields['password']);
         }
 
         if (!UserAuthValidator::validateLogin($fields['login'])) {
-            $session->add('errors', ['login' => 'Некорректный логин']);
-        }
-
-        if (!empty($this->errors)) {
-            return [];
+            $session->addToArray('errors', ['login' => 'Некорректный логин']);
+            unset($fields['login']);
         }
 
         return $fields;
