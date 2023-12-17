@@ -34,7 +34,13 @@ class AuthController extends AbstractController
         echo $this->render('auth/login');
     }
 
-    public function actionAuth(): void
+    public function actionLogout(): void
+    {
+        $this->auth->logout();
+        header('Location: /auth');
+    }
+
+    public function actionLogin(): void
     {
         $request = new UserAuthRequest();
 
