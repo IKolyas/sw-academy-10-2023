@@ -42,5 +42,4 @@ class UsersController extends AbstractController
     {
         var_dump('test');
     }
-
 }

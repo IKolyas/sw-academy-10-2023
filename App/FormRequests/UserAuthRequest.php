@@ -9,7 +9,6 @@ use App\Models\User;
 
 class UserAuthRequest extends Request
 {
-
     public function validated(): array
     {
         $session = new Session();
@@ -30,10 +29,5 @@ class UserAuthRequest extends Request
         }
 
         return $fields;
-    }
-
-    public function errors(): array
-    {
-        return $this->errors;
     }
 }

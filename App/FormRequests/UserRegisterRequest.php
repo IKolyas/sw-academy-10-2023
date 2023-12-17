@@ -20,7 +20,6 @@ class UserRegisterRequest extends Request
 
     public function validated(): array
     {
-
         $session = new Session();
 
         $fields = [
