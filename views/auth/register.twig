@@ -15,7 +15,7 @@
     <div class="form__input-wrapper">
         <label class="form__input">
             Имя
-            <input class="input" type="text" value="<?= $_REQUEST['first_name'] ?? '' ?>" name="first_name">
+            <input class="input" type="text" value="{{ user.first_name }}" name="first_name">
         </label>
         {% if errors.first_name %}
             <span class="error">{{ errors.first_name }}</span>
@@ -24,7 +24,7 @@
     <div class="form__input-wrapper">
         <label class="form__input">
             Фамилия
-            <input class="input" type="text"  value="<?= $_REQUEST['last_name'] ?? '' ?>"  name="last_name">
+            <input class="input" type="text"  value="{{ user.last_name }}"  name="last_name">
         </label>
         {% if errors.last_name %}
             <span class="error">{{ errors.last_name }}</span>
@@ -33,7 +33,7 @@
     <div class="form__input-wrapper">
         <label class="form__input">
             Логин
-            <input class="input" type="text" value="<?= $_REQUEST['login'] ?? '' ?>"  name="login">
+            <input class="input" type="text" value="{{ user.login }}" name="login">
         </label>
         {% if errors.login %}
             <span class="error">{{ errors.login }}</span>
@@ -42,7 +42,7 @@
     <div class="form__input-wrapper">
         <label class="form__input">
             Пароль
-            <input class="input" type="password" value="<?= $_REQUEST['password'] ?? '' ?>"  name="password">
+            <input class="input" type="password" value="{{user.password}}"  name="password">
         </label>
         {% if errors.password %}
             <span class="error">{{ errors.password }}</span>
@@ -51,7 +51,7 @@
     <div class="form__input-wrapper">
         <label class="form__input">
             Подтверждение пароля
-            <input class="input" type="password" value="<?= $_REQUEST['confirm_password'] ?? '' ?>"  name="confirm_password">
+            <input class="input" type="password" value="{{user.confirm_password}}"  name="confirm_password">
         </label>
         {% if errors.confirm_password %}
             <span class="error">{{ errors.confirm_password }}</span>
@@ -60,7 +60,7 @@
     <div class="form__input-wrapper">
         <label class="form__input">
             Почта
-            <input class="input" type="text" value="<?= $_REQUEST['email'] ?? '' ?>"  name="email">
+            <input class="input" type="text" value="{{user.email}}"  name="email">
         </label>
         {% if errors.email %}
             <span class="error">{{ errors.email }}</span>
