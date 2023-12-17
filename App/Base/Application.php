@@ -19,8 +19,11 @@ class Application
 
     protected ComponentsFactory $componentsFactory;
     protected array $config;
-    protected $components;
+    protected array $components = [];
 
+    /**
+     * @throws ReflectionException
+     */
     public function run(array $config): void
     {
         $this->componentsFactory = new ComponentsFactory();
@@ -56,7 +59,7 @@ class Application
         /**
          * Если не найден компонент, проверяем есть ли он в конфиге, создаём его через фабрику и помещаем в $this->components
          */
-        if (is_null($this->components) || empty($this->components[$name])) {
+        if (empty($this->components[$name])) {
             if ($params = $this->config['COMPONENTS'][$name]) {
                 $this->components[$name] = $this->componentsFactory->createComponent($name, $params);
             } else {
