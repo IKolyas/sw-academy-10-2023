@@ -66,6 +66,7 @@ class AuthController extends AbstractController
     public function actionRegister(): void
     {
         $request = new UserRegisterRequest();
+
         if ($request->isGet()) {
             echo $this->render('auth/register');
             return;
@@ -73,30 +74,15 @@ class AuthController extends AbstractController
 
         $data = $request->validated();
 
-        $user = new User();
+        $errors = $this->session->get('errors');
 
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-
-        $matchLogin = $user->find($data['login'], 'login');
-
-        if ($matchLogin) {
-            throw new ValidationException(['user' => 'Пользователь с таким логином уже существует']);
-        }
-
-        $matchEmail = $user->find($data['email'], 'email');
-
-        if ($matchEmail) {
-            throw new ValidationException(['user' => 'Пользователь с таким email уже существует']);
-        }
-
-        $isCreated = $user->create($data);
-
-        if ($isCreated) {
-            $_SESSION['user_login'] = $data['login'];
-        }
-
-        if ($isCreated) {
+        if (empty($errors) && $this->auth->register($data)) {
             header('Location: /');
+        } else {
+            echo $this->render('auth/register', [
+                'errors' => $this->session->get('errors'),
+                'user' => $data
+            ]);
         }
     }
 }
