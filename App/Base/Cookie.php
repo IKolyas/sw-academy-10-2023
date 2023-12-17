@@ -14,6 +14,11 @@ class Cookie
         setcookie($key, $value, time() + env('COOKIE_TIME', 3600), '/');
     }
 
+    public function removeCookie(string $key): void
+    {
+        setcookie($key, '', -1, '/');
+    }
+
     public function getUserByCookie(string $cookie_key)
     {
 //        TODO: реализовать получение пользователя из базы по куке
