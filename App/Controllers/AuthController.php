@@ -20,12 +20,13 @@ class AuthController extends AbstractController
 
         $this->session = new Session();
 
-        if ($this->session->get('user_id')) {
-            header('Location: /');
-            return;
-        }
-
         $this->auth = new Auth();
+
+        $this->session->remove('errors');
+
+        if ($this->auth->isAuthorized()) {
+            header('Location: /');
+        }
     }
 
     public function actionIndex(): void
