@@ -44,13 +44,22 @@ class AuthController extends AbstractController
     {
         $request = new UserAuthRequest();
 
+        if ($request->isGet()) {
+            echo $this->render('auth/login');
+            return;
+        }
+
         $data = $request->validated();
 
-        if ($this->auth->authorized($data)) {
+        $errors = $this->session->get('errors');
+
+        if (empty($errors) && $this->auth->tryLogin($data)) {
             header('Location: /');
         } else {
-            $errors = $this->session->get('errors');
-            echo $this->render('auth/login', ['errors' => $errors]);
+            echo $this->render('auth/login', [
+                'errors' => $this->session->get('errors'),
+                'user' => $data
+            ]);
         }
     }
 
