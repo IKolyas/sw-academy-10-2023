@@ -18,9 +18,11 @@ class Session implements SessionInterface
         return $_SESSION[$key] ?? null;
     }
 
-    public function add(string $key, mixed $value): void
+    public function addToArray(string $key, mixed $value): void
     {
-        $_SESSION[$key] = $value;
+        $data = $this->get($key) ?? [];
+        $newData = array_merge($data, $value);
+        $_SESSION[$key] = $newData;
     }
 
     public function set(string $key, mixed $value): void
