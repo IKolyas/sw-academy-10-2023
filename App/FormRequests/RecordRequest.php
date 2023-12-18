@@ -3,6 +3,7 @@
 namespace App\FormRequests;
 
 use App\Base\Request;
+use App\Enums\RequestMethodType;
 use App\FormRequests\Validators\RecordValidator;
 use Exception;
 
@@ -13,20 +14,12 @@ class RecordRequest extends Request
      */
     public function validated(): array
     {
-        if ($this->method == 'POST') {
-
-            $fields = $this->validatedPost();
-
-        } elseif ($this->method == 'PUT') {
-            
-            $fields = $this->validatedPut();
-
-        } elseif ($this->method == 'DELETE') {
-
-            $fields = $this->validatedDelete();
-        }
-
-        return $fields;
+        return match (RequestMethodType::tryFrom($this->method)) {
+            RequestMethodType::POST => $this->validatedPost(),
+            RequestMethodType::PUT => $this->validatedPut(),
+            RequestMethodType::DELETE => $this->validatedDelete(),
+            default => throw new Exception('Неизвестный метод запроса'),
+        };
     }
 
     /**Валидация Post-запроса */
@@ -42,7 +35,7 @@ class RecordRequest extends Request
 
         //проверка на заполненность полей
         if (!RecordValidator::isFieldsFilled($fields)) {
-            header('Location: http://localhost:8080/records/add');
+            header('Location: /records/add');
         }
         //Валидация полей
         $fields['user_id']  = RecordValidator::validateUserId($fields['user_id']);
@@ -55,7 +48,7 @@ class RecordRequest extends Request
 
         //если возникла ошибка -> редирект
         if (array_search(false, $fields, true)) {
-            header('Location: http://localhost:8080/records/add');
+            header('Location: /records/add');
         }
 
         return $fields;
@@ -71,7 +64,7 @@ class RecordRequest extends Request
         $fields = [];
 
         foreach ($data as $key=>$value) {
-           
+
             $fields[$key] = match($key) {
                 'user_id'   => RecordValidator::validateUserId($value),
                 'date'      => RecordValidator::validateDate($value),
@@ -85,7 +78,7 @@ class RecordRequest extends Request
 
         //если возникла ошибка -> редирект
         if (array_search(false, $fields, true)) {
-            header('Location: http://localhost:8080/records/edit');
+            header('Location: /records/edit');
         }
 
         return $fields;
@@ -99,9 +92,9 @@ class RecordRequest extends Request
 
         //если возникла ошибка -> редирект
         if (array_search(false, $fields, true)) {
-            header('Location: http://localhost:8080/records/delete');
+            header('Location: /records/delete');
         }
-        
+
         return $fields;
      }
 }

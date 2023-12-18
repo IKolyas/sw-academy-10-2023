@@ -18,13 +18,4 @@ class Record extends AbstractModel
         $this->repository = new RecordRepository();
     }
 
-    public function add(array $data): int
-    {
-        return parent::create($data);
-    }
-
-    public function edit(array $data): int
-    {
-        return parent::update($data);
-    }
 }

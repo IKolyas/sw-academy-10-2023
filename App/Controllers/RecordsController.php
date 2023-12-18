@@ -3,149 +3,126 @@
 namespace App\Controllers;
 
 use App\Base\Session;
+use App\Enums\RequestMethodType;
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
+use Exception;
 
 class RecordsController extends AbstractController
 {
-    
-    public function actionIndex(): void
-    {
-        $record = new Record();
-        $records = $record->findAll();
 
-        if ($records) {
-            header('Content-Type: application/json');
-            echo json_encode($records);
-            //echo $this->render('calendars/index', ['calendars' => $calendars]);
-
-        } else {
-            //TODO: Добавить обработку ошибок
-            throw new \Exception('Calendars not found');
-        }
-    }
+    protected bool $authOnly = true;
 
     /**
      * GET-запросы
+     * @throws Exception
      */
     public function actionRecords(array $params): void
     {
         $record = new Record();
-        
-        if (!empty($params)) {
 
-            $calendars = $record->find($params['id']);
-
-            if ($calendars) {
-                header('Content-Type: application/json');
-                echo json_encode($calendars);
-
-            } else {
-            //TODO: Добавить обработку ошибок
-                throw new \Exception('Calendars not found');
-            }
-
-        } else {
+        if (empty($params['id'])) {
             throw new \Exception('not found: id');
         }
+
+        $calendars = $record->find($params['id']);
+
+        if (!$calendars) {
+            throw new \Exception('Calendars not found');
+        }
+
+//        For debug
+        header('Content-Type: application/json');
+        echo json_encode($calendars);
+
     }
 
     /**
      * POST-запрос
+     * @throws Exception
      */
     public function actionAdd(): void
     {
-        $session = new Session();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $request = new RecordRequest();
+        $params = $request->validated();
 
-            //проверка
-            $validator = new RecordRequest();
-            $params = $validator->validated();
+        $record = new Record();
 
-            $record = new Record();
+        if (app()->request->isGet()) {
+            print_r(app()->session->get('errors'));
+            app()->session->remove('errors');
+            return;
+        }
 
-            if ($record->add($params)) {
-                //TODO: Заменить на шаблон
-                header('Content-Type: application/json');
-                echo json_encode([
-                    'status'    => true,
-                    'message'   => 'Запись успешно создана',
-                ]);
-            } 
-        } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        if ($record->create($params)) {
             //TODO: Заменить на шаблон
-            print_r($session->get('errors-record'));
-            $session->remove('errors-record');
+            header('Content-Type: application/json');
+            echo json_encode([
+                'status' => true,
+                'message' => 'Запись успешно создана',
+            ]);
         }
     }
 
     /**
      * PUT-запрос
+     * @throws Exception
      */
     public function actionEdit(): void
     {
-        $session = new Session();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-
-            //проверка
-            $validator = new RecordRequest();
-            $params = $validator->validated();
-
-            $record = new Record();
-
-            $countRows = (int)$record->edit($params);
-
-            if ($countRows > 0) {
-                //TODO: Заменить на шаблон
-                header('Content-Type: application/json');
-                echo json_encode([
-                    'status'    => true,
-                    'message'   => "Пользователь с id:{$params['id']} обновлен",
-                ]);
-            } else {
-                echo "$countRows строк изменено";
-            }
-           
-
-        } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            //TODO: Заменить на шаблон
-            print_r($session->get('errors-record'));
-            $session->remove('errors-record');
+        if (app()->request->getMethod() != RequestMethodType::PUT) {
+            var_dump(app()->session->get('errors'));
+            app()->session->remove('errors-record');
         }
+
+        $request = new RecordRequest();
+        $params = $request->validated();
+        $record = new Record();
+        $countRows = (int)$record->edit($params);
+
+        if (!$countRows) {
+            echo "$countRows строк изменено";
+            return;
+        }
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            'status' => true,
+            'message' => "Пользователь с id:{$params['id']} обновлен",
+        ]);
+
     }
 
     /**
      * DELETE-запрос
+     * @throws Exception
      */
     public function actionDelete(array $params): void
     {
         $session = new Session();
 
-        if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-
-            //проверка
-            $validator  = new RecordRequest();
-            $params     = $validator->validated();
-
-            $record = new Record();
-
-            $countRows = (int)$record->delete($params['id']);
-
-            if ($countRows > 0) {
-                //TODO: Заменить на шаблон
-                header('Content-Type: application/json');
-                echo json_encode([
-                    'status' => true,
-                    'message' => "Пользователь с id:{$params['id']} удалён",
-                ]);
-            }
-        } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            //TODO: Заменить на шаблон
-            print_r($session->get('errors-record'));
-            $session->remove('errors-record');
+        if (app()->request->getMethod() != RequestMethodType::DELETE) {
+            print_r(app()->session->get('errors-record'));
+            app()->session->remove('errors-record');
         }
+
+        $request = new RecordRequest();
+        $params = $request->validated();
+        $record = new Record();
+        $countRows = $record->delete($params['id']);
+
+        if (!$countRows) {
+            return;
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => true,
+            'message' => "Пользователь с id:{$params['id']} удалён",
+        ]);
     }
-    
+
 }

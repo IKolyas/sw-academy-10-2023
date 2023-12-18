@@ -89,7 +89,7 @@ class Request
 
     }
 
-    protected function getMethod(): RequestMethodType
+    public function getMethod(): RequestMethodType
     {
         return RequestMethodType::tryFrom($this->method);
     }

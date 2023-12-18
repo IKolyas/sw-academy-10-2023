@@ -21,15 +21,17 @@ class UserRegisterRequest extends Request
     public function validated(): array
     {
         $fields = [
-            'first_name' => $this->getParam('first_name') ?? null,
-            'last_name' => $this->getParam('last_name') ?? null,
-            'login' => $this->getParam('login') ?? null,
-            'password' => $this->getParam('password') ?? null,
-            'confirm_password' => $this->getParam('confirm_password') ?? null,
-            'email' => $this->getParam('email') ?? null,
+            'first_name',
+            'last_name',
+            'login',
+            'password',
+            'confirm_password',
+            'email',
         ];
 
-        foreach ($fields as $field => $value) {
+        foreach ($fields as $field) {
+            $fields[$field] = $this->getParam($field) ?? null;
+            $value = $fields[$field];
             if ($value && UserAuthValidator::validateField($field, $value)) {
                 unset($this->errors[$field]);
             } else {
