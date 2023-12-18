@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Base\Session;
-use App\Enums\RequestMethodType;
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
 use Exception;
@@ -15,23 +13,56 @@ class RecordsController extends AbstractController
      * GET-запросы
      * @throws Exception
      */
-    public function actionRecords(array $params): void
+    public function actionShow(?Record $record): void
     {
-        $record = new Record();
-
-        if (empty($params['id'])) {
-            throw new Exception('not found: id');
+        if (!$record->id) {
+            $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
         }
 
-        $calendars = $record->find($params['id']);
+//        TODO: Заменить на шаблон
+//        $this->renderer->render('records/show', ['record' => $record]);
+    }
 
-        if (!$calendars) {
-            throw new Exception('Calendars not found');
+    /**
+     * POST-запрос
+     * @throws Exception
+     */
+    public function actionAdd(?RecordRequest $request, ?Record $record): void
+    {
+        $validated = $request->validated();
+
+        if (!$validated) {
+            //TODO: Заменить на шаблон
+            var_dump(app()->session->get('errors'));
+            return;
         }
 
-//        For debug
-        header('Content-Type: application/json');
-        echo json_encode($calendars);
+        if ($record->create($validated)) {
+            //TODO: Заменить на шаблон
+            var_dump("Запись успешно создана");
+        }
+    }
+
+    /**
+     * POST-запрос
+     * @throws Exception
+     */
+
+    public function actionEdit(?RecordRequest $request, ?Record $record): void
+    {
+
+        $validated = $request->validated();
+
+        if (!$validated) {
+            //TODO: Заменить на шаблон
+            var_dump(app()->session->get('errors'));
+            return;
+        }
+
+        $record->update($validated);
+
+        //TODO: Заменить на шаблон
+        var_dump($record, "Запись успешно обновлена");
 
     }
 
@@ -39,83 +70,18 @@ class RecordsController extends AbstractController
      * POST-запрос
      * @throws Exception
      */
-    public function actionAdd(?RecordRequest $request): void
+
+    public function actionDelete(?Record $record): void
     {
-        $params = $request->validated();
-
-        $record = new Record();
-
-        if (app()->request->isGet()) {
-            print_r(app()->session->get('errors'));
-            app()->session->remove('errors');
+        if (!$record->id) {
+            $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
             return;
         }
 
-        if ($record->create($params)) {
-            //TODO: Заменить на шаблон
-            header('Content-Type: application/json');
-            echo json_encode([
-                'status' => true,
-                'message' => 'Запись успешно создана',
-            ]);
-        }
-    }
+        $record->delete($record->id);
 
-    /**
-     * PUT-запрос
-     * @throws Exception
-     */
-    public function actionEdit(?RecordRequest $request): void
-    {
-        if (app()->request->getMethod() != RequestMethodType::PUT) {
-            var_dump(app()->session->get('errors'));
-            app()->session->remove('errors-record');
-        }
-
-        $params = $request->validated();
-        $record = new Record();
-        $countRows = (int)$record->create($params);
-
-        if (!$countRows) {
-            echo "$countRows строк изменено";
-            return;
-        }
-
-        header('Content-Type: application/json');
-
-        echo json_encode([
-            'status' => true,
-            'message' => "Пользователь с id:{$params['id']} обновлен",
-        ]);
-
-    }
-
-    /**
-     * DELETE-запрос
-     * @throws Exception
-     */
-    public function actionDelete(array $params, ?RecordRequest $request): void
-    {
-        $session = new Session();
-
-        if (app()->request->getMethod() != RequestMethodType::DELETE) {
-            print_r(app()->session->get('errors-record'));
-            app()->session->remove('errors-record');
-        }
-
-        $params = $request->validated();
-        $record = new Record();
-        $countRows = $record->delete($params['id']);
-
-        if (!$countRows) {
-            return;
-        }
-
-        header('Content-Type: application/json');
-        echo json_encode([
-            'status' => true,
-            'message' => "Пользователь с id:{$params['id']} удалён",
-        ]);
+        //TODO: Заменить на шаблон
+        var_dump("Пользователь с id:{$record->id} удалён");
     }
 
 }
