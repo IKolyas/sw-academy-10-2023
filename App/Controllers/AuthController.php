@@ -2,32 +2,11 @@
 
 namespace App\Controllers;
 
-use App\Base\Session;
 use App\FormRequests\UserAuthRequest;
 use App\FormRequests\UserRegisterRequest;
-use App\Models\User;
-use App\Services\Auth;
-use App\Services\Renderers\RendererInterface;
 
 class AuthController extends AbstractController
 {
-    private Session $session;
-    private Auth $auth;
-
-    public function __construct(RendererInterface $renderer)
-    {
-        parent::__construct($renderer);
-
-        $this->session = new Session();
-
-        $this->auth = new Auth();
-
-        $this->session->remove('errors');
-
-        if ($this->auth->isAuthorized()) {
-            header('Location: /');
-        }
-    }
 
     public function actionIndex(): void
     {
@@ -36,7 +15,7 @@ class AuthController extends AbstractController
 
     public function actionLogout(): void
     {
-        $this->auth->logout();
+        app()->auth->logout();
         header('Location: /auth');
     }
 
@@ -45,19 +24,18 @@ class AuthController extends AbstractController
         $request = new UserAuthRequest();
 
         if ($request->isGet()) {
-            echo $this->render('auth/login');
+            echo $this->render('auth');
             return;
         }
 
         $data = $request->validated();
+        $errors = app()->session->get('errors');
 
-        $errors = $this->session->get('errors');
-
-        if (empty($errors) && $this->auth->tryLogin($data)) {
+        if (empty($errors) && app()->auth->tryLogin($data)) {
             header('Location: /');
         } else {
             echo $this->render('auth/login', [
-                'errors' => $this->session->get('errors'),
+                'errors' => app()->session->get('errors'),
                 'user' => $data
             ]);
         }
@@ -73,14 +51,13 @@ class AuthController extends AbstractController
         }
 
         $data = $request->validated();
+        $errors = app()->session->get('errors');
 
-        $errors = $this->session->get('errors');
-
-        if (empty($errors) && $this->auth->register($data)) {
-            header('Location: /');
+        if (empty($errors) && app()->auth->register($data)) {
+            header('Location: /auth');
         } else {
             echo $this->render('auth/register', [
-                'errors' => $this->session->get('errors'),
+                'errors' => app()->session->get('errors'),
                 'user' => $data
             ]);
         }

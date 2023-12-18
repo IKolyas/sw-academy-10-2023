@@ -14,6 +14,8 @@ use ReflectionException;
  * @property RendererInterface $renderer
  * @property Session $session
  * @property array $config
+ * @property Cookie $cookie
+ * @property Auth $auth
  */
 class Application
 {
@@ -21,7 +23,7 @@ class Application
 
     protected ComponentsFactory $componentsFactory;
     protected array $config;
-    protected $components;
+    protected array $components = [];
 
     public function run(array $config): void
     {
@@ -31,10 +33,6 @@ class Application
         $params = $this->request->getAll();
         $actionName = $this->request->getAction();
 
-        $authService = new Auth();
-        if ($controllerName !== 'auth' && !$authService->isAuthorized()) {
-            header('Location: /auth');
-        }
 
         /**
          * Получаем имя класса контроллера с пространством имён
@@ -63,7 +61,7 @@ class Application
         /**
          * Если не найден компонент, проверяем есть ли он в конфиге, создаём его через фабрику и помещаем в $this->components
          */
-        if (is_null($this->components) || empty($this->components[$name])) {
+        if (empty($this->components[$name])) {
             if ($params = $this->config['COMPONENTS'][$name]) {
                 $this->components[$name] = $this->componentsFactory->createComponent($name, $params);
             } else {
