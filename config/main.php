@@ -11,6 +11,8 @@
 use App\Base\Cookie;
 use App\Base\Request;
 use App\Base\Response;
+use App\Base\Session;
+use App\Services\Auth;
 use App\Services\DataBase;
 use App\Services\Renderers\TwigRenderer;
 
@@ -34,6 +36,12 @@ return [
         ],
         'db' => [
             'class' => DataBase::class,
+        ],
+        'session' => [
+            'class' => Session::class,
+        ],
+        'auth' => [
+            'class' => Auth::class,
         ]
     ]
 ];

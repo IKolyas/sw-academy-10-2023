@@ -4,9 +4,9 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
     `id`           BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    `login`        VARCHAR(45)        NOT NULL,
+    `login`        VARCHAR(45)        NOT NULL UNIQUE,
     `password`     VARCHAR(255)       NOT NULL,
-    `email`        VARCHAR(45)        NOT NULL,
+    `email`        VARCHAR(45)        NOT NULL UNIQUE,
     `first_name`   VARCHAR(45)        NULL,
     `last_name`    VARCHAR(45)        NULL,
     `access_token` VARCHAR(255)       NULL,

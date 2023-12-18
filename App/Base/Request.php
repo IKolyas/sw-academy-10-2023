@@ -2,6 +2,8 @@
 
 namespace App\Base;
 
+use App\Enums\RequestMethodType;
+
 class Request
 {
     protected string $uri;
@@ -62,26 +64,34 @@ class Request
     }
 
     //  Получить параметр из запроса
-    public function getParam(string $key): ?array
+    public function getParam(string $key): ?string
     {
-        $method = $this->getMethod();
+        $method = $this->getMethod()?->getData();
 
         if (!isset($method[$key])) {
             return null;
         }
 
-        return [$key => $method[$key]];
+        return $method[$key];
     }
 
     //  Получить все параметры
-    public function getAll(): array
+    public function getAll(): ?array
     {
-        return $this->getMethod();
+
+        $methodData = $this->getMethod()?->getData();
+
+        if (!$methodData) {
+            return null;
+        }
+
+        return array_filter($methodData, fn($k) => $k !== 'uri', ARRAY_FILTER_USE_KEY);
+
     }
 
-    protected function getMethod(): array
+    public function getMethod(): RequestMethodType
     {
-        return $this->isGet() ? $_GET : $_POST;
+        return RequestMethodType::tryFrom($this->method);
     }
 
 }

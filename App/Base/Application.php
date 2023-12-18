@@ -2,6 +2,7 @@
 
 namespace App\Base;
 
+use App\Services\Auth;
 use App\Traits\Singleton;
 use App\Services\Renderers\RendererInterface;
 use Exception;
@@ -11,7 +12,10 @@ use ReflectionException;
  * @property Request $request
  * @property Response $response
  * @property RendererInterface $renderer
+ * @property Session $session
  * @property array $config
+ * @property Cookie $cookie
+ * @property Auth $auth
  */
 class Application
 {
@@ -31,6 +35,7 @@ class Application
         $controllerName = $this->request->getController() ?: $this->config['DEFAULT_CONTROLLER'];
         $params = $this->request->getAll();
         $actionName = $this->request->getAction();
+
 
         /**
          * Получаем имя класса контроллера с пространством имён

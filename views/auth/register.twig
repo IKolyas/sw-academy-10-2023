@@ -1,0 +1,70 @@
+
+<form class="form" action="" method="post">
+    <div class="form__heading">
+        <h2>
+            <a class="link" href="/auth">Авторизация</a>
+        </h2>
+        /
+        <h2>
+            Регистрация
+        </h2>
+    </div>
+    {% if errors.user %}
+        <span class="error">{{ errors.user }}</span>
+    {% endif %}
+    <div class="form__input-wrapper">
+        <label class="form__input">
+            Имя
+            <input class="input" type="text" value="{{ user.first_name }}" name="first_name">
+        </label>
+        {% if errors.first_name %}
+            <span class="error">{{ errors.first_name }}</span>
+        {% endif %}
+    </div>
+    <div class="form__input-wrapper">
+        <label class="form__input">
+            Фамилия
+            <input class="input" type="text"  value="{{ user.last_name }}"  name="last_name">
+        </label>
+        {% if errors.last_name %}
+            <span class="error">{{ errors.last_name }}</span>
+        {% endif %}
+    </div>
+    <div class="form__input-wrapper">
+        <label class="form__input">
+            Логин
+            <input class="input" type="text" value="{{ user.login }}" name="login">
+        </label>
+        {% if errors.login %}
+            <span class="error">{{ errors.login }}</span>
+        {% endif %}
+    </div>
+    <div class="form__input-wrapper">
+        <label class="form__input">
+            Пароль
+            <input class="input" type="password" value="{{user.password}}"  name="password">
+        </label>
+        {% if errors.password %}
+            <span class="error">{{ errors.password }}</span>
+        {% endif %}
+    </div>
+    <div class="form__input-wrapper">
+        <label class="form__input">
+            Подтверждение пароля
+            <input class="input" type="password" value="{{user.confirm_password}}"  name="confirm_password">
+        </label>
+        {% if errors.confirm_password %}
+            <span class="error">{{ errors.confirm_password }}</span>
+        {% endif %}
+    </div>
+    <div class="form__input-wrapper">
+        <label class="form__input">
+            Почта
+            <input class="input" type="text" value="{{user.email}}"  name="email">
+        </label>
+        {% if errors.email %}
+            <span class="error">{{ errors.email }}</span>
+        {% endif %}
+    </div>
+    <button class="button" type="submit">Зарегистрироваться</button>
+</form>
