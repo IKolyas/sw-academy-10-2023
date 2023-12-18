@@ -22,4 +22,8 @@ function app(): Application
     return Application::getInstance();
 }
 
-app()->run($config);
+try {
+    app()->run($config);
+} catch (ReflectionException $e) {
+    echo $e->getMessage();
+}

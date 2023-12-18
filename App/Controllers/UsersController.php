@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\FormRequests\UserAuthRequest;
 use App\Models\User;
 use Exception;
 
@@ -25,4 +26,19 @@ class UsersController extends AbstractController
         }
     }
 
+    /**
+     * @throws Exception
+     */
+    public function actionAuth(): void
+    {
+        $request = new UserAuthRequest();
+        $data = $request->validated();
+
+        var_dump($data);
+    }
+
+    public function actionAll(array $params): void
+    {
+        var_dump('test');
+    }
 }

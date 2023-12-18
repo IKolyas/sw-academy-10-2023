@@ -22,7 +22,6 @@ class ComponentsFactory
         if (class_exists($class)) {
             unset($params['class']);
             $reflection = new ReflectionClass($class);
-
             return $reflection->newInstanceArgs(array_values($params));
         }
 

@@ -3,6 +3,7 @@
 namespace App\Base;
 
 use App\Enums\RequestMethodType;
+
 class Request
 {
     protected string $uri;
@@ -63,7 +64,7 @@ class Request
     }
 
     //  Получить параметр из запроса
-    public function getParam(string $key): ?array
+    public function getParam(string $key): ?string
     {
         $method = $this->getMethod()?->getData();
 
@@ -71,12 +72,13 @@ class Request
             return null;
         }
 
-        return [$key => $method[$key]];
+        return $method[$key];
     }
 
     //  Получить все параметры
     public function getAll(): ?array
     {
+
         $methodData = $this->getMethod()?->getData();
 
         if (!$methodData) {
@@ -87,7 +89,7 @@ class Request
 
     }
 
-    protected function getMethod(): RequestMethodType
+    public function getMethod(): RequestMethodType
     {
         return RequestMethodType::tryFrom($this->method);
     }

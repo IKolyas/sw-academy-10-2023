@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y curl zlib1g-dev libzip-dev && docker-ph
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 # Install Xdebug
 RUN pecl install xdebug
+RUN composer require "twig/twig:^3.0"
 
 WORKDIR /var/www/html
 
