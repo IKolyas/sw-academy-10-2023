@@ -2,8 +2,6 @@
 
 namespace App\Base;
 
-use App\Traits\Singleton;
-
 class Session implements SessionInterface
 {
 
@@ -12,12 +10,19 @@ class Session implements SessionInterface
         session_start();
     }
 
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $_SESSION[$key] ?? null;
     }
 
-    public function set(string $key, $value): void
+    public function addToArray(string $key, mixed $value): void
+    {
+        $data = $this->get($key) ?? [];
+        $newData = array_merge($data, $value);
+        $_SESSION[$key] = $newData;
+    }
+
+    public function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;
     }
