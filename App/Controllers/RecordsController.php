@@ -11,8 +11,6 @@ use Exception;
 class RecordsController extends AbstractController
 {
 
-    protected bool $authOnly = true;
-
     /**
      * GET-запросы
      * @throws Exception

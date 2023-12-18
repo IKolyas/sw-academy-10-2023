@@ -8,14 +8,7 @@ use App\Services\Renderers\RendererInterface;
 
 class AuthController extends AbstractController
 {
-    public function __construct(RendererInterface $renderer)
-    {
-        parent::__construct($renderer);
-
-        if (app()->auth->isAuthorized()) {
-            header('Location: /');
-        }
-    }
+    protected bool $requireAuth = false;
 
     public function actionIndex(): void
     {
