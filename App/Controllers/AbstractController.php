@@ -2,15 +2,17 @@
 
 namespace App\Controllers;
 
+use App\Models\AbstractModel;
 use App\Services\Renderers\RendererInterface;
+use ReflectionException;
 
 abstract class AbstractController
 {
     protected const DEFAULT_ACTION = 'index';
     protected const NOT_FOUND_PAGE_NAME = '404';
 
-    protected string $mainTemplate = 'layouts/main';
     protected bool $useMainTemplate = true;
+    protected string $mainTemplate = 'layouts/main';
     protected string $action;
     protected RendererInterface $renderer;
 
@@ -26,6 +28,9 @@ abstract class AbstractController
         }
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function runAction($action = null, $params = []): void
     {
         $this->action = $action ?: self::DEFAULT_ACTION;
@@ -34,7 +39,8 @@ abstract class AbstractController
         $method = "action" . ucfirst($this->action);
 
         if (method_exists($this, $method)) {
-            $this->$method($params);
+            $this->bindParams($params, $method);
+            $this->$method(...$params);
         } else {
             echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
         }
@@ -60,4 +66,45 @@ abstract class AbstractController
         return $content;
     }
 
+    /**
+     * @throws ReflectionException
+     */
+    private function bindParams(array &$data, $method): void
+    {
+        $params = [];
+
+        $reflection = new \ReflectionClass($this);
+        $reflectionParameters = $reflection->getMethod($method)?->getParameters();
+
+        if (!$reflectionParameters || !count($reflectionParameters)) {
+            $data = $params;
+            return;
+        }
+
+        foreach ($reflectionParameters as $parameter) {
+            $typeName = $parameter->getType()?->getName() ?? '';
+
+            if ($typeName === 'array') {
+                $params = [$parameter->getName() => $data];
+                continue;
+            }
+
+            if (!class_exists($typeName)) {
+                continue;
+            }
+
+            $class = new $typeName();
+
+            if (!$class instanceof AbstractModel) {
+                $params[$parameter->getName()] = $class;
+                continue;
+            }
+
+            $params[$parameter->getName()] = array_key_exists('id', $data)
+                ? $class->find($data['id'])
+                : $class;
+        }
+
+        $data = $params;
+    }
 }

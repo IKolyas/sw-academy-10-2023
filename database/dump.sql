@@ -10,9 +10,9 @@ CREATE TABLE `users`
     `first_name`   VARCHAR(45)        NULL,
     `last_name`    VARCHAR(45)        NULL,
     `access_token` VARCHAR(255)       NULL,
-    `is_admin`     BOOL               NOT NULL DEFAULT false,
+    `is_admin`     BOOL               NOT NULL DEFAULT FALSE,
     `status`       INTEGER            NOT NULL DEFAULT 1,
-    `created_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `created_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `updated_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -30,10 +30,10 @@ CREATE TABLE `records`
 
 INSERT INTO `users` (`login`, `password`, `email`, `first_name`, `last_name`, `access_token`, `is_admin`, `status`)
 VALUES ('admin', 'admin', 'admin@localhost', 'admin', 'admin', null, true, 1),
-       ('anton', 'password', 'anton@localhost', null, null, null, false, 1),
-       ('nikita', 'password', 'nikita@localhost', null, null, null, false, 1),
-       ('nastya', 'password', 'nastya@localhost', null, null, null, false, 1),
-       ('aleksandr', 'password', 'aleksandr@localhost', null, null, null, false, 1);
+       ('anton', 'password', 'anton@localhost', 'Антон', null, null, false, 1),
+       ('nikita', 'password', 'nikita@localhost', 'Никита', null, null, false, 1),
+       ('nastya', 'password', 'nastya@localhost', 'Настя', null, null, false, 1),
+       ('aleksandr', 'password', 'aleksandr@localhost', 'Александр', null, null, false, 1);
 
 INSERT INTO `records` (`user_id`, `status`, `date`, `type`, `note`)
 VALUES (2, 1, DATE_ADD(NOW(), INTERVAL +1 DAY), 1, 'test note'),
