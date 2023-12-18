@@ -16,7 +16,7 @@ class RecordRequest extends Request
     {
         return match (RequestMethodType::tryFrom($this->method)) {
             RequestMethodType::POST => $this->validatedPost(),
-            RequestMethodType::PUT => $this->validatedPut(),
+            //RequestMethodType::PUT => $this->validatedPut(),
             RequestMethodType::DELETE => $this->validatedDelete(),
             default => throw new Exception('Неизвестный метод запроса'),
         };
@@ -27,35 +27,33 @@ class RecordRequest extends Request
     {
         //Обязательные поля
         $fields = [
-            'user_id'   => $this->getParam('user_id') ?? null,
-            'date'      => $this->getParam('date') ?? null,
-            'status'    => $this->getParam('status') ?? null,
-            'type'      => $this->getParam('type') ?? null,
+            'user_id',
+            'date',
+            'status',
+            'type',
         ];
 
-        //проверка на заполненность полей
-        if (!RecordValidator::isFieldsFilled($fields)) {
-            header('Location: /records/add');
+        //проверка
+        $correctFields = [];
+        foreach ($fields as $field) {
+            $correctFields[$field] = $this->getParam($field) ?? null;
+            //валидирует данные
+            $correctFields[$field] = RecordValidator::validateField($field, $correctFields[$field]);
         }
-        //Валидация полей
-        $fields['user_id']  = RecordValidator::validateUserId($fields['user_id']);
-        $fields['date']     = RecordValidator::validateDate($fields['date']);
-        $fields['status']   = RecordValidator::validateStatus($fields['status']);
-        $fields['type']     = RecordValidator::validateType($fields['type']);
 
         //добавляем необязательные поля
-        $fields['note'] = $this->getParam('note') ?? null;
+        $correctFields['note'] = $this->getParam('note') ?? null;
 
-        //если возникла ошибка -> редирект
-        if (array_search(false, $fields, true)) {
-            header('Location: /records/add');
+        //если возникла ошибка
+        if (array_search(false, $correctFields, true)) {
+            return ['is-valid' => false];
         }
 
-        return $fields;
+        return $correctFields;
     }
 
     /**Валидация Put-запроса */
-    private function validatedPut(): array
+    /* private function validatedPut(): array
     {
         $id         = $this->getParam('id') ?? null;
         $putData    = file_get_contents('php://input');
@@ -82,18 +80,20 @@ class RecordRequest extends Request
         }
 
         return $fields;
-    }
+    } */
 
      /**Валидация Delete-запроса */
      private function validatedDelete(): array
      {
-        $id           = $this->getParam('id') ?? null;
+        $id = $this->getParam('id') ?? null;
         $fields['id'] = RecordValidator::validateId($id);
 
-        //если возникла ошибка -> редирект
+        //если возникла ошибка
         if (array_search(false, $fields, true)) {
-            header('Location: /records/delete');
+            return ['is-valid' => false];
         }
+
+        $correctFields['is-valid'] = true;
 
         return $fields;
      }

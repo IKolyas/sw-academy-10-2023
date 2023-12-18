@@ -79,4 +79,5 @@ class Application
     {
         return $this->config[$key] ?? null;
     }
+
 }
