@@ -8,22 +8,10 @@ use App\Models\Record;
 class RecordValidator extends AbstractValidator
 {
 
-    public static function isFieldsFilled(array $fields): bool
-    {
-
-        if (array_search(null, $fields, true)) {
-
-            $_SESSION["errors-record"]['is-fields-filled'] = 'Fill in all the fields!';
-            return false;
-        }
-        return true;
-    }
-
     public static function validateId(mixed $id): bool|int
     {
         if (preg_match('/\D/u', $id) || !(new Record())->find($id)) {
-            
-            $_SESSION["errors-record"]['id'] = 'id is not valid';
+            app()->session->addToArray('errors', ['record' => 'Некорректный id']);
             return false;
         }
 
@@ -32,9 +20,9 @@ class RecordValidator extends AbstractValidator
 
     public static function validateDate(mixed $date): bool|string
     {
-        if (!parent::isString($date)) {
+        if (!self::isString($date)) {
+            app()->session->addToArray('errors', ['record' => 'Некорректная дата']);
 
-            $_SESSION["errors-record"]['date'] = 'Date is not valid';
             return false;
         }
 
@@ -43,17 +31,20 @@ class RecordValidator extends AbstractValidator
             if ($timestamp = strtotime($date)) {
                 return date("Y-m-d", $timestamp);
             }
-            $_SESSION["errors-record"]['date'] = 'Date is not valid';
+
+            app()->session->addToArray('errors', ['record' => 'Некорректная дата']);
+
             return false;
-        } 
+        }
+
         return $date;
     }
 
     public static function validateUserId(mixed $id): bool|int
     {
-        if (preg_match('/\D/u', $id) || !(new User())->find($id)) {
+        if (is_null($id) || preg_match('/\D/u', $id) || !(new User())->find($id)) {
 
-            $_SESSION["errors-record"]['user_id'] = 'User id is not valid';
+            app()->session->addToArray('errors', ['record' => 'Некорректный пользователь']);
             return false;
         }
 
@@ -62,9 +53,9 @@ class RecordValidator extends AbstractValidator
 
     public static function validateStatus(mixed $status): bool|int
     {
-        if ($status != 0 && $status != 1) {
+        if (is_null($status) || $status != 0 && $status != 1) {
 
-            $_SESSION["errors-record"]['status'] = 'Status is not valid';
+            app()->session->addToArray('errors', ['record' => 'Некорректный статус']);
             return false;
         }
 
@@ -73,13 +64,24 @@ class RecordValidator extends AbstractValidator
 
     public static function validateType(mixed $type): bool|int
     {
-        if ($type != 0 && $type != 1) {
+        if (is_null($type) || $type != 0 && $type != 1) {
 
-            $_SESSION["errors-record"]['type'] = 'Type is not valid';
+            app()->session->addToArray('errors', ['record' => 'Некорректный тип']);
             return false;
         }
 
         return (int)$type;
+    }
+
+    public static function validateField(string $field, ?string $value): mixed
+    {
+        return match ($field) {
+            'id' => self::validateId($value),
+            'date' => self::validateDate($value),
+            'user_id' => self::validateUserId($value),
+            'status' => self::validateStatus($value),
+            'type' => self::validateType($value),
+        };
     }
 
 }
