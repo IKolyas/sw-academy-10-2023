@@ -25,6 +25,9 @@ class Application
     protected array $config;
     protected array $components = [];
 
+    /**
+     * @throws ReflectionException
+     */
     public function run(array $config): void
     {
         $this->componentsFactory = new ComponentsFactory();
