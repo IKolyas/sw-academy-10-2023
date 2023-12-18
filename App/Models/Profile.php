@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\Repositories\EditRepository;
-use Exception;
+use App\Repositories\ProfileRepository;
 
-class Edit extends AbstractModel
+class Profile extends AbstractModel
 {
     public int $id;
     public ?string $first_name;
@@ -21,19 +20,9 @@ class Edit extends AbstractModel
 
     public function __construct()
     {
-        $this->repository = new EditRepository();
+        $this->repository = new ProfileRepository();
     }
 
-    public function findById(int $id): ?AbstractModel
-    {
-        $user = $this->repository->findById($id);
-
-        if ($user === null) {
-            throw new Exception('User not found');
-        }
-
-        return $user;
-    }
     public function save(): void
     {
         $this->updated_at = date('Y-m-d H:i:s');

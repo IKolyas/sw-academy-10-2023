@@ -1,22 +1,35 @@
-<h2>Страница пользователей</h2>
-<div class="table">
-    <div class="table-row">
-        <div class="table-head">ID</div>
-        <div class="table-head">Имя</div>
-        <div class="table-head">Фамилия</div>
-        <div class="table-head">Email</div>
-        <div class="table-head">Логин</div>
-        <div class="table-head">Пароль</div>
-    </div>
-    {% for user in users %}
-        <div class="table-row">
-            <div class="table-cell">{{ user.id|e }}</div>
-            <div class="table-cell">{{ user.first_name|e }}</div>
-            <div class="table-cell">{{ user.last_name|e }}</div>
-            <div class="table-cell">{{ user.email|e }}</div>
-            <div class="table-cell">{{ user.login|e }}</div>
-            <div class="table-cell">{{ user.password|e }}</div>
-        </div>
-    {% endfor %}
+<div class="overflow-hidden bg-white shadow sm:rounded-lg">
+    {% if users is not empty %}
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Логин</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Имя</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Фамилия</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+            {% for user in users %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <p class="text-sm font-semibold leading-6 text-gray-900">{{ user.login|e }}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <p class="text-sm font-semibold leading-6 text-gray-900">{{ user.first_name|e }}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <p class="text-sm font-semibold leading-6 text-gray-900">{{ user.last_name|e }}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <p class="text-sm leading-5 text-gray-500">{{ user.email|e }}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <a class="btn-view" href="/profile/show/?id={{ user.id }}">Просмотр</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 </div>
-

@@ -4,27 +4,20 @@ namespace App\Controllers;
 
 use App\FormRequests\UserAuthRequest;
 use App\Models\User;
+use App\Resources\Users\UserResource;
 use Exception;
 
 class UsersController extends AbstractController
 {
-//    protected string $mainTemplate = 'layouts/users';
-    /**
-     * @throws Exception
-     */
-
-    public function actionIndex(): void
+    protected string $mainTemplate = 'layouts/example_layout';
+    public function actionIndex(User $users): void
     {
-        $this-> mainTemplate = 'layouts/users';
-        $user = new User();
-        $users = $user->findAll();
-
-        if ($users) {
-            echo $this->render('users/users', ['users' => $users]);
-        } else {
-//            TODO: Добавить обработку ошибок
-            throw new Exception('Users not found');
-        }
+        echo $this->render(
+            'users/users',
+            [
+                'users' => array_map(UserResource::transformToList(...), $users->findAll() ?? [])
+            ]
+        );
     }
 
     /**
@@ -35,10 +28,5 @@ class UsersController extends AbstractController
         $data = $request->validated();
 
         var_dump($data);
-    }
-
-    public function actionAll(array $params): void
-    {
-        var_dump('test');
     }
 }
