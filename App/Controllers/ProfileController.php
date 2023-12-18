@@ -12,12 +12,13 @@ class ProfileController extends AbstractController
 {
     protected string $mainTemplate = 'layouts/example_layout';
 
-    public function actionShow(array $params, ?User $user, ?Request $request, ?User $users): void
+    public function actionShow(?User $user, ?Request $request, ?User $users): void
     {
+//        TODO: Рефакторинг
         $userId = (int)$request->getParam('id');
         $token = app()->cookie->getCookie('token');
-
         $currUser = $users->find($token,'access_token');
+
         if (!$currUser->is_admin && $currUser->id !== $userId) {
             echo $this->render('users/user-view', ['user' => UserResource::transformToShow($user)]);
             return;
@@ -31,14 +32,14 @@ class ProfileController extends AbstractController
         echo $this->render(self::NOT_FOUND_PAGE_NAME);
     }
 
-    public function actionSave(array $params, ?User $user): void
+    public function actionUpdate(?User $user, ?UserEditRequest $request): void
     {
-        $request = new UserEditRequest();
 
         if (!$request->isPost()) {
             echo 'Данные для сохранения не были получены.';
             return;
         }
+
         $userId = (int)$request->getParam('id');
 
         if (!$userId) {

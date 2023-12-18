@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Repositories\ProfileRepository;
+use App\Repositories\UserRepository;
 
 class Profile extends AbstractModel
 {
@@ -20,7 +21,7 @@ class Profile extends AbstractModel
 
     public function __construct()
     {
-        $this->repository = new ProfileRepository();
+        $this->repository = new UserRepository();
     }
 
     public function save(): void
