@@ -21,10 +21,8 @@ class AuthController extends AbstractController
         header('Location: /auth');
     }
 
-    public function actionLogin(): void
+    public function actionLogin(?UserAuthRequest $request): void
     {
-        $request = new UserAuthRequest();
-
         if ($request->isGet()) {
             echo $this->render('auth');
             return;
@@ -43,10 +41,8 @@ class AuthController extends AbstractController
         }
     }
 
-    public function actionRegister(): void
+    public function actionRegister(?UserRegisterRequest $request): void
     {
-        $request = new UserRegisterRequest();
-
         if ($request->isGet()) {
             echo $this->render('auth/register');
             return;
