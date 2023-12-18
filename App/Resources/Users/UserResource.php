@@ -4,7 +4,7 @@ namespace App\Resources\Users;
 
 use App\Models\User;
 
-class UserResource
+final class UserResource
 {
     public static function transformToList(User $user): array
     {

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Base\Request;
 use App\Models\User;
 use App\Resources\Users\UserResource;
 
@@ -10,10 +11,8 @@ class ExampleUsersController extends AbstractController
 
     protected string $mainTemplate = 'layouts/example_layout';
 
-    public function actionIndex(): void
+    public function actionIndex(User $users): void
     {
-        $users = new User();
-
         echo $this->render(
             'example_users/index',
             [
@@ -22,7 +21,7 @@ class ExampleUsersController extends AbstractController
         );
     }
 
-    public function actionShow(?User $user): void
+    public function actionShow(array $params, ?User $user, ?Request $request): void
     {
         if ($user?->id) {
             echo $this->render('example_users/show', ['user' => UserResource::transformToShow($user)]);
