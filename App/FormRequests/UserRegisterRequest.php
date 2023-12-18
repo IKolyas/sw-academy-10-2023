@@ -3,7 +3,6 @@
 namespace App\FormRequests;
 
 use App\Base\Request;
-use App\Base\Session;
 use App\FormRequests\Validators\UserAuthValidator;
 
 class UserRegisterRequest extends Request
@@ -20,23 +19,18 @@ class UserRegisterRequest extends Request
 
     public function validated(): array
     {
-        $fields = [
-            'first_name',
-            'last_name',
-            'login',
-            'password',
-            'confirm_password',
-            'email',
-        ];
+        $fields = [];
 
-        foreach ($fields as $field) {
+        foreach ($this->errors as $field => $value) {
             $fields[$field] = $this->getParam($field) ?? null;
             $value = $fields[$field];
+
             if ($value && UserAuthValidator::validateField($field, $value)) {
                 unset($this->errors[$field]);
-            } else {
-                unset($fields[$field]);
+                continue;
             }
+
+            unset($fields[$field]);
         }
 
         if ($fields['password'] !== $fields['confirm_password']) {

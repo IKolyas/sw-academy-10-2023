@@ -16,15 +16,25 @@ abstract class AbstractController
     protected string $action;
     protected RendererInterface $renderer;
 
-    protected bool $authOnly = false;
+    protected bool $requireAuth = true;
 
     public function __construct(RendererInterface $renderer)
     {
         $this->renderer = $renderer;
         app()->session->remove('errors');
 
-        if ($this->authOnly && !app()->auth->isAuthorized()) {
+        $isAuthorized = app()->auth->isAuthorized();
+
+        if ($this->requireAuth && $isAuthorized) {
+            return;
+        }
+
+        if ($this->requireAuth) {
             header('Location: /auth');
+        }
+
+        if ($isAuthorized) {
+            header('Location: /');
         }
     }
 
@@ -69,7 +79,7 @@ abstract class AbstractController
     /**
      * @throws ReflectionException
      */
-    private function bindParams(array &$data, $method): void
+    private function bindParams(?array &$data, $method): void
     {
         $params = [];
 
