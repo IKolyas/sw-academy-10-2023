@@ -70,7 +70,7 @@ class RecordsController extends AbstractController
                 header('Content-Type: application/json');
                 echo json_encode([
                     'status'    => true,
-                    'message'   => 'Пользователь успешно создан',
+                    'message'   => 'Запись успешно создана',
                 ]);
             } 
         } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -134,6 +134,7 @@ class RecordsController extends AbstractController
             $countRows = (int)$record->delete($params['id']);
 
             if ($countRows > 0) {
+                //TODO: Заменить на шаблон
                 header('Content-Type: application/json');
                 echo json_encode([
                     'status' => true,

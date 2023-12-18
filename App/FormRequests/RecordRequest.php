@@ -22,6 +22,7 @@ class RecordRequest extends Request
         } elseif ($request->method == 'PUT') {
 
             $fields = $this->validatedPut();
+
         } elseif ($request->method == 'DELETE') {
 
             $fields = $this->validatedDelete();
@@ -35,7 +36,6 @@ class RecordRequest extends Request
     {
         //Обязательные поля
         $fields = [
-            'id'        => $this->getParam('id') ?? null,
             'user_id'   => $this->getParam('user_id') ?? null,
             'date'      => $this->getParam('date') ?? null,
             'status'    => $this->getParam('status') ?? null,
@@ -72,8 +72,6 @@ class RecordRequest extends Request
 
         $fields = [];
 
-        //print_r( $data );die;
-
         foreach ($data as $key=>$value) {
            
             $fields[$key] = match($key) {
@@ -87,6 +85,7 @@ class RecordRequest extends Request
 
         $fields['id'] = RecordValidator::validateId($id);
 
+        //если возникла ошибка -> редирект
         if (array_search(false, $fields, true)) {
             header('Location: http://localhost:8080/records/edit');
         }
@@ -100,6 +99,7 @@ class RecordRequest extends Request
         $id           = $this->getParam('id') ?? null;
         $fields['id'] = RecordValidator::validateId($id);
 
+        //если возникла ошибка -> редирект
         if (array_search(false, $fields, true)) {
             header('Location: http://localhost:8080/records/delete');
         }

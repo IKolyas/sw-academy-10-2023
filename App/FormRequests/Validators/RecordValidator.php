@@ -10,7 +10,8 @@ class RecordValidator extends AbstractValidator
 
     public static function isFieldsFilled(array $fields): bool
     {
-        if (array_search(null, $fields)) {
+
+        if (array_search(null, $fields, true)) {
 
             $_SESSION["errors-record"]['is-fields-filled'] = 'Fill in all the fields!';
             return false;
@@ -18,7 +19,7 @@ class RecordValidator extends AbstractValidator
         return true;
     }
 
-    public static function validateId(mixed $id)/* : bool|string */
+    public static function validateId(mixed $id): bool|int
     {
         if (preg_match('/\D/u', $id) || !(new Record())->find($id)) {
             
@@ -29,7 +30,7 @@ class RecordValidator extends AbstractValidator
         return (int)$id;
     }
 
-    public static function validateDate(mixed $date)/* : bool|string */
+    public static function validateDate(mixed $date): bool|string
     {
         if (!parent::isString($date)) {
 
@@ -48,7 +49,7 @@ class RecordValidator extends AbstractValidator
         return $date;
     }
 
-    public static function validateUserId(mixed $id)/* : bool|string */
+    public static function validateUserId(mixed $id): bool|int
     {
         if (preg_match('/\D/u', $id) || !(new User())->find($id)) {
 
@@ -59,7 +60,7 @@ class RecordValidator extends AbstractValidator
         return (int)$id;
     }
 
-    public static function validateStatus(mixed $status)/* : bool|int */
+    public static function validateStatus(mixed $status): bool|int
     {
         if ($status != 0 && $status != 1) {
 
@@ -70,7 +71,7 @@ class RecordValidator extends AbstractValidator
         return (int)$status;
     }
 
-    public static function validateType(mixed $type)/* : bool|int */
+    public static function validateType(mixed $type): bool|int
     {
         if ($type != 0 && $type != 1) {
 
