@@ -16,6 +16,12 @@ abstract class AbstractModel
     public function findAll(): ?array
     {
         return $this->repository->all();
+
+    }
+
+    public function findById(int $id): ?AbstractModel
+    {
+        return $this->repository->getOne($id);
     }
 
     public function update($fields): int
