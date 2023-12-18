@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Models\AbstractModel;
 use App\Services\DataBase;
 
+use function PHPSTORM_META\type;
+
 abstract class AbstractRepository implements RepositoryInterface
 {
     protected ?DataBase $dataBase;
@@ -51,12 +53,13 @@ abstract class AbstractRepository implements RepositoryInterface
         $columns = implode(',', $columns);
 
         $sql = "INSERT INTO {$this->tableName} ({$columns}) VALUES ({$paramsValue})";
-
         return $this->save($sql, $paramsList);
     }
 
     public function update(array $params): int
     {
+
+        //var_dump($params);die;
         $paramsList = [];
         $columns = [];
 
