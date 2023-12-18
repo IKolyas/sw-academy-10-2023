@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 /** @var array|null $users */
 echo '<br>';
 echo '<h2>Страница пользователей</h2>';
@@ -10,4 +10,4 @@ foreach ($users as $user) {
     echo '<br>' . "<div>last_name: $user->last_name</div>";
     echo '<br>' . "<div>email: $user->email</div>";
     echo '<br>' . "<div>login: $user->login</div>" . '<br>' . '<br>';
-}
+} -->
