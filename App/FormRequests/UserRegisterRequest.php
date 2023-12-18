@@ -41,8 +41,9 @@ class UserRegisterRequest extends Request
 
         if ($fields['password'] !== $fields['confirm_password']) {
             $this->errors['confirm_password'] = 'Пароли не совпадают';
-            unset($fields['confirm_password']);
         }
+
+        unset($fields['confirm_password']);
 
         if (!empty($this->errors)) {
             $session->set('errors', $this->errors);

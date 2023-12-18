@@ -2,6 +2,7 @@
 
 namespace App\Base;
 
+use App\Services\Auth;
 use App\Traits\Singleton;
 use App\Services\Renderers\RendererInterface;
 use Exception;
@@ -29,6 +30,11 @@ class Application
         $controllerName = $this->request->getController() ?: $this->config['DEFAULT_CONTROLLER'];
         $params = $this->request->getAll();
         $actionName = $this->request->getAction();
+
+        $authService = new Auth();
+        if ($controllerName !== 'auth' && !$authService->isAuthorized()) {
+            header('Location: /auth');
+        }
 
         /**
          * Получаем имя класса контроллера с пространством имён
