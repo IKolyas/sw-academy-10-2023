@@ -6,6 +6,9 @@ use App\Models\Record;
 
 class CalendarController extends AbstractController
 {
+
+    protected bool $authOnly = true; // проверка авторизации
+
     /**
      * @throws \Exception
      */
@@ -15,10 +18,7 @@ class CalendarController extends AbstractController
         $records = $record->findAll();
 
         if ($records) {
-            header('Content-Type: application/json');
-            echo json_encode($records);
-            //echo $this->render('calendars/index', ['calendars' => $calendars]);
-
+            echo $this->render('calendar/index', $records);
         } else {
             //TODO: Добавить обработку ошибок
             throw new \Exception('Calendars not found');

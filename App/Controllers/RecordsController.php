@@ -20,13 +20,13 @@ class RecordsController extends AbstractController
         $record = new Record();
 
         if (empty($params['id'])) {
-            throw new \Exception('not found: id');
+            throw new Exception('not found: id');
         }
 
         $calendars = $record->find($params['id']);
 
         if (!$calendars) {
-            throw new \Exception('Calendars not found');
+            throw new Exception('Calendars not found');
         }
 
 //        For debug
@@ -74,7 +74,7 @@ class RecordsController extends AbstractController
 
         $params = $request->validated();
         $record = new Record();
-        $countRows = (int)$record->edit($params);
+        $countRows = (int)$record->create($params);
 
         if (!$countRows) {
             echo "$countRows строк изменено";
