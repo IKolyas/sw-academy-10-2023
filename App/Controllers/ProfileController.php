@@ -51,7 +51,6 @@ class ProfileController extends AbstractController
 
         if (empty($errors)) {
             $data['id'] = $userId;
-            var_dump($data);
             $user->update($data);
             header('Location: /profile/show/?id='.$userId);
         } else {
