@@ -12,8 +12,8 @@ CREATE TABLE `users`
     `access_token` VARCHAR(255)       NULL,
     `is_admin`     BOOL               NOT NULL DEFAULT FALSE,
     `status`       INTEGER            NOT NULL DEFAULT 1,
-    `created_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `updated_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
+    `created_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `records`
