@@ -12,6 +12,7 @@ class UsersController extends AbstractController
     /**
      * @throws Exception
      */
+
     public function actionIndex(): void
     {
         $this-> mainTemplate = 'layouts/users';
@@ -29,9 +30,8 @@ class UsersController extends AbstractController
     /**
      * @throws Exception
      */
-    public function actionAuth(): void
+    public function actionAuth(?UserAuthRequest $request): void
     {
-        $request = new UserAuthRequest();
         $data = $request->validated();
 
         var_dump($data);

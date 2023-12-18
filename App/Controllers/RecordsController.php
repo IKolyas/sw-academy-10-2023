@@ -11,8 +11,6 @@ use Exception;
 class RecordsController extends AbstractController
 {
 
-    protected bool $authOnly = true;
-
     /**
      * GET-запросы
      * @throws Exception
@@ -41,10 +39,8 @@ class RecordsController extends AbstractController
      * POST-запрос
      * @throws Exception
      */
-    public function actionAdd(): void
+    public function actionAdd(?RecordRequest $request): void
     {
-
-        $request = new RecordRequest();
         $params = $request->validated();
 
         $record = new Record();
@@ -69,15 +65,13 @@ class RecordsController extends AbstractController
      * PUT-запрос
      * @throws Exception
      */
-    public function actionEdit(): void
+    public function actionEdit(?RecordRequest $request): void
     {
-
         if (app()->request->getMethod() != RequestMethodType::PUT) {
             var_dump(app()->session->get('errors'));
             app()->session->remove('errors-record');
         }
 
-        $request = new RecordRequest();
         $params = $request->validated();
         $record = new Record();
         $countRows = (int)$record->edit($params);
@@ -100,7 +94,7 @@ class RecordsController extends AbstractController
      * DELETE-запрос
      * @throws Exception
      */
-    public function actionDelete(array $params): void
+    public function actionDelete(array $params, ?RecordRequest $request): void
     {
         $session = new Session();
 
@@ -109,7 +103,6 @@ class RecordsController extends AbstractController
             app()->session->remove('errors-record');
         }
 
-        $request = new RecordRequest();
         $params = $request->validated();
         $record = new Record();
         $countRows = $record->delete($params['id']);
