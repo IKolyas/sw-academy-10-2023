@@ -69,7 +69,7 @@ abstract class AbstractController
     /**
      * @throws ReflectionException
      */
-    private function bindParams(array &$data, $method): void
+    private function bindParams(?array &$data, $method): void
     {
         $params = [];
 

@@ -13,6 +13,8 @@ class UsersController extends AbstractController
     /**
      * @throws Exception
      */
+    protected bool $authOnly = true;
+
     public function actionIndex(): void
     {
 

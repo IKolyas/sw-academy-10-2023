@@ -4,9 +4,18 @@ namespace App\Controllers;
 
 use App\FormRequests\UserAuthRequest;
 use App\FormRequests\UserRegisterRequest;
+use App\Services\Renderers\RendererInterface;
 
 class AuthController extends AbstractController
 {
+    public function __construct(RendererInterface $renderer)
+    {
+        parent::__construct($renderer);
+
+        if (app()->auth->isAuthorized()) {
+            header('Location: /');
+        }
+    }
 
     public function actionIndex(): void
     {
