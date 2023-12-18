@@ -10,9 +10,6 @@ abstract class AbstractController
 {
     protected const DEFAULT_ACTION = 'index';
     protected const NOT_FOUND_PAGE_NAME = '404';
-
-    protected bool $useMainTemplate = true;
-    protected string $mainTemplate = 'layouts/main';
     protected string $action;
     protected RendererInterface $renderer;
 
@@ -63,17 +60,7 @@ abstract class AbstractController
      */
     protected function render(string $template, array $params = []): string
     {
-        $content = $this->renderer->render($template, $params);
-
-//      Если включена главная страница (шаблон главной страницы) useMainTemplate
-        if ($this->useMainTemplate) {
-//            TODO: Создать клас для работы с сессиями. Добавить класс в апп. Получить из сессии пользователя.
-//            $auth_user = app()->session->IsAuth();
-
-            return $this->renderer->render($this->mainTemplate, compact('content'));
-        }
-
-        return $content;
+        return $this->renderer->render($template, $params);
     }
 
     /**
@@ -110,9 +97,12 @@ abstract class AbstractController
                 continue;
             }
 
-            $params[$parameter->getName()] = array_key_exists('id', $data)
-                ? $class->find($data['id'])
-                : $class;
+            if (!$data || !array_key_exists('id', $data)) {
+                $params[$parameter->getName()] = $class;
+                continue;
+            }
+
+            $params[$parameter->getName()] = $class->find($data['id']);
         }
 
         $data = $params;

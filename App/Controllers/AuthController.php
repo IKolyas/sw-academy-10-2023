@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\FormRequests\UserAuthRequest;
 use App\FormRequests\UserRegisterRequest;
-use App\Services\Renderers\RendererInterface;
 
 class AuthController extends AbstractController
 {
@@ -18,7 +17,7 @@ class AuthController extends AbstractController
     public function actionLogout(): void
     {
         app()->auth->logout();
-        header('Location: /auth');
+        app()->response->redirect('/auth');
     }
 
     public function actionLogin(?UserAuthRequest $request): void
@@ -32,7 +31,7 @@ class AuthController extends AbstractController
         $errors = app()->session->get('errors');
 
         if (empty($errors) && app()->auth->tryLogin($data)) {
-            header('Location: /');
+            app()->response->redirect('/');
         } else {
             echo $this->render('auth/login', [
                 'errors' => app()->session->get('errors'),
@@ -52,7 +51,7 @@ class AuthController extends AbstractController
         $errors = app()->session->get('errors');
 
         if (empty($errors) && app()->auth->register($data)) {
-            header('Location: /auth');
+            app()->response->redirect('/auth');
         } else {
             echo $this->render('auth/register', [
                 'errors' => app()->session->get('errors'),
