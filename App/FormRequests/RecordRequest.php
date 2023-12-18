@@ -13,17 +13,15 @@ class RecordRequest extends Request
      */
     public function validated(): array
     {
-        $request = new Request();
-        
-        if ($request->method == 'POST') {
+        if ($this->method == 'POST') {
 
             $fields = $this->validatedPost();
 
-        } elseif ($request->method == 'PUT') {
-
+        } elseif ($this->method == 'PUT') {
+            
             $fields = $this->validatedPut();
 
-        } elseif ($request->method == 'DELETE') {
+        } elseif ($this->method == 'DELETE') {
 
             $fields = $this->validatedDelete();
         }
