@@ -6,8 +6,12 @@ use App\Models\User;
 
 final class UserResource
 {
-    public static function transformToList(User $user): array
+    public static function transformToList(?User $user): array
     {
+        if (!$user?->id) {
+            return [];
+        }
+
         return [
             'id' => $user->id,
             'login' => $user->first_name,
@@ -16,9 +20,9 @@ final class UserResource
         ];
     }
 
-    public static function transformToShow(User $user): array
+    public static function transformToShow(?User $user): array
     {
-        if (!$user->id) {
+        if (!$user?->id) {
             return [];
         }
 

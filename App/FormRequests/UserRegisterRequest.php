@@ -33,7 +33,11 @@ class UserRegisterRequest extends Request
             unset($fields[$field]);
         }
 
-        if ($fields['password'] !== $fields['confirm_password']) {
+        if (
+            empty($fields['password'])
+            || empty($fields['confirm_password'])
+            || (string)$fields['password'] !== $fields['confirm_password']
+        ) {
             $this->errors['confirm_password'] = 'Пароли не совпадают';
         }
 

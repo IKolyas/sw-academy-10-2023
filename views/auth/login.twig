@@ -1,31 +1,49 @@
-<form class="form" action="/auth/login" method="post">
-    <div class="form__heading">
-        <h2>Авторизация</h2>
-        /
-        <h2>
-            <a class="link" href="/auth/register">Регистрация</a>
-        </h2>
+{% extends "layouts/main.twig" %}
+
+{% block stylesheets %}
+    <link href="/styles/auth.css" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    Вход
+{% endblock %}
+{% block page %}Вход{% endblock %}
+
+{% block content %}
+    <div class="flex justify-center">
+        <form class="form" action="/auth/login" method="post">
+            <div class="form__heading">
+                <h2>Авторизация</h2>
+                /
+                <h2>
+                    <a class="link" href="/auth/register">Регистрация</a>
+                </h2>
+            </div>
+            <div class="form__input-wrapper">
+                {% if errors.user %}
+                    <span class="error">{{ errors.user }}</span>
+                {% endif %}
+                <label class="form__input">
+                    Логин
+                    <input class="input" type="text" value="{{ user.login }}" name="login">
+                </label>
+                {% if errors.login %}
+                    <span class="error">{{ errors.login }}</span>
+                {% endif %}
+            </div>
+            <div class="form__input-wrapper">
+                <label class="form__input">
+                    Пароль
+                    <input class="input" type="password" name="password">
+                </label>
+                {% if errors.password %}
+                    <span class="error">{{ errors.password }}</span>
+                {% endif %}
+            </div>
+            <button class="button" type="submit">Войти</button>
+        </form>
     </div>
-    <div class="form__input-wrapper">
-        {% if errors.user %}
-            <span class="error">{{ errors.user }}</span>
-        {% endif %}
-        <label class="form__input">
-            Логин
-            <input class="input" type="text" value="{{ user.login }}" name="login">
-        </label>
-        {% if errors.login %}
-            <span class="error">{{ errors.login }}</span>
-        {% endif %}
-    </div>
-    <div class="form__input-wrapper">
-        <label class="form__input">
-            Пароль
-            <input class="input" type="password" name="password">
-        </label>
-        {% if errors.password %}
-            <span class="error">{{ errors.password }}</span>
-        {% endif %}
-    </div>
-    <button class="button" type="submit">Войти</button>
-</form>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

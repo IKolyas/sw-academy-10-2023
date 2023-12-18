@@ -2,6 +2,8 @@
 
 namespace App\Base;
 
+use App\Base\Interfaces\SessionInterface;
+
 class Session implements SessionInterface
 {
 

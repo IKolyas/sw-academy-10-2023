@@ -2,31 +2,28 @@
 
 namespace App\Controllers;
 
-use App\FormRequests\UserAuthRequest;
 use App\Models\User;
 use App\Resources\Users\UserResource;
-use Exception;
 
 class UsersController extends AbstractController
 {
-    protected string $mainTemplate = 'layouts/example_layout';
     public function actionIndex(User $users): void
     {
         echo $this->render(
-            'users/users',
+            'users/index',
             [
                 'users' => array_map(UserResource::transformToList(...), $users->findAll() ?? [])
             ]
         );
     }
 
-    /**
-     * @throws Exception
-     */
-    public function actionAuth(?UserAuthRequest $request): void
+    public function actionShow(?User $user): void
     {
-        $data = $request->validated();
+        if (!$user || !$user->id) {
+            echo $this->render(self::NOT_FOUND_PAGE_NAME);
+            return;
+        }
 
-        var_dump($data);
+        echo $this->render('users/show', ['user' => UserResource::transformToShow($user)]);
     }
 }
