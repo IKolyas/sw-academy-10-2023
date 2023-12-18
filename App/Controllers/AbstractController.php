@@ -14,9 +14,16 @@ abstract class AbstractController
     protected string $action;
     protected RendererInterface $renderer;
 
+    protected bool $authOnly = false;
+
     public function __construct(RendererInterface $renderer)
     {
         $this->renderer = $renderer;
+        app()->session->remove('errors');
+
+        if ($this->authOnly && !app()->auth->isAuthorized()) {
+            header('Location: /auth');
+        }
     }
 
     public function runAction($action = null, $params = []): void
