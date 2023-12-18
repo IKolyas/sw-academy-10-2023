@@ -1,0 +1,24 @@
+<h2>{{ user.first_name|e }}</h2>
+
+    <form class="table" action="/edit/save" method="post">
+        <div class="table-row">
+            <div class="table-head">ID</div>
+            <div class="table-head">Имя</div>
+            <div class="table-head">Фамилия</div>
+            <div class="table-head">Email</div>
+            <div class="table-head">Логин</div>
+            <div class="table-head">Пароль</div>
+        </div>
+        <div class="table-row">
+            <div class="table-cell">{{ user.id|e }}</div>
+            <input type="hidden" name="id" value="{{ user.id }}">
+            <input class="table-cell" type="text" name="first_name" value="{{ user.first_name|e }}">
+            <input class="table-cell" type="text" name="last_name" value="{{ user.last_name|e }}">
+            <input class="table-cell" type="email" name="email" value="{{ user.email|e }}">
+            <input class="table-cell" type="text" name="login" value="{{ user.login|e }}">
+            <div class="table-cell">{{ user.password|e }}</div>
+        </div>
+        <div>
+            <input class="btn-edit" type="submit" value="Сохранить изменения">
+        </div>
+    </form>
