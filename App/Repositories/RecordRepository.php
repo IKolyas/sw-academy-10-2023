@@ -17,9 +17,9 @@ class RecordRepository extends AbstractRepository
         return Record::class;
     }
 
-    public function getByDateRange(string $from, string $to): array
+    public function getByRange(string $from, string $to, string $field = 'id'): array
     {
-        $sql = "SELECT * FROM {$this->tableName} WHERE date BETWEEN :from AND :to";
-        return $this->getQuery($sql, ['from' => $from, 'to' => $to]);
+        $sql = "SELECT * FROM {$this->tableName} WHERE :field BETWEEN :from AND :to";
+        return $this->getQuery($sql, ['from' => $from, 'to' => $to, 'field' => $field]);
     }
 }
