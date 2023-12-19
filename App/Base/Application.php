@@ -37,7 +37,6 @@ class Application
         $actionName = $this->request->getAction();
         $modelId = $this->request->getModelId();
 
-
         /**
          * Получаем имя класса контроллера с пространством имён
          * App\Controllers\UsersController\
@@ -54,7 +53,6 @@ class Application
             $this->response->redirect('notFound');
         }
     }
-
 
     /**
      * @throws ReflectionException

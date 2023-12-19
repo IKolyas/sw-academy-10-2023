@@ -38,15 +38,15 @@ abstract class AbstractController
     /**
      * @throws \ReflectionException
      */
-    public function runAction($action = null, $params = [], $modelId = 0): void
+    public function runAction(?string $action = null, ?array $params = [], ?int $modelId = 0): void
     {
-        $this->action = $action ?: ((int)$modelId != 0 ? 'show' : self::DEFAULT_ACTION);
+        $this->action = $action ?: ($modelId != 0 ? 'show' : self::DEFAULT_ACTION);
 
 //      Добавляет префикс 'action' к названию для поиска метода ///actionAll
         $method = "action" . ucfirst($this->action);
 
         if (method_exists($this, $method)) {
-            $this->bindParams($params, $method, (int)$modelId);
+            $this->bindParams($params, $method, $modelId);
             $this->$method(...$params);
         } else {
             echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
@@ -66,7 +66,7 @@ abstract class AbstractController
     /**
      * @throws ReflectionException
      */
-    private function bindParams(?array &$data, $method, int $modelId): void
+    private function bindParams(?array &$data, ?string $method, ?int $modelId): void
     {
         $params = [];
 
@@ -92,12 +92,12 @@ abstract class AbstractController
 
             $class = new $typeName();
 
-            if (!$class instanceof AbstractModel || (!$data || !array_key_exists('id', $data)) && $modelId == 0) {
+            if (!$class instanceof AbstractModel || (!$data || !array_key_exists('id', $data)) && is_null($modelId)) {
                 $params[$parameter->getName()] = $class;
                 continue;
             }
 
-            $params[$parameter->getName()] = $class->find($modelId == 0 ? $data['id'] : $modelId);
+            $params[$parameter->getName()] = $class->find($modelId ?: $data['id']);
         }
         
         $data = $params;
