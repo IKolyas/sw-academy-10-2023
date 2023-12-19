@@ -15,16 +15,11 @@ class CalendarController extends AbstractController
      */
     public function actionIndex(array $params, ?Calendar $calendar): void
     {
-        $record = new Record();
-        $records = $record->findAll();
-
         $monthsFromNow = $params['monthsFromNow'] ?? 0;
         $dates = $calendar->getFilledDates($monthsFromNow);
-        var_dump($records);
 
-        if ($records) {
+        if ($dates) {
             echo $this->render('calendar/index', [
-                ...$records,
                 'days' => $dates,
                 'currentMonth' => date('F', strtotime($monthsFromNow . ' month')),
             ]);
