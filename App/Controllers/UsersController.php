@@ -9,12 +9,10 @@ class UsersController extends AbstractController
 {
     public function actionIndex(User $users): void
     {
-        $allUsers = $users->findAll();
-
         echo $this->render(
             'users/index',
             [
-                'users' => $allUsers
+                'users' => array_map(UserResource::transformToShow(...), $users->findAll() ?? [])
             ]
         );
     }
