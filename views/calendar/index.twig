@@ -86,7 +86,8 @@
                             </time>
                             {% if day.records %}
                                 {% for record in day.records %}
-                                    <p class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600">{{ record.note }}</p>
+                                    <p class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600">{{ record['first_name'] }} {{ record['last_name'] }}</p>
+                                    <p class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600">{{ record['status'] }}</p>
                                 {% endfor %}
                             {% endif %}
                         </a>

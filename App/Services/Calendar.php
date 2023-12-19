@@ -37,7 +37,7 @@ class Calendar
         $record = new Record();
         $firstDay = $this->dates[0]['value'];
         $lastDay = $this->dates[count($this->dates) - 1]['value'];
-        $this->records = $record->getByRange($firstDay, $lastDay, 'date');
+        $this->records = $record->getRecordsWithUsers($firstDay, $lastDay);
 
         foreach ($this->dates as &$date) {
             $dateRecords = $this->findRecords($date['value']);
@@ -107,7 +107,7 @@ class Calendar
     {
         $records = [];
         foreach ($this->records as $record) {
-            if ($record->date !== $day) {
+            if ($record['date'] !== $day) {
                 continue;
             }
 

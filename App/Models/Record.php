@@ -22,5 +22,9 @@ class Record extends AbstractModel
     {
         return $this->repository->getByRange($from, $to, $field);
     }
+    public function getRecordsWithUsers(string $from, string $to): array
+    {
+        return $this->repository->getRecordsWithUsers($from, $to);
+    }
 
 }
