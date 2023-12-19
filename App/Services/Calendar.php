@@ -2,27 +2,50 @@
 
 namespace App\Services;
 
+use App\Models\Record;
+
 class Calendar
 {
     private array $dates = [];
+    private array $records = [];
 
-    public function getFilledDates(int $monthsFromNow = 0): array
+    public function getFilledDates(int $monthsFromNow): array
     {
         $yearMonth = $this->getDate($monthsFromNow);
 
         for ($day = 1; $day <= date('t', strtotime($yearMonth)); $day++) {
             $timestamp = strtotime($yearMonth . '-' . $day);
+            $dayToWrite = date('Y-m-d', $timestamp);
+
             $date = [
-                'value' =>date('Y-m-d', $timestamp),
-                'isCurrent' => true
+                'value' => $dayToWrite,
+                'isCurrentMonth' => true
             ];
+
             $this->addDate($date);
         }
 
         $this->addPrevDays($monthsFromNow);
         $this->addNextDays($monthsFromNow);
 
+        $this->fillDatesRecords();
         return $this->dates;
+    }
+
+    private function fillDatesRecords(): void
+    {
+        $record = new Record();
+        $firstDay = $this->dates[0]['value'];
+        $lastDay = $this->dates[count($this->dates) - 1]['value'];
+        $this->records = $record->getByDateRange($firstDay, $lastDay);
+
+        foreach ($this->dates as &$date) {
+            $dateRecords = $this->findRecords($date['value']);
+
+            if ($dateRecords) {
+                $date['records'] = $dateRecords;
+            }
+        }
     }
 
     private function addPrevDays(int $monthsFromNow): void
@@ -38,8 +61,8 @@ class Calendar
             }
 
             $date = [
-                'value' =>date('Y-m-d', $timestamp),
-                'isCurrent' => false
+                'value' => date('Y-m-d', $timestamp),
+                'isCurrentMonth' => false
             ];
 
             $this->addDate($date, 'unshift');
@@ -59,8 +82,8 @@ class Calendar
             }
 
             $date = [
-                'value' =>date('Y-m-d', $timestamp),
-                'isCurrent' => false
+                'value' => date('Y-m-d', $timestamp),
+                'isCurrentMonth' => false
             ];
 
             $this->addDate($date);
@@ -78,5 +101,19 @@ class Calendar
             'add' => $this->dates[] = $date,
             'unshift' => array_unshift($this->dates, $date),
         };
+    }
+
+    private function findRecords(string $day): array
+    {
+        $records = [];
+        foreach ($this->records as $record) {
+            if ($record->date !== $day) {
+                continue;
+            }
+
+            $records[] = $record;
+        }
+
+        return $records;
     }
 }
