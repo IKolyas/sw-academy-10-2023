@@ -7,10 +7,3 @@ const goNext = () => {
 const goPrev = () => {
     window.location.href = `/calendar?monthsFromNow=${monthsFromNow - 1}`;
 }
-
-
-document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('currentMonthDay')) {
-        alert(event.target.firstElementChild.attributes.datetime.value)
-    }
-});
