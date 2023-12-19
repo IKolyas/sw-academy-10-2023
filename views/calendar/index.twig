@@ -68,7 +68,9 @@
                 <div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-5 lg:gap-px">
                     {% for day in days %}
                         <a
+                                {% if day.isCurrentMonth %}
                                 href="/records/show?date={{ day.value }}"
+                                {% endif %}
                              class="relative {{ day.isCurrentMonth ? 'bg-white' : 'bg-gray-200' }} {{ day.isCurrentMonth ? 'currentMonthDay' : '' }} h-24 md:min-h-full px-3 py-2 group"
                         >
                             <time class="{{ day.value|date('Y-m-d') == "now"|date('Y-m-d') ? 'flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white' : '' }}"
