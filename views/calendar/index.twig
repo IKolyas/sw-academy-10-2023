@@ -67,9 +67,20 @@
 
                 <div class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-5 lg:gap-px">
                     {% for day in days %}
-                        <div class="relative {{ day.isCurrent ? 'bg-white' : 'bg-gray-200' }} {{ day.isCurrent ? 'currentMonthDay' : '' }} h-24 md:min-h-full px-3 py-2">
-                            <time class="{{ day.value|date('Y-m-d') == "now"|date('Y-m-d') ? 'text-indigo-600' : 'text-gray-900' }}" datetime="{{ day.value }}">{{ day.value|date('j') }}</time>
-                        </div>
+                        <a
+                                href="/records/show?date={{ day.value }}"
+                             class="relative {{ day.isCurrentMonth ? 'bg-white' : 'bg-gray-200' }} {{ day.isCurrentMonth ? 'currentMonthDay' : '' }} h-24 md:min-h-full px-3 py-2 group"
+                        >
+                            <time class="{{ day.value|date('Y-m-d') == "now"|date('Y-m-d') ? 'flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white' : '' }}"
+                                  datetime="{{ day.value }}">
+                                {{ day.value|date('j') }}
+                            </time>
+                            {% if day.records %}
+                                    {% for record in day.records %}
+                                                <p class="flex-auto truncate font-medium text-gray-900 group-hover:text-indigo-600">{{ record.note }}</p>
+                                    {% endfor %}
+                            {% endif %}
+                        </a>
                     {% endfor %}
                 </div>
             </div>
