@@ -17,6 +17,7 @@ class User extends AbstractModel
     public bool $status;
     public string $created_at;
     public string $updated_at;
+    public ?string $photo;
 
     public function __construct()
     {

@@ -6,6 +6,24 @@
 
 {% block content %}
     <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+        <img id="blah" src="#" alt="your image" />
+        <!-- Тип кодирования данных, enctype, ДОЛЖЕН БЫТЬ указан ИМЕННО так -->
+        <img width="50" height="50" src="/{{ user.photo|e }}" />
+        <form class="pl-1" enctype="multipart/form-data" action="/profile/upload" method="POST">
+            <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
+            <input type="hidden" name="MAX_FILE_SIZE" value="3145728" />
+            <!-- Название элемента input определяет имя в массиве $_FILES -->
+            <lable for="file">Загрузить фото (.jpg, .jpeg, или .png, не более 3Мб)</lable>
+            <input id="file" name="userfile" type="file" />
+            
+            <input class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
+                    ml-5 mb-5" type="submit" value="Отправить файл" />
+        </form>
+        {% if errors.photo %}
+            <span class="error">{{ errors.photo }}</span>
+        {% endif %}
+    </div>
+    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
         <form class="table" action="/profile/update" method="post">
             <div class="px-4 py-6 sm:px-6">
                 <h3 class="text-base font-semibold leading-7 text-gray-900">Информация о пользователе</h3>
@@ -72,5 +90,15 @@
     </div>
 {% endblock %}
 {% block scripts %}
+        <script>
+            let imgInp = document.getElementById('file');
+            let blah = document.getElementById('blah')
 
+            imgInp.onchange = evt => {
+                const [file] = imgInp.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                }
+            }
+        </script>
 {% endblock %}

@@ -18,6 +18,7 @@ class Profile extends AbstractModel
     public string $created_at;
     public string $updated_at;
     public int $status;
+    public ?string $photo;
 
     public function __construct()
     {

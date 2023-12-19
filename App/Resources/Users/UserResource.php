@@ -35,6 +35,7 @@ final class UserResource
             'status' => $user->status,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
+            'photo' => $user->photo,
         ];
     }
 }
