@@ -21,12 +21,13 @@ class RecordRequest extends Request
     }
 
     /**Валидация Post-запроса */
-    private function validatedPost(): array | bool
+    private function validatedPost(): array
     {
         //Обязательные поля
         $fields = [
-            'user_id',
+            'id',
             'date',
+            'user_id',
             'status',
             'type',
         ];
@@ -41,10 +42,10 @@ class RecordRequest extends Request
 
         //добавляем необязательные поля
         $correctFields['note'] = $this->getParam('note') ?? null;
-
+// TODO: тут проблем
         //если возникла ошибка
         if (array_search(false, $correctFields, true)) {
-            return false;
+            return $correctFields;
         }
 
         return $correctFields;

@@ -15,12 +15,18 @@ class RecordsController extends AbstractController
      */
     public function actionShow(?Record $record): void
     {
-        if (!$record->id) {
-            echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
+        $date = app()->request->getParam('date');
+        $foundRecord = Record::getByDate($date);
+
+        if ($foundRecord) {
+            echo $this->renderer->render('record/edit', ['record' => $foundRecord]);
         }
 
-//        TODO: Заменить на шаблон
-//        $this->renderer->render('records/show', ['record' => $record]);
+        if (!$foundRecord) {
+            $record->date = $date;
+            $foundRecord = $record;
+            echo $this->renderer->render('record/create', ['record' => $foundRecord]);
+        }
     }
 
     /**
@@ -31,15 +37,20 @@ class RecordsController extends AbstractController
     {
         $validated = $request->validated();
 
-        if (!$validated) {
-            //TODO: Заменить на шаблон
-            var_dump(app()->session->get('errors'));
-            return;
+        $errors = app()->session->get('errors');
+
+        if (empty($errors)) {
+            $record->update($validated + ['id' => $record->id]);
         }
 
         if ($record->create($validated)) {
-            //TODO: Заменить на шаблон
-            var_dump("Запись успешно создана");
+            echo $this->render(
+                'record/edit',
+                [
+                    'record' => $validated,
+                    'errors' => app()->session->get('errors')
+                ]
+            );
         }
     }
 
@@ -50,38 +61,28 @@ class RecordsController extends AbstractController
 
     public function actionEdit(?RecordRequest $request, ?Record $record): void
     {
-
         $validated = $request->validated();
+        $errors = app()->session->get('errors');
 
-        if (!$validated) {
-            //TODO: Заменить на шаблон
-            var_dump(app()->session->get('errors'));
+        if (empty($errors)) {
+            $updated = $record->update($validated + ['id' => $record->id]);
+
+            if (!$updated) {
+                app()->session->addToArray('errors', ['record' => 'Не удалось обновить запись']);
+            }
+        } else {
+            echo $this->render('record/edit', [
+                'record' => $validated,
+                'errors' => $errors,
+            ]);
             return;
         }
 
-        $record->update($validated);
+        $errorsAfterUpdate = app()->session->get('errors');
 
-        //TODO: Заменить на шаблон
-        var_dump($record, "Запись успешно обновлена");
-
+        echo $this->render('record/edit', [
+            'record' => $validated,
+            'errors' => $errorsAfterUpdate,
+        ]);
     }
-
-    /**
-     * POST-запрос
-     * @throws Exception
-     */
-
-    public function actionDelete(?Record $record): void
-    {
-        if (!$record->id) {
-            $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
-            return;
-        }
-
-        $record->delete($record->id);
-
-        //TODO: Заменить на шаблон
-        var_dump("Пользователь с id:{$record->id} удалён");
-    }
-
 }
