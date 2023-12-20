@@ -13,9 +13,7 @@ abstract class AbstractController
     protected const NOT_FOUND_PAGE_NAME = '404';
     protected string $action;
     protected RendererInterface $renderer;
-
     protected array $attendant;
-
     protected bool $requireAuth = true;
 
     public function __construct(RendererInterface $renderer)
@@ -50,8 +48,7 @@ abstract class AbstractController
 
         if (method_exists($this, $method)) {
             $this->bindParams($params, $method, $modelId);
-            $this->attendant = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0]; 
-            
+            $this->attendant = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0];             
             $this->$method(...$params);
         } else {
             echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
