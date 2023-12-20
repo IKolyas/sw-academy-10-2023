@@ -18,7 +18,7 @@ class Record extends AbstractModel
         $this->repository = new RecordRepository();
     }
 
-    public static function getByDate(string $date): ?self
+    public function getByDate(string $date): ?self
     {
         $repository = new RecordRepository();
         $result = $repository->getBy($date, 'date');

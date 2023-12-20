@@ -27,12 +27,13 @@ class RecordRequest extends Request
             'date',
             'user_id',
             'type',
+            'status',
         ];
 
         $correctFields = [];
 
         foreach ($fields as $field) {
-            $correctFields[$field] = trim($this->getParam($field) ) ?? null;
+            $correctFields[$field] = $this->getParam($field) ?? null;
             $correctFields[$field] = RecordValidator::validateField($field, $correctFields[$field]);
         }
 

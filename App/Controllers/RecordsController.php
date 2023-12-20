@@ -14,10 +14,10 @@ class RecordsController extends AbstractController
      * GET-запросы
      * @throws Exception
      */
-    public function actionShow(?Record $record): void
+    public function actionShow(?Record $record, ?RecordRequest $request): void
     {
-        $date = app()->request->getParam('date');
-        $foundRecord = Record::getByDate($date);
+        $date = $request->getParam('date');
+        $foundRecord = $record->getByDate($date);
 
         if ($foundRecord) {
             echo $this->renderer->render('record/edit', ['record' => $foundRecord]);
@@ -36,7 +36,7 @@ class RecordsController extends AbstractController
      */
     public function actionAdd(?RecordRequest $request, ?Record $record): void
     {
-        $date = app()->request->getParam('date');
+        $date = $request->getParam('date');
         $validated = $request->validated();
         $errors = app()->session->get('errors');
 
@@ -70,8 +70,20 @@ class RecordsController extends AbstractController
             return;
         }
 
-        $validated['status'] = $request->getParam('status') ?? null;
         $record->update($validated);
         app()->response->redirect('/calendar');
+    }
+
+    public function actionDelete(?Record $record): void
+    {
+        if (!$record->id) {
+            $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
+            return;
+        }
+
+        $record->delete($record->id);
+
+        //TODO: Заменить на шаблон
+        var_dump("Пользователь с id:{$record->id} удалён");
     }
 }

@@ -53,7 +53,7 @@ class RecordValidator extends AbstractValidator
 
     public static function validateStatus(mixed $status): int | bool
     {
-        if (is_null($status) || $status != 0 && $status != 1) {
+        if ($status != 0 && $status != 1) {
 
             app()->session->addToArray('errors', ['record' => 'Некорректный статус']);
             return false;
