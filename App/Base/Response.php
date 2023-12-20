@@ -8,4 +8,11 @@ class Response
     {
         header("Location: $action");
     }
+
+    public function json(array $data): void
+    {
+        header('Content-Type: application/json');
+        http_response_code($data['status'] ?? 200);
+        echo json_encode($data);
+    }
 }
