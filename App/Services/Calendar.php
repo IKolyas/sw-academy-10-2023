@@ -9,9 +9,9 @@ class Calendar
     private array $dates = [];
     private array $records = [];
 
-    public function getFilledDates(int $monthsFromNow): array
+    public function getFilledDates(string $monthsFromNow): array
     {
-        $yearMonth = $this->getDate($monthsFromNow);
+        $yearMonth = $monthsFromNow;
 
         for ($day = 1; $day <= date('t', strtotime($yearMonth)); $day++) {
             $timestamp = strtotime($yearMonth . '-' . $day);
@@ -25,8 +25,8 @@ class Calendar
             $this->addDate($date);
         }
 
-        $this->addPrevDays($monthsFromNow);
-        $this->addNextDays($monthsFromNow);
+        $this->addPrevDays($yearMonth);
+        $this->addNextDays($yearMonth);
 
         $this->fillDatesRecords();
         return $this->dates;
@@ -34,10 +34,15 @@ class Calendar
 
     private function fillDatesRecords(): void
     {
+
+        //var_dump( $this->dates[0]['value']);die;
+
         $record = new Record();
         $firstDay = $this->dates[0]['value'];
         $lastDay = $this->dates[count($this->dates) - 1]['value'];
         $this->records = $record->getRecordsWithUsers($firstDay, $lastDay);
+
+        //var_dump(count($this->dates),$firstDay, $lastDay);die;
 
         foreach ($this->dates as &$date) {
             $dateRecords = $this->findRecords($date['value']);
@@ -48,9 +53,9 @@ class Calendar
         }
     }
 
-    private function addPrevDays(int $monthsFromNow): void
+    private function addPrevDays(string $monthsFromNow): void
     {
-        $yearMonth = $this->getDate($monthsFromNow - 1);
+        $yearMonth = date('Y-m', strtotime("$monthsFromNow -1 month"));
         $lastDay = date('t', strtotime($yearMonth));
 
         for ($day = $lastDay; $day >= 24; $day--) {
@@ -69,9 +74,9 @@ class Calendar
         }
     }
 
-    private function addNextDays(int $monthsFromNow): void
+    private function addNextDays(string $monthsFromNow): void
     {
-        $yearMonth = $this->getDate($monthsFromNow + 1);
+        $yearMonth = date('Y-m', strtotime("$monthsFromNow +1 month"));
 
         for ($day = 1; $day <= 6; $day++) {
 
