@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
+use App\Models\User;
 use App\Resources\Record\RecordResource;
 use Exception;
 
@@ -14,8 +15,16 @@ class RecordsController extends AbstractController
      * GET-запросы
      * @throws Exception
      */
-    public function actionShow(?Record $record, ?RecordRequest $request): void
+    public function actionShow(?Record $record, ?RecordRequest $request, ?User $user): void
     {
+        $token = app()->cookie->getCookie('token');
+        $user = $user?->find($token,'access_token');
+
+        if ($user->is_admin !== 1) {
+            app()->response->redirect('/forbidden');
+            return;
+        }
+
         $date = $request->getParam('date');
         $foundRecord = $record->getByDate($date);
 
