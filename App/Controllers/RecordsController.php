@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
+use App\Resources\Record\RecordResource;
 use Exception;
 
 class RecordsController extends AbstractController
@@ -35,23 +36,20 @@ class RecordsController extends AbstractController
      */
     public function actionAdd(?RecordRequest $request, ?Record $record): void
     {
+        $date = app()->request->getParam('date');
         $validated = $request->validated();
-
         $errors = app()->session->get('errors');
 
-        if (empty($errors)) {
-            $record->update($validated + ['id' => $record->id]);
+        if (!empty($errors)) {
+            echo $this->render('record/create', [
+                'record' => ['date' => $date],
+                'errors' => $errors,
+            ]);
+            return;
         }
 
-        if ($record->create($validated)) {
-            echo $this->render(
-                'record/edit',
-                [
-                    'record' => $validated,
-                    'errors' => app()->session->get('errors')
-                ]
-            );
-        }
+        $record->create($validated);
+        app()->response->redirect('/calendar');
     }
 
     /**
@@ -64,25 +62,16 @@ class RecordsController extends AbstractController
         $validated = $request->validated();
         $errors = app()->session->get('errors');
 
-        if (empty($errors)) {
-            $updated = $record->update($validated + ['id' => $record->id]);
-
-            if (!$updated) {
-                app()->session->addToArray('errors', ['record' => 'Не удалось обновить запись']);
-            }
-        } else {
+        if (!empty($errors)) {
             echo $this->render('record/edit', [
-                'record' => $validated,
+                'record' => RecordResource::transformToShow($record->find($record->id)),
                 'errors' => $errors,
             ]);
             return;
         }
 
-        $errorsAfterUpdate = app()->session->get('errors');
-
-        echo $this->render('record/edit', [
-            'record' => $validated,
-            'errors' => $errorsAfterUpdate,
-        ]);
+        $validated['status'] = $request->getParam('status') ?? null;
+        $record->update($validated);
+        app()->response->redirect('/calendar');
     }
 }
