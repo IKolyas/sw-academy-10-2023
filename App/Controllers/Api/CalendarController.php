@@ -4,6 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Base\Request;
 use App\Base\Response;
+use App\Services\Calendar;
 
 class CalendarController extends AbstractApiController
 {
@@ -11,10 +12,16 @@ class CalendarController extends AbstractApiController
     {
         $data = $request->getBody();
 
+        $date = $data['date'] ?? date('Y-m');
+
+        $calendar = new Calendar();
+
+        $result = $calendar->getFilledMonth($date);
+
         $response->json([
             'status' => 200,
             'success' => true,
-            'data' => $data
+            'data' => $result
         ]);
     }
 }
