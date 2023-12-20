@@ -29,20 +29,6 @@ class Record extends AbstractModel
         return null;
     }
 
-    public function save(): void
-    {
-        $params = [
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'date' => $this->date,
-            'status' => $this->status,
-            'type' => $this->type,
-            'note' => $this->note,
-        ];
-
-        $this->update($params);
-    }
-
     public function getByRange(string $from, string $to, string $field = 'id'): array
     {
         return $this->repository->getByRange($from, $to, $field);
