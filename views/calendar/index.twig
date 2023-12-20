@@ -102,6 +102,35 @@
                         </a>
                     {% endfor %}
                 </div>
+                <div class="isolate grid grid-cols-7 grid-rows-5 gap-px lg:hidden">
+                    {% for day in days %}
+                        <a
+                                {% if day.isCurrentMonth %}
+                                    href="/records/show?date={{ day.value }}"
+                                {% endif %}
+                                class="relative flex flex-col justify-end {{ day.isCurrentMonth ? 'bg-white' : 'bg-gray-200' }} {{ day.isCurrentMonth ? 'currentMonthDay' : '' }} h-24 px-3 py-2 group"
+                        >
+                            <time class="absolute top-2 left-2 font-semibold {{ day.value|date('Y-m-d') == "now"|date('Y-m-d') ? 'flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-white' : '' }}"
+                                  datetime="{{ day.value }}">
+                                {{ day.value|date('j') }}
+                            </time>
+                            {% if day.records %}
+                                {% for record in day.records %}
+                                    <p class="truncate font-s font-medium text-gray-900 group-hover:text-indigo-600">{{ record['first_name'] }} {{ record['last_name'] }}</p>
+                                    <p class="truncate font-medium text-gray-900">{{ record['note'] }}</p>
+                                    {% if record['date'] < "now"|date('Y-m-d') %}
+                                    <img class="absolute top-2 right-2" height="24" width="24"
+                                                {% if record['status'] == 1 %}
+                                                    src="/images/ok.svg"
+                                                {% elseif record['status'] == 0 and record['date'] < "now"|date('Y-m-d') %}
+                                                    src="/images/shit.svg"
+                                                {% endif %}
+                                         alt="status">
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </a>
+                    {% endfor %}
             </div>
         </div>
     </div>
