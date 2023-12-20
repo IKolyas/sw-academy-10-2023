@@ -15,6 +15,7 @@ abstract class AbstractApiController
     public function __construct()
     {
         header('Content-Type: application/json');
+        app()->session->remove('errors');
     }
 
     public function runAction(?string $action = null): void
