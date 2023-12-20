@@ -9,6 +9,7 @@ class UsersController extends AbstractController
 {
     public function actionIndex(User $users): void
     {
+        // var_dump($this->attendant);
         echo $this->render(
             'users/index',
             [
