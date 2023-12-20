@@ -12,7 +12,8 @@ class UsersController extends AbstractController
         echo $this->render(
             'users/index',
             [
-                'users' => array_map(UserResource::transformToList(...), $users->findAll() ?? [])
+                'users' => array_map(UserResource::transformToList(...), $users->findAll() ?? []),
+                'route' => 'users'
             ]
         );
     }
@@ -24,6 +25,9 @@ class UsersController extends AbstractController
             return;
         }
 
-        echo $this->render('users/show', ['user' => UserResource::transformToShow($user)]);
+        echo $this->render('users/show', [
+            'user' => UserResource::transformToShow($user),
+            'route' => 'users'
+        ]);
     }
 }
