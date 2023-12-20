@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AbstractModel;
+use App\Models\Record;
 use App\Services\Renderers\RendererInterface;
 use ReflectionException;
 
@@ -12,6 +13,8 @@ abstract class AbstractController
     protected const NOT_FOUND_PAGE_NAME = '404';
     protected string $action;
     protected RendererInterface $renderer;
+
+    protected array $attendant;
 
     protected bool $requireAuth = true;
 
@@ -47,6 +50,8 @@ abstract class AbstractController
 
         if (method_exists($this, $method)) {
             $this->bindParams($params, $method, $modelId);
+            $this->attendant = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0]; 
+            
             $this->$method(...$params);
         } else {
             echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
