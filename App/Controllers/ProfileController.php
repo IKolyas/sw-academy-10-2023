@@ -69,11 +69,12 @@ class ProfileController extends AbstractController
 
             $user->update(['photo' => $uploadFileInDb, 'id' => $user->id]); //Сохраняем в БД
             $user = UserResource::transformToShow($user->find($user->id)); //Переводим в ресурс           
+            var_dump($user);
 
             echo $this->render(
                 'profile/edit',
                 [
-                    'user' => $user,
+                    'user' => ['photo' => $uploadFileInDb],
                     'errors' => app()->session->get('errors'),
                 ]
             ); 
@@ -85,7 +86,7 @@ class ProfileController extends AbstractController
             echo $this->render(
                 'profile/edit',
                 [
-                    'user' => $user,
+                    'user' => ['photo' => $uploadFileInDb],
                     'errors' => app()->session->get('errors'),
                 ]
             );
