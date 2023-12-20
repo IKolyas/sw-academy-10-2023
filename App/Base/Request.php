@@ -10,7 +10,7 @@ class Request
     protected ?string $method;
     protected ?string $controller;
     protected ?string $action;
-    protected ?array $params;
+    protected ?string $params;
     protected ?int $modelId;
 
     private const URL_PATTERN = "#(?P<controller>\w+(-[A-z]+)*)[/]?(?P<action>[A-z]+)?(?P<modelId>\d+)?[/]?[?]?(?P<params>.*)#ui";

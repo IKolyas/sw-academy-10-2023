@@ -18,4 +18,13 @@ class Record extends AbstractModel
         $this->repository = new RecordRepository();
     }
 
+    public function getByRange(string $from, string $to, string $field = 'id'): array
+    {
+        return $this->repository->getByRange($from, $to, $field);
+    }
+    public function getRecordsWithUsers(string $from, string $to): array
+    {
+        return $this->repository->getRecordsWithUsers($from, $to);
+    }
+
 }

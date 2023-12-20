@@ -96,5 +96,5 @@ abstract class AbstractRepository implements RepositoryInterface
 
     abstract public function getTableName(): string;
 
-    abstract public function getModelClassName(): string;
+    abstract public function getModelClassName(): ?string;
 }
