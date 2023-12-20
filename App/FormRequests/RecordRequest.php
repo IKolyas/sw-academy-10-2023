@@ -21,7 +21,7 @@ class RecordRequest extends Request
     }
 
     /**Валидация Post-запроса */
-    public function validatedPost(): array | bool
+    private function validatedPost(): array | bool
     {
         $fields = [
             'date',
