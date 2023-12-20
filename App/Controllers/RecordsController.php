@@ -16,7 +16,7 @@ class RecordsController extends AbstractController
     public function actionShow(?Record $record): void
     {
         if (!$record->id) {
-            $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
+            echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
         }
 
 //        TODO: Заменить на шаблон

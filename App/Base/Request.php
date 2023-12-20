@@ -10,16 +10,17 @@ class Request
     protected ?string $method;
     protected ?string $controller;
     protected ?string $action;
-    protected ?string $params;
+    protected ?array $params;
+    protected ?int $modelId;
 
-    private const URL_PATTERN = "#(?P<controller>\w+)[/]?(?P<action>\w+)?[/]?[?]?(?P<params>.*)#ui";
-
+    private const URL_PATTERN = "#(?P<controller>\w+(-[A-z]+)*)[/]?(?P<action>[A-z]+)?(?P<modelId>\d+)?[/]?[?]?(?P<params>.*)#ui";
 
     public function __construct()
     {
         $this->controller = '';
         $this->action = '';
-        $this->params = '';
+        $this->params = null;
+        $this->modelId = null;
         $this->uri = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->parseRequest();
@@ -28,9 +29,14 @@ class Request
     protected function parseRequest(): void
     {
         if (preg_match_all(self::URL_PATTERN, $this->uri, $matches)) {
-            $this->controller = $matches['controller'][0];
+            $this->controller = preg_replace_callback(
+                '/((-)(\w))/',
+                fn($matches) => strtoupper($matches[3]),
+                $matches['controller'][0]
+            );
             $this->action = $matches['action'][0];
-            $this->params = $matches['params'][0];
+            $this->params = $matches['params'][0] == '' ? null : $matches['params'][0];
+            $this->modelId = $matches['modelId'][0] == '' ? null : $matches['modelId'][0];
         }
     }
 
@@ -47,9 +53,15 @@ class Request
     }
 
     // Параметры из REQUEST_URI
-    public function getParams(): ?string
+    public function getParams(): ?array
     {
         return $this->params;
+    }
+
+    // id модели из REQUEST_URI
+    public function getModelId(): ?int
+    {
+        return $this->modelId;
     }
 
     // Вспомогательные методы для проверки типа запроса. Понадобятся в дальнейшем, чтобы делать меньше проверок
@@ -86,7 +98,6 @@ class Request
         }
 
         return array_filter($methodData, fn($k) => $k !== 'uri', ARRAY_FILTER_USE_KEY);
-
     }
 
     public function getMethod(): RequestMethodType
