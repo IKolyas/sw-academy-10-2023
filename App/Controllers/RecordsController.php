@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
+use App\Resources\Record\RecordResource;
 use Exception;
 
 class RecordsController extends AbstractController
@@ -13,14 +14,20 @@ class RecordsController extends AbstractController
      * GET-запросы
      * @throws Exception
      */
-    public function actionShow(?Record $record): void
+    public function actionShow(?Record $record, ?RecordRequest $request): void
     {
-        if (!$record->id) {
-            echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
+        $date = $request->getParam('date');
+        $foundRecord = $record->getByDate($date);
+
+        if ($foundRecord) {
+            echo $this->renderer->render('record/edit', ['record' => $foundRecord]);
         }
 
-//        TODO: Заменить на шаблон
-//        $this->renderer->render('records/show', ['record' => $record]);
+        if (!$foundRecord) {
+            $record->date = $date;
+            $foundRecord = $record;
+            echo $this->renderer->render('record/create', ['record' => $foundRecord]);
+        }
     }
 
     /**
@@ -29,18 +36,20 @@ class RecordsController extends AbstractController
      */
     public function actionAdd(?RecordRequest $request, ?Record $record): void
     {
+        $date = $request->getParam('date');
         $validated = $request->validated();
+        $errors = app()->session->get('errors');
 
-        if (!$validated) {
-            //TODO: Заменить на шаблон
-            var_dump(app()->session->get('errors'));
+        if (!empty($errors)) {
+            echo $this->render('record/create', [
+                'record' => ['date' => $date],
+                'errors' => $errors,
+            ]);
             return;
         }
 
-        if ($record->create($validated)) {
-            //TODO: Заменить на шаблон
-            var_dump("Запись успешно создана");
-        }
+        $record->create($validated);
+        app()->response->redirect('/calendar');
     }
 
     /**
@@ -50,26 +59,20 @@ class RecordsController extends AbstractController
 
     public function actionEdit(?RecordRequest $request, ?Record $record): void
     {
-
         $validated = $request->validated();
+        $errors = app()->session->get('errors');
 
-        if (!$validated) {
-            //TODO: Заменить на шаблон
-            var_dump(app()->session->get('errors'));
+        if (!empty($errors)) {
+            echo $this->render('record/edit', [
+                'record' => RecordResource::transformToShow($record->find($record->id)),
+                'errors' => $errors,
+            ]);
             return;
         }
 
         $record->update($validated);
-
-        //TODO: Заменить на шаблон
-        var_dump($record, "Запись успешно обновлена");
-
+        app()->response->redirect('/calendar');
     }
-
-    /**
-     * POST-запрос
-     * @throws Exception
-     */
 
     public function actionDelete(?Record $record): void
     {
@@ -83,5 +86,4 @@ class RecordsController extends AbstractController
         //TODO: Заменить на шаблон
         var_dump("Пользователь с id:{$record->id} удалён");
     }
-
 }

@@ -8,7 +8,7 @@ use App\Models\Record;
 class RecordValidator extends AbstractValidator
 {
 
-    public static function validateId(mixed $id): bool|int
+    public static function validateId(mixed $id): int | bool
     {
         if (preg_match('/\D/u', $id) || !(new Record())->find($id)) {
             app()->session->addToArray('errors', ['record' => 'Некорректный id']);
@@ -18,7 +18,7 @@ class RecordValidator extends AbstractValidator
         return (int)$id;
     }
 
-    public static function validateDate(mixed $date): bool|string
+    public static function validateDate(mixed $date): string | bool
     {
         if (!self::isString($date)) {
             app()->session->addToArray('errors', ['record' => 'Некорректная дата']);
@@ -40,7 +40,7 @@ class RecordValidator extends AbstractValidator
         return $date;
     }
 
-    public static function validateUserId(mixed $id): bool|int
+    public static function validateUserId(mixed $id): int | bool
     {
         if (is_null($id) || preg_match('/\D/u', $id) || !(new User())->find($id)) {
 
@@ -51,9 +51,9 @@ class RecordValidator extends AbstractValidator
         return (int)$id;
     }
 
-    public static function validateStatus(mixed $status): bool|int
+    public static function validateStatus(mixed $status): int | bool
     {
-        if (is_null($status) || $status != 0 && $status != 1) {
+        if ($status != 0 && $status != 1) {
 
             app()->session->addToArray('errors', ['record' => 'Некорректный статус']);
             return false;
@@ -62,7 +62,7 @@ class RecordValidator extends AbstractValidator
         return (int)$status;
     }
 
-    public static function validateType(mixed $type): bool|int
+    public static function validateType(mixed $type): int | bool
     {
         if (is_null($type) || $type != 0 && $type != 1) {
 
@@ -81,6 +81,7 @@ class RecordValidator extends AbstractValidator
             'user_id' => self::validateUserId($value),
             'status' => self::validateStatus($value),
             'type' => self::validateType($value),
+            'note' => $value,
         };
     }
 

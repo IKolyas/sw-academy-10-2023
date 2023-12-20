@@ -18,6 +18,17 @@ class Record extends AbstractModel
         $this->repository = new RecordRepository();
     }
 
+    public function getByDate(string $date): ?self
+    {
+        $repository = new RecordRepository();
+        $result = $repository->getBy($date, 'date');
+
+        if (!empty($result)) {
+            return $result[0];
+        }
+        return null;
+    }
+
     public function getByRange(string $from, string $to, string $field = 'id'): array
     {
         return $this->repository->getByRange($from, $to, $field);

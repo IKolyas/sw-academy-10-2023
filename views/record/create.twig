@@ -1,0 +1,52 @@
+{% extends "layouts/main.twig" %}
+
+{% block stylesheets %}{% endblock %}
+{% block title %}Запись{% endblock %}
+
+{% block content %}
+    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+        <form class="table" action="/records/add" method="post">
+            <div class="px-4 py-6 sm:px-6">
+                <h3 class="text-base font-semibold leading-7 text-gray-900">Запись на {{ record.date|e }} </h3>
+            </div>
+            <div class="border-t border-gray-100">
+                <dl class="divide-y divide-gray-100">
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900">id пользователя</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <input class="pl-1 bg-gray-200" type="text" name="user_id" value="{{ record.user_id|e }}">
+                        </dd>
+                    </div>
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900">Дата</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <input class="pl-1" type="date" name="date" value="{{ record.date|e }}" readonly >
+                        </dd>
+                    </div>
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900">Тип</dt>
+                        <input class="pl-1 bg-gray-200" type="text" name="type" value="{{ record.type|e }}" >
+                    </div>
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900">Комментарий</dt>
+                        <input class="pl-1 bg-gray-200" type="text" name="note" value="{{ record.note|e }}">
+                    </div>
+                </dl>
+                <div class="my-8 mx-8">
+                    {% if errors.record %}
+                        <span class="error bg-red-200 p-1">{{ errors.record }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <input class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
+                ml-5 mb-5"
+                       type="submit"
+                       value= "Создать">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}

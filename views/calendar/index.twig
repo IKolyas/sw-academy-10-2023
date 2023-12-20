@@ -12,7 +12,7 @@
 
 {% block content %}
     <div class="lg:flex lg:h-full lg:flex-col">
-        <header class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">
+        <header class="flex items-center justify-between border-b border-gray-200 px-6 pb-4 lg:flex-none">
             <span></span>
             <div class="flex items-center">
                 <div class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
@@ -88,12 +88,16 @@
                                 {% for record in day.records %}
                                     <p class="truncate font-medium text-gray-900 group-hover:text-indigo-600">{{ record['first_name'] }} {{ record['last_name'] }}</p>
                                     <p class="truncate font-medium text-gray-900">{{ record['note'] }}</p>
-                                    {% if record['date'] < "now"|date('Y-m-d') %}
-                                    <img class="absolute top-2 right-2" height="24" width="24"
+                                    {% if record['date'] <= "now"|date('Y-m-d') %}
+                                    <img height="24" width="24"
                                                 {% if record['status'] == 1 %}
+                                                    class="absolute top-2 right-2"
                                                     src="/images/ok.svg"
                                                 {% elseif record['status'] == 0 and record['date'] < "now"|date('Y-m-d') %}
+                                                    class="absolute top-2 right-2"
                                                     src="/images/shit.svg"
+                                                {% else %}
+                                                    class="hidden"
                                                 {% endif %}
                                          alt="status">
                                     {% endif %}
