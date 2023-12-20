@@ -84,6 +84,7 @@
                                   datetime="{{ day.value }}">
                                 {{ day.value|date('j') }}
                             </time>
+                        <div class="max-h-20 overflow-hidden">
                             {% if day.records %}
                                 {% for record in day.records %}
                                     <p class="truncate font-medium text-gray-900 group-hover:text-indigo-600">{{ record['first_name'] }} {{ record['last_name'] }}</p>
@@ -103,6 +104,7 @@
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
+                        </div>
                         </a>
                     {% endfor %}
                 </div>
