@@ -12,7 +12,11 @@
         <div class="photo">
                 <h3 class="photo__title">Фото профиля:</h3>
                 <div class="photo__border">
-                    <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo|e }}" alt="фото профиля"/>
+                    {% if not user.photo %}
+                        <img class="photo__image" width="160" height="160" src="/src/images/orig.jpeg" alt="фото профиля"/>
+                    {% else %}
+                        <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo }}" alt="фото профиля"/>
+                    {% endif %}
                 </div>
         </div>
 

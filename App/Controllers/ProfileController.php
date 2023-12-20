@@ -43,13 +43,15 @@ class ProfileController extends AbstractController
 
         echo $this->render('profile/edit',
             [
-                'user' => UserResource::transformToShow($user->find($user->id)),
+                'user' => $user,
+                // 'user' => UserResource::transformToShow($user->find($user->id)),
+
                 'errors' => app()->session->get('errors'),
             ]
         );
     }
 
-    public function actionUpload(?User $user, ?UserEditRequest $request): void
+    public function actionUpload(?User $user): void
     {
 
         $token = app()->cookie->getCookie('token');
@@ -61,17 +63,17 @@ class ProfileController extends AbstractController
         $uploadfile = $uploaddir . $user->id . '_' . basename($file['name']);
         $uploadFileInDb = $user->id . '_' . basename($file['name']);
 
-
         if( $ext == 'jpeg' || $ext == 'png' || $ext == 'jpg' ) {
 
             move_uploaded_file($file['tmp_name'], $uploadfile);
 
-            $user->update(['photo' => $uploadFileInDb, 'id' => $user->id]);
+            $user->update(['photo' => $uploadFileInDb, 'id' => $user->id]); //Сохраняем в БД
+            $user = UserResource::transformToShow($user->find($user->id)); //Переводим в ресурс           
 
             echo $this->render(
                 'profile/edit',
                 [
-                    'user' => UserResource::transformToShow($user->find($user->id)),
+                    'user' => $user,
                     'errors' => app()->session->get('errors'),
                 ]
             ); 
@@ -83,7 +85,7 @@ class ProfileController extends AbstractController
             echo $this->render(
                 'profile/edit',
                 [
-                    'user' => UserResource::transformToShow($user->find($user->id)),
+                    'user' => $user,
                     'errors' => app()->session->get('errors'),
                 ]
             );

@@ -22,7 +22,11 @@
                 {% for user in users %}
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <img class="photo__image" width="50" height="50" src="/uploads/{{ user.photo }}" alt="фото профиля"/>
+                            {% if not user.photo %}
+                                <img class="photo__image" width="50" height="50" src="/src/images/orig.jpeg" alt="фото профиля"/>
+                            {% else %}
+                                <img class="photo__image" width="50" height="50" src="/uploads/{{ user.photo }}" alt="фото профиля"/>
+                            {% endif %}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{ user.login }}</p>
