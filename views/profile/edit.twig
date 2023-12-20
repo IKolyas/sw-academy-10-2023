@@ -1,27 +1,38 @@
 {% extends "layouts/main.twig" %}
 
-{% block stylesheets %}{% endblock %}
+{% block stylesheets %}
+        <link href="/styles/profile.css" type="text/css" rel="stylesheet" />
+{% endblock %}
 {% block title %}Профиль{% endblock %}
 {% block page %}Редактирование профиля{% endblock %}
 
 {% block content %}
     <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-        <img id="blah" src="#" alt="your image" />
         <!-- Тип кодирования данных, enctype, ДОЛЖЕН БЫТЬ указан ИМЕННО так -->
-        <img width="50" height="50" src="/{{ user.photo|e }}" />
-        <form class="pl-1" enctype="multipart/form-data" action="/profile/upload" method="POST">
+        <div class="photo">
+                <h3 class="photo__title">Фото профиля:</h3>
+                <div class="photo__border">
+                    <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo|e }}" alt="фото профиля"/>
+                </div>
+        </div>
+
+        <form class="photo-form" enctype="multipart/form-data" action="/profile/upload" method="POST">
             <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
             <input type="hidden" name="MAX_FILE_SIZE" value="3145728" />
             <!-- Название элемента input определяет имя в массиве $_FILES -->
-            <lable for="file">Загрузить фото (.jpg, .jpeg, или .png, не более 3Мб)</lable>
-            <input id="file" name="userfile" type="file" />
-            
-            <input class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
-                    ml-5 mb-5" type="submit" value="Отправить файл" />
+            <label class="photo-form__label cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" for="userfile">Загрузить фото</label>
+            {# <lable class="custom-file-upload" for="file">Загрузить фото (.jpg, .jpeg, или .png, не более 3Мб)</lable> #}
+
+            <input class="photo-form__input" id="userfile" name="userfile" type="file" />
+            <div id="preshow" class="visually-hidden preshow">
+                <h3 class="preshow__title">Предпросмотр фото:</h3>
+                <img class="preshow__image" id="blah" src="#" alt="your image" />
+            </div>
+                <input class="photo-form__btn visually-hidden cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            type="submit"
+            value="Отправить файл"/>
         </form>
-        {% if errors.photo %}
-            <span class="error">{{ errors.photo }}</span>
-        {% endif %}
+
     </div>
     <div class="overflow-hidden bg-white shadow sm:rounded-lg">
         <form class="table" action="/profile/update" method="post">
@@ -91,12 +102,20 @@
 {% endblock %}
 {% block scripts %}
         <script>
-            let imgInp = document.getElementById('file');
+            let photoFormBtn = document.querySelector('.photo-form__btn');
+            let imgInp = document.getElementById('userfile');
             let blah = document.getElementById('blah')
+            let preshow = document.getElementById('preshow');
+            let photoFormLabel = document.querySelector('.photo-form__label');
+            let photoBorder = document.querySelector('.photo__border');
 
             imgInp.onchange = evt => {
                 const [file] = imgInp.files
                 if (file) {
+                    photoFormBtn.classList.remove("visually-hidden");
+                    preshow.classList.remove("visually-hidden");
+                    photoBorder.classList.add("visually-hidden");
+                    photoFormLabel.classList.add("visually-hidden");
                     blah.src = URL.createObjectURL(file)
                 }
             }

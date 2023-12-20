@@ -36,6 +36,7 @@ class Profile extends AbstractModel
             'email' => $this->email,
             'login' => $this->login,
             'updated_at' => $this->updated_at,
+            'photo' => $this->photo,
         ];
 
         $this->update($params);
