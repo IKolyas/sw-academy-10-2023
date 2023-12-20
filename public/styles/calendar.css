@@ -1,0 +1,11 @@
+.block-date:hover .link-date{
+    background: #4e4edc;
+    color: white;
+}
+.block-date{
+    cursor: pointer;
+}
+.link-date{
+    width: 5px;
+    height: 5px;
+}

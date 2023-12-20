@@ -35,7 +35,7 @@ class Application
         $controllerName = $this->request->getController() ?: $this->config['DEFAULT_CONTROLLER'];
         $params = $this->request->getAll();
         $actionName = $this->request->getAction();
-
+        $modelId = $this->request->getModelId();
 
         /**
          * Получаем имя класса контроллера с пространством имён
@@ -48,12 +48,11 @@ class Application
          */
         if (class_exists($controllerClass)) {
             $controller = new $controllerClass($this->renderer);
-            $controller->runAction($actionName, $params);
+            $controller->runAction($actionName, $params, $modelId);
         } else {
             $this->response->redirect('notFound');
         }
     }
-
 
     /**
      * @throws ReflectionException

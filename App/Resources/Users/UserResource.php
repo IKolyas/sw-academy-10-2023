@@ -15,7 +15,8 @@ final class UserResource
         return [
             'photo' => $user->photo,
             'id' => $user->id,
-            'login' => $user->first_name,
+            'login' => $user->login,
+            'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'email' => $user->email,
         ];

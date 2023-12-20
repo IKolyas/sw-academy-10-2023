@@ -12,7 +12,7 @@ class RecordRequest extends Request
     /**
      * @throws Exception
      */
-    public function validated(): array
+    public function validated(): array | bool
     {
         return match (RequestMethodType::tryFrom($this->method)) {
             RequestMethodType::POST => $this->validatedPost(),
@@ -23,26 +23,23 @@ class RecordRequest extends Request
     /**Валидация Post-запроса */
     private function validatedPost(): array | bool
     {
-        //Обязательные поля
         $fields = [
-            'user_id',
             'date',
-            'status',
+            'user_id',
             'type',
+            'status',
         ];
 
         $correctFields = [];
 
         foreach ($fields as $field) {
             $correctFields[$field] = $this->getParam($field) ?? null;
-            //валидирует данные
             $correctFields[$field] = RecordValidator::validateField($field, $correctFields[$field]);
         }
 
-        //добавляем необязательные поля
-        $correctFields['note'] = $this->getParam('note') ?? null;
+        $correctFields['id'] = $this->getParam('id') ?? null;
+        $correctFields['note'] = trim($this->getParam('note')) ?? null;
 
-        //если возникла ошибка
         if (array_search(false, $correctFields, true)) {
             return false;
         }

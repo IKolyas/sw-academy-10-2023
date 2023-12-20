@@ -23,6 +23,10 @@ abstract class AbstractModel
     {
         return $this->repository->getOne($id);
     }
+    public function findByDate(int $date): ?AbstractModel
+    {
+        return $this->repository->getOne($date);
+    }
 
     public function update($fields): int
     {

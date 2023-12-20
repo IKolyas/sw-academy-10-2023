@@ -21,7 +21,7 @@ CREATE TABLE `records`
 (
     `id`      BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     `user_id` BIGINT             NOT NULL,
-    `status`  INTEGER            NOT NULL DEFAULT 1,
+    `status`  INTEGER            NOT NULL DEFAULT 0,
     `date`    DATE               NOT NULL,
     `type`    integer            NOT NULL DEFAULT 1,
     `note`    TEXT               NULL,

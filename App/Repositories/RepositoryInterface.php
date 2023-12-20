@@ -18,7 +18,7 @@ interface RepositoryInterface
 
     public function getTableName(): string;
 
-    public function getModelClassName(): string;
+    public function getModelClassName(): ?string;
 
     public function getQuery(string $sql, array $params = []): array;
 
