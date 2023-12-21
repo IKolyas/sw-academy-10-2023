@@ -11,9 +11,11 @@ class Request
     protected ?string $controller;
     protected ?string $action;
     protected ?string $params;
+    protected ?array $body;
     protected ?int $modelId;
+    public bool $isApi;
 
-    private const URL_PATTERN = "#(?P<controller>\w+(-[A-z]+)*)[/]?(?P<action>[A-z]+)?(?P<modelId>\d+)?[/]?[?]?(?P<params>.*)#ui";
+    private const URL_PATTERN = "#(api/)?(?P<controller>\w+(-[A-z]+)*)[/]?(?P<action>[A-z]+)?(?P<modelId>\d+)?[/]?[?]?(?P<params>.*)#ui";
 
     public function __construct()
     {
@@ -24,10 +26,12 @@ class Request
         $this->uri = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->parseRequest();
+        $this->parseBody();
     }
 
     protected function parseRequest(): void
     {
+        $this->isApi = str_contains($this->uri, '/api/');
         if (preg_match_all(self::URL_PATTERN, $this->uri, $matches)) {
             $this->controller = preg_replace_callback(
                 '/((-)(\w))/',
@@ -53,7 +57,7 @@ class Request
     }
 
     // Параметры из REQUEST_URI
-    public function getParams(): ?array
+    public function getParams(): ?string
     {
         return $this->params;
     }
@@ -87,6 +91,16 @@ class Request
         return $method[$key];
     }
 
+    public function parseBody(): void
+    {
+        $this->body = json_decode(file_get_contents('php://input'), true) ?? null;
+    }
+
+    public function getBody(): ?array
+    {
+        return $this->body;
+    }
+
     //  Получить все параметры
     public function getAll(): ?array
     {
@@ -104,5 +118,4 @@ class Request
     {
         return RequestMethodType::tryFrom($this->method);
     }
-
 }

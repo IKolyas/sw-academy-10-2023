@@ -32,4 +32,10 @@ class User extends AbstractModel
 
         return true;
     }
+
+    public function updatePassword($fields): int
+    {
+        $fields['password'] = password_hash($fields['password'], PASSWORD_DEFAULT);
+        return parent::update($fields);
+    }
 }
