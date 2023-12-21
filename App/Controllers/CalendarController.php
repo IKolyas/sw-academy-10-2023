@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\Calendar;
 use App\Services\Graph;
+use App\Models\User;
 use Exception;
 
 class CalendarController extends AbstractController
@@ -14,17 +15,18 @@ class CalendarController extends AbstractController
      */
     public function actionIndex(array $params, ?Calendar $calendar, ?Graph $generateGraph): void
     {
-        //var_dump('ASASUIA');die;
         $monthsFromNow = !isset($params['monthsFromNow']) ? date('Y-m') : date('Y-m', strtotime($params['monthsFromNow']));
         $dates = $calendar->getFilledDates($monthsFromNow);
 
-        if (isset($params['generateGraph']) && $params['generateGraph'] === 'true') {
-            $generateGraph->generateGraph($dates);
-            header('Location: /calendar?monthsFromNow=' . $params['monthsFromNow']);
+        //проверка на админа
+        $token = app()->cookie->getCookie('token');
+        $user = (new User())->find($token,'access_token');
 
-        } elseif (isset($params['generateGraph']) && $params['generateGraph'] === 'false') {
-            $generateGraph->deleteGraph($dates);
-            header('Location: /calendar?monthsFromNow=' . $params['monthsFromNow']);
+        if (isset($params['generateGraph'])) {
+            if ($user->login === 'admin') {
+                $params['generateGraph'] === 'true' ? $generateGraph->generateGraph($dates) : $generateGraph->deleteGraph($dates);
+            }
+            header('Location: /calendar?monthsFromNow=' . $monthsFromNow);
         }
 
         if ($dates) {
