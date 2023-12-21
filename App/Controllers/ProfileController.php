@@ -6,6 +6,8 @@ use App\FormRequests\UserEditRequest;
 use App\FormRequests\UserRegisterRequest;
 use App\Models\User;
 use App\Resources\Users\UserResource;
+use App\FormRequests\UserPhotoRequest;
+use App\Services\Files;
 use App\Services\Renderers\RendererInterface;
 
 
@@ -45,7 +47,9 @@ class ProfileController extends AbstractController
 
         echo $this->render('profile/edit',
             [
-                'user' => UserResource::transformToShow($user->find($user->id)),
+                'user' => $user,
+                // 'user' => UserResource::transformToShow($user->find($user->id)),
+
                 'errors' => app()->session->get('errors'),
             ]
         );
@@ -72,4 +76,37 @@ class ProfileController extends AbstractController
         $user->updatePassword($password + ['id' => $user->id]);
         app()->response->redirect('/profile/edit');
     }
+
+    public function actionUpload(?User $user, ?UserPhotoRequest $request, Files $files): void
+    {
+        $file = $request->validated();
+        $token = app()->cookie->getCookie('token');
+        $user = $user?->find($token,'access_token');
+        
+        
+        if (!$file) {
+            echo $this->render(
+                'profile/edit',
+                [
+                    'user' => $user,
+                    'errors' => app()->session->get('errors'),
+                    'feedback' => app()->session->get('feedback'),
+                    ]
+                );
+                return;
+            }
+            
+        $uploadName = $user?->id . '_' . basename($file['name']);
+        $files->uploadFile($uploadName);
+        $files->updatePhotoInDataBase($user, $uploadName);
+
+        echo $this->render(
+            'profile/edit',
+            [
+                'user' => $user,
+                'errors' => app()->session->get('errors'),
+                'feedback' => app()->session->get('feedback'),
+            ]
+        );         
+    }    
 }

@@ -1,11 +1,44 @@
 {% extends "layouts/main.twig" %}
 
-{% block stylesheets %}{% endblock %}
+{% block stylesheets %}
+        <link href="/styles/profile.css" type="text/css" rel="stylesheet" />
+{% endblock %}
 {% block title %}Профиль{% endblock %}
 {% block page %}Редактирование профиля{% endblock %}
 
 {% block content %}
     <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+        <!-- Тип кодирования данных, enctype, ДОЛЖЕН БЫТЬ указан ИМЕННО так -->
+        <div class="photo">
+                <h3 class="photo__title">Фото профиля:</h3>
+                <div class="photo__border">
+                    {% if not user.photo %}
+                        <img class="photo__image" width="160" height="160" src="/src/images/orig.jpeg" alt="фото профиля"/>
+                    {% else %}
+                        <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo }}" alt="фото профиля"/>
+                    {% endif %}
+                </div>
+        </div>
+
+        <form class="photo-form" enctype="multipart/form-data" action="/profile/upload" method="POST">
+            <input type="hidden" name="MAX_FILE_SIZE" value="3145728" />
+            <label class="photo-form__label cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" for="userfile">Загрузить фото</label>
+            <input class="photo-form__input" id="userfile" name="userfile" type="file" />
+            <div id="preshow" class="visually-hidden preshow">
+                <h3 class="preshow__title">Предпросмотр фото:</h3>
+                <img class="preshow__image" id="blah" src="#" alt="your image" />
+                <p class="preshow__desc">Важно! Изображение должо быть в формате jpeg / jpg / png. Максимальный размер файла = 3 Мб</p>
+            </div>
+                <input class="photo-form__btn visually-hidden cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            type="submit"
+            value="Отправить файл"/>
+            {% if errors.photo %}
+                <span class="error">{{ errors.photo }}</span>
+            {% else  %}
+                <span class="feedback">{{ feedback.photo }}</span>
+            {% endif %}
+        </form>
+
         <form class="table" action="/profile/update" method="post">
             <div class="px-4 py-6 sm:px-6">
                 <h3 class="text-base font-semibold leading-7 text-gray-900">Информация о пользователе</h3>
@@ -78,5 +111,23 @@
     </div>
 {% endblock %}
 {% block scripts %}
+        <script>
+            let photoFormBtn = document.querySelector('.photo-form__btn');
+            let imgInp = document.getElementById('userfile');
+            let blah = document.getElementById('blah')
+            let preshow = document.getElementById('preshow');
+            let photoFormLabel = document.querySelector('.photo-form__label');
+            let photoBorder = document.querySelector('.photo__border');
 
+            imgInp.onchange = evt => {
+                const [file] = imgInp.files
+                if (file) {
+                    photoFormBtn.classList.remove("visually-hidden");
+                    preshow.classList.remove("visually-hidden");
+                    photoBorder.classList.add("visually-hidden");
+                    photoFormLabel.classList.add("visually-hidden");
+                    blah.src = URL.createObjectURL(file)
+                }
+            }
+        </script>
 {% endblock %}

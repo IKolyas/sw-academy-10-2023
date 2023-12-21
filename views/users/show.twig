@@ -10,6 +10,16 @@
             <div class="border-t border-gray-100">
                 <dl class="divide-y divide-gray-100">
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900">Фото:</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            {% if not user.photo %}
+                                <img class="photo__image" width="160" height="160" src="/src/images/orig.jpeg" alt="фото профиля"/>
+                            {% else %}
+                                <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo }}" alt="фото профиля"/>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900">Имя</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <p class="pl-1">{{ user.first_name|e }}</p>
