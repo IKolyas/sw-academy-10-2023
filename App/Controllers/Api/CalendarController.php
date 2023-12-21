@@ -9,7 +9,6 @@ class CalendarController extends AbstractApiController
     protected bool $requireAuth = false;
     public function actionIndex(): void
     {
-        var_dump($_POST);
         $data = $this->request->getBody();
 
         $date = date('Y-m', strtotime($data['date'])) ?? date('Y-m');
