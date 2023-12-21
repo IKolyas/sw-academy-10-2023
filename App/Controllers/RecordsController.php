@@ -2,23 +2,32 @@
 
 namespace App\Controllers;
 
+use App\Enums\RecordStatusType;
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
 use App\Models\User;
 use App\Resources\Record\RecordResource;
+use App\Services\Renderers\RendererInterface;
 use Exception;
 
 class RecordsController extends AbstractController
 {
+    protected ?User $user;
 
+    public function __construct(RendererInterface $renderer)
+    {
+        parent::__construct($renderer);
+
+        $token = app()->cookie->getCookie('token');
+        $this->user = (new User())->find($token, 'access_token');
+    }
     /**
      * GET-запросы
      * @throws Exception
      */
     public function actionShow(?Record $record, ?RecordRequest $request, ?User $user): void
     {
-        $token = app()->cookie->getCookie('token');
-        $user = $user?->find($token,'access_token');
+        $user = $this->user;
 
         if ($user->is_admin !== 1) {
             app()->response->redirect('/forbidden');
@@ -29,13 +38,19 @@ class RecordsController extends AbstractController
         $foundRecord = $record->getByDate($date);
 
         if ($foundRecord) {
-            echo $this->renderer->render('record/edit', ['record' => $foundRecord]);
+            echo $this->renderer->render('record/edit', [
+                'record' => $foundRecord,
+                'statuses' => RecordStatusType::getList(),
+                ]);
         }
 
         if (!$foundRecord) {
             $record->date = $date;
             $foundRecord = $record;
-            echo $this->renderer->render('record/create', ['record' => $foundRecord]);
+            echo $this->renderer->render('record/create', [
+                'record' => $foundRecord,
+                'statuses' => RecordStatusType::getList(),
+            ]);
         }
     }
 

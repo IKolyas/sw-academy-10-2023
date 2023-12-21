@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Enums\UserStatusType;
 use App\FormRequests\UserEditRequest;
-use App\FormRequests\UserRegisterRequest;
 use App\Models\User;
 use App\Resources\Users\UserResource;
 use App\Services\Renderers\RendererInterface;
@@ -24,7 +24,10 @@ class ProfileController extends AbstractController
 
     public function actionEdit(): void
     {
-        echo $this->render('profile/edit', ['user' => UserResource::transformToShow($this->user)]);
+        echo $this->render('profile/edit', [
+            'user' => UserResource::transformToShow($this->user),
+            'statuses' => UserStatusType::getList(),
+        ]);
     }
 
     public function actionUpdate(?UserEditRequest $request): void
@@ -46,6 +49,7 @@ class ProfileController extends AbstractController
         echo $this->render('profile/edit',
             [
                 'user' => UserResource::transformToShow($user->find($user->id)),
+                'statuses' => UserStatusType::getList(),
                 'errors' => app()->session->get('errors'),
             ]
         );

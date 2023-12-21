@@ -32,6 +32,7 @@ class UserEditRequest extends Request
             unset($fields[$field]);
         }
 
+        $fields['status'] = $this->getParam('status') ?? null;
 
         if (!empty($this->errors)) {
             app()->session->set('errors', $this->errors);

@@ -2,6 +2,7 @@
 
 namespace App\FormRequests\Validators;
 
+use App\Enums\RecordStatusType;
 use App\Models\User;
 use App\Models\Record;
 
@@ -53,7 +54,7 @@ class RecordValidator extends AbstractValidator
 
     public static function validateStatus(mixed $status): int | bool
     {
-        if ($status != 0 && $status != 1) {
+        if ($status != RecordStatusType::WAITING_FOR_DUTY && $status != RecordStatusType::DUTY_COMPLETED) {
 
             app()->session->addToArray('errors', ['record' => 'Некорректный статус']);
             return false;

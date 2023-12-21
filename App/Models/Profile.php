@@ -23,20 +23,4 @@ class Profile extends AbstractModel
     {
         $this->repository = new UserRepository();
     }
-
-    public function save(): void
-    {
-        $this->updated_at = date('Y-m-d H:i:s');
-
-        $params = [
-            'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'email' => $this->email,
-            'login' => $this->login,
-            'updated_at' => $this->updated_at,
-        ];
-
-        $this->update($params);
-    }
 }
