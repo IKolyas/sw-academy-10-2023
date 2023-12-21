@@ -14,6 +14,7 @@ class UsersController extends AbstractController
             [
                 'users' => array_map(UserResource::transformToList(...), $users->findAll() ?? []),
                 'attendant' => $this->attendant,
+                'page' => 'users',
             ]
         );
     }
@@ -25,6 +26,9 @@ class UsersController extends AbstractController
             return;
         }
 
-        echo $this->render('users/show', ['user' => UserResource::transformToShow($user)]);
+        echo $this->render('users/show', [
+            'user' => UserResource::transformToShow($user),
+            'page' => 'users'
+        ]);
     }
 }
