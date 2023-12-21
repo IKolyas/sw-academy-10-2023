@@ -36,13 +36,15 @@ class Application
         $params = $this->request->getAll();
         $actionName = $this->request->getAction();
         $modelId = $this->request->getModelId();
+        $isApi = $this->request->isApi;
 
         /**
          * Получаем имя класса контроллера с пространством имён
          * App\Controllers\UsersController\
          */
-        $controllerClass = $this->config['CONTROLLER_NAMESPACE'] . ucfirst($controllerName) . "Controller";
+        $controllerNamespace = $isApi ? $this->config['CONTROLLER_NAMESPACE'] . 'Api\\' : $this->config['CONTROLLER_NAMESPACE'];
 
+        $controllerClass = $controllerNamespace . ucfirst($controllerName) . "Controller";
         /**
          * Попытка вызвать у контроллера соответствующий метод
          */

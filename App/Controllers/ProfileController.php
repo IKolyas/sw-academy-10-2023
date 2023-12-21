@@ -3,32 +3,35 @@
 namespace App\Controllers;
 
 use App\FormRequests\UserEditRequest;
+use App\FormRequests\UserRegisterRequest;
 use App\Models\User;
 use App\Resources\Users\UserResource;
 use App\FormRequests\UserPhotoRequest;
 use App\Services\Files;
+use App\Services\Renderers\RendererInterface;
+
 
 class ProfileController extends AbstractController
 {
 
-    public function actionEdit(?User $user): void
+    protected ?User $user;
+
+    public function __construct(RendererInterface $renderer)
     {
+        parent::__construct($renderer);
+
         $token = app()->cookie->getCookie('token');
-        $user = $user?->find($token,'access_token');
-
-        if (!$user || !$user->id) {
-            app()->auth->logout();
-            app()->response->redirect('/login');
-            return;
-        }
-
-        echo $this->render('profile/edit', ['user' => UserResource::transformToShow($user)]);
+        $this->user = (new User())->find($token, 'access_token');
     }
 
-    public function actionUpdate(?User $user, ?UserEditRequest $request): void
+    public function actionEdit(): void
     {
-        $token = app()->cookie->getCookie('token');
-        $user = $user?->find($token,'access_token');
+        echo $this->render('profile/edit', ['user' => UserResource::transformToShow($this->user)]);
+    }
+
+    public function actionUpdate(?UserEditRequest $request): void
+    {
+        $user = $this->user;
 
         if (!$user?->id) {
             $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
@@ -50,6 +53,28 @@ class ProfileController extends AbstractController
                 'errors' => app()->session->get('errors'),
             ]
         );
+    }
+
+    public function actionChangePassword(?UserEditRequest $request): void
+    {
+        if ($request->isGet()) {
+            echo $this->render('profile/changePassword');
+            return;
+        }
+
+        $user = $this->user;
+        $password = $request->validatedPasswordChange($user);
+        $errors = app()->session->get('errors');
+
+        if (!empty($errors)) {
+            echo $this->render('profile/changePassword', [
+                'errors' => app()->session->get('errors'),
+            ]);
+            return;
+        }
+
+        $user->updatePassword($password + ['id' => $user->id]);
+        app()->response->redirect('/profile/edit');
     }
 
     public function actionUpload(?User $user, ?UserPhotoRequest $request, Files $files): void

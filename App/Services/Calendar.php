@@ -9,9 +9,9 @@ class Calendar
     private array $dates = [];
     private array $records = [];
 
-    public function getFilledDates(int $monthsFromNow): array
+    public function getFilledDates(string $monthsFromNow): array
     {
-        $yearMonth = $this->getDate($monthsFromNow);
+        $yearMonth = $monthsFromNow;
 
         for ($day = 1; $day <= date('t', strtotime($yearMonth)); $day++) {
             $timestamp = strtotime($yearMonth . '-' . $day);
@@ -25,10 +25,28 @@ class Calendar
             $this->addDate($date);
         }
 
-        $this->addPrevDays($monthsFromNow);
-        $this->addNextDays($monthsFromNow);
+        $this->addPrevDays($yearMonth);
+        $this->addNextDays($yearMonth);
 
         $this->fillDatesRecords();
+        return $this->dates;
+    }
+
+    public function getFilledMonth(string $month): array
+    {
+        for ($day = 1; $day <= date('t', strtotime($month)); $day++) {
+            $timestamp = strtotime($month . '-' . $day);
+            $dayToWrite = date('Y-m-d', $timestamp);
+
+            $date = [
+                'value' => $dayToWrite
+            ];
+
+            $this->addDate($date);
+        }
+
+        $this->fillDatesRecords();
+
         return $this->dates;
     }
 
@@ -48,9 +66,9 @@ class Calendar
         }
     }
 
-    private function addPrevDays(int $monthsFromNow): void
+    private function addPrevDays(string $monthsFromNow): void
     {
-        $yearMonth = $this->getDate($monthsFromNow - 1);
+        $yearMonth = date('Y-m', strtotime("$monthsFromNow -1 month"));
         $lastDay = date('t', strtotime($yearMonth));
 
         for ($day = $lastDay; $day >= 24; $day--) {
@@ -69,9 +87,9 @@ class Calendar
         }
     }
 
-    private function addNextDays(int $monthsFromNow): void
+    private function addNextDays(string $monthsFromNow): void
     {
-        $yearMonth = $this->getDate($monthsFromNow + 1);
+        $yearMonth = date('Y-m', strtotime("$monthsFromNow +1 month"));
 
         for ($day = 1; $day <= 6; $day++) {
 
