@@ -16,7 +16,6 @@ abstract class AbstractApiController
 
     public function __construct()
     {
-        header('Content-Type: application/json');
         app()->session->remove('errors');
 
         $isAuthorized = app()->auth->isAuthorized();
