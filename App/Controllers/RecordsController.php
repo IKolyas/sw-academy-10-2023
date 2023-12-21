@@ -25,7 +25,7 @@ class RecordsController extends AbstractController
      * GET-запросы
      * @throws Exception
      */
-    public function actionShow(?Record $record, ?RecordRequest $request, ?User $user): void
+    public function actionShow(?Record $record, ?RecordRequest $request): void
     {
         $user = $this->user;
 
