@@ -6,6 +6,8 @@ use App\FormRequests\UserEditRequest;
 use App\FormRequests\UserRegisterRequest;
 use App\Models\User;
 use App\Resources\Users\UserResource;
+use App\FormRequests\UserPhotoRequest;
+use App\Services\Files;
 use App\Services\Renderers\RendererInterface;
 
 
@@ -45,7 +47,9 @@ class ProfileController extends AbstractController
 
         echo $this->render('profile/edit',
             [
-                'user' => UserResource::transformToShow($user->find($user->id)),
+                'user' => $user,
+                // 'user' => UserResource::transformToShow($user->find($user->id)),
+
                 'errors' => app()->session->get('errors'),
             ]
         );
@@ -73,44 +77,36 @@ class ProfileController extends AbstractController
         app()->response->redirect('/profile/edit');
     }
 
-    public function actionUpload(?User $user, ?UserEditRequest $request): void
+    public function actionUpload(?User $user, ?UserPhotoRequest $request, Files $files): void
     {
-
+        $file = $request->validated();
         $token = app()->cookie->getCookie('token');
         $user = $user?->find($token,'access_token');
-        $file = $_FILES['userfile'];
-        $name = $file['name'];
-        $ext = pathinfo($name, PATHINFO_EXTENSION);
-        $uploaddir = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'uploads/';
-        $uploadfile = $uploaddir . $user->id . '_' . basename($file['name']);
-        $uploadFileInDb = $user->id . '_' . basename($file['name']);
-
-
-        if( $ext == 'jpeg' || $ext == 'png' || $ext == 'jpg' ) {
-
-            move_uploaded_file($file['tmp_name'], $uploadfile);
-
-            $user->update(['photo' => $uploadFileInDb, 'id' => $user->id]);
-
+        
+        
+        if (!$file) {
             echo $this->render(
                 'profile/edit',
                 [
-                    'user' => UserResource::transformToShow($user->find($user->id)),
+                    'user' => $user,
                     'errors' => app()->session->get('errors'),
-                ]
-            ); 
-
-        } else {
-
-            echo 'Данный формат файла не поддерживается';
+                    'feedback' => app()->session->get('feedback'),
+                    ]
+                );
+                return;
+            }
             
-            echo $this->render(
-                'profile/edit',
-                [
-                    'user' => UserResource::transformToShow($user->find($user->id)),
-                    'errors' => app()->session->get('errors'),
-                ]
-            );
-        }
-    }
+        $uploadName = $user?->id . '_' . basename($file['name']);
+        $files->uploadFile($uploadName);
+        $files->updatePhotoInDataBase($user, $uploadName);
+
+        echo $this->render(
+            'profile/edit',
+            [
+                'user' => $user,
+                'errors' => app()->session->get('errors'),
+                'feedback' => app()->session->get('feedback'),
+            ]
+        );         
+    }    
 }

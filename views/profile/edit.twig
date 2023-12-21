@@ -12,29 +12,33 @@
         <div class="photo">
                 <h3 class="photo__title">Фото профиля:</h3>
                 <div class="photo__border">
-                    <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo|e }}" alt="фото профиля"/>
+                    {% if not user.photo %}
+                        <img class="photo__image" width="160" height="160" src="/src/images/orig.jpeg" alt="фото профиля"/>
+                    {% else %}
+                        <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo }}" alt="фото профиля"/>
+                    {% endif %}
                 </div>
         </div>
 
         <form class="photo-form" enctype="multipart/form-data" action="/profile/upload" method="POST">
-            <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
             <input type="hidden" name="MAX_FILE_SIZE" value="3145728" />
-            <!-- Название элемента input определяет имя в массиве $_FILES -->
             <label class="photo-form__label cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" for="userfile">Загрузить фото</label>
-            {# <lable class="custom-file-upload" for="file">Загрузить фото (.jpg, .jpeg, или .png, не более 3Мб)</lable> #}
-
             <input class="photo-form__input" id="userfile" name="userfile" type="file" />
             <div id="preshow" class="visually-hidden preshow">
                 <h3 class="preshow__title">Предпросмотр фото:</h3>
                 <img class="preshow__image" id="blah" src="#" alt="your image" />
+                <p class="preshow__desc">Важно! Изображение должо быть в формате jpeg / jpg / png. Максимальный размер файла = 3 Мб</p>
             </div>
                 <input class="photo-form__btn visually-hidden cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
             type="submit"
             value="Отправить файл"/>
+            {% if errors.photo %}
+                <span class="error">{{ errors.photo }}</span>
+            {% else  %}
+                <span class="feedback">{{ feedback.photo }}</span>
+            {% endif %}
         </form>
 
-    </div>
-    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
         <form class="table" action="/profile/update" method="post">
             <div class="px-4 py-6 sm:px-6">
                 <h3 class="text-base font-semibold leading-7 text-gray-900">Информация о пользователе</h3>

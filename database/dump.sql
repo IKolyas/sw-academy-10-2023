@@ -12,7 +12,7 @@ CREATE TABLE `users`
     `access_token` VARCHAR(255)       NULL,
     `is_admin`     BOOL               NOT NULL DEFAULT FALSE,
     `status`       INTEGER            NOT NULL DEFAULT 1,
-    `photo`        VARCHAR(255)       NOT NULL DEFAULT 'orig.jpeg',
+    `photo`        VARCHAR(255)       NULL,
     `created_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at`   TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
