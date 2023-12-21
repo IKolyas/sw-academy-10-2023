@@ -16,6 +16,7 @@
             <span></span>
             <div class="flex items-center">
                 <div class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
+                    
                     <button onclick="goPrev()" type="button"
                             class="flex h-9 w-12 items-center justify-center rounded-l-md border-y border-l border-gray-300 pr-1 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:pr-0 md:hover:bg-gray-200">
                         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -35,6 +36,14 @@
                                   d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
                                   clip-rule="evenodd"/>
                         </svg>
+                    </button>
+                    <button onclick="generateGraph()" type="button"
+                            class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
+                        Сгенерировать график
+                    </button>
+                    <button onclick="deleteGraph()" type="button"
+                            class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
+                        Очистить график
                     </button>
                 </div>
             </div>

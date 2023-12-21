@@ -2,10 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Base\Request;
-use App\Models\Record;
 use App\Services\Calendar;
-use DateTime;
+use App\Services\Graph;
 use Exception;
 
 class CalendarController extends AbstractController
@@ -14,12 +12,20 @@ class CalendarController extends AbstractController
     /**
      * @throws Exception
      */
-    public function actionIndex(array $params, ?Calendar $calendar): void
+    public function actionIndex(array $params, ?Calendar $calendar, ?Graph $generateGraph): void
     {
-        $monthsFromNow = $params['monthsFromNow'] === null ? date('Y-m') : date('Y-m', strtotime($params['monthsFromNow']));
-
-        //var_dump($monthsFromNow);die;
+        //var_dump('ASASUIA');die;
+        $monthsFromNow = !isset($params['monthsFromNow']) ? date('Y-m') : date('Y-m', strtotime($params['monthsFromNow']));
         $dates = $calendar->getFilledDates($monthsFromNow);
+
+        if (isset($params['generateGraph']) && $params['generateGraph'] === 'true') {
+            $generateGraph->generateGraph($dates);
+            header('Location: /calendar?monthsFromNow=' . $params['monthsFromNow']);
+
+        } elseif (isset($params['generateGraph']) && $params['generateGraph'] === 'false') {
+            $generateGraph->deleteGraph($dates);
+            header('Location: /calendar?monthsFromNow=' . $params['monthsFromNow']);
+        }
 
         if ($dates) {
             echo $this->render('calendar/index', [
