@@ -36,7 +36,7 @@ class Application
         $params = $this->request->getAll();
         $actionName = $this->request->getAction();
         $modelId = $this->request->getModelId();
-        $isApi = $this->request->getIsApi();
+        $isApi = $this->request->isApi;
 
         /**
          * Получаем имя класса контроллера с пространством имён

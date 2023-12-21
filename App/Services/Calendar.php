@@ -52,15 +52,10 @@ class Calendar
 
     private function fillDatesRecords(): void
     {
-
-        //var_dump( $this->dates[0]['value']);die;
-
         $record = new Record();
         $firstDay = $this->dates[0]['value'];
         $lastDay = $this->dates[count($this->dates) - 1]['value'];
         $this->records = $record->getRecordsWithUsers($firstDay, $lastDay);
-
-        //var_dump(count($this->dates),$firstDay, $lastDay);die;
 
         foreach ($this->dates as &$date) {
             $dateRecords = $this->findRecords($date['value']);

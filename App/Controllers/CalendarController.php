@@ -22,7 +22,7 @@ class CalendarController extends AbstractController
             echo $this->render('calendar/index', [
                 'days' => $dates,
                 'currentMonth' => date('F', strtotime($monthsFromNow . ' month')),
-                'route' => 'calendar'
+                'page' => 'calendar'
             ]);
         } else {
             //TODO: Добавить обработку ошибок

@@ -13,7 +13,7 @@ class UsersController extends AbstractController
             'users/index',
             [
                 'users' => array_map(UserResource::transformToList(...), $users->findAll() ?? []),
-                'route' => 'users'
+                'page' => 'users'
             ]
         );
     }
@@ -27,7 +27,7 @@ class UsersController extends AbstractController
 
         echo $this->render('users/show', [
             'user' => UserResource::transformToShow($user),
-            'route' => 'users'
+            'page' => 'users'
         ]);
     }
 }

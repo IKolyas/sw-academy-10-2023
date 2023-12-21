@@ -11,6 +11,8 @@ abstract class AbstractApiController
 {
     protected string $action;
     protected bool $requireAuth = true;
+    protected Response $response;
+    protected Request $request;
 
     protected const DEFAULT_ACTION = 'index';
 
@@ -20,11 +22,7 @@ abstract class AbstractApiController
 
         $isAuthorized = app()->auth->isAuthorized();
 
-        if ($this->requireAuth && $isAuthorized) {
-            return;
-        }
-
-        if ($this->requireAuth) {
+        if ($this->requireAuth && !$isAuthorized) {
             (new Response())->json([
                 'success' => false,
                 'message' => 'Необходима авторизация'
@@ -40,24 +38,23 @@ abstract class AbstractApiController
 //      Добавляет префикс 'action' к названию для поиска метода ///actionAll
         $method = "action" . ucfirst($this->action);
 
-        $response = new Response();
-        $request = new Request();
+        $this->response = app()->response;
+        $this->request = app()->request;
 
-        if (!$request->isPost()) {
-            $response->json([
+        if (!$this->request->isPost()) {
+            $this->response->json([
                 'success' => false,
                 'message' => 'Метод недоступен'
             ], StatusCode::METHOD_NOT_ALLOWED);
             return;
         }
 
-
         if (method_exists($this, $method)) {
-            $this->$method($request, $response);
+            $this->$method();
             return;
         }
 
-        $response->json([
+        $this->response->json([
             'success' => false,
             'message' => 'Метод не существует'
         ], StatusCode::NOT_FOUND);

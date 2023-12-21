@@ -2,8 +2,6 @@
 
 namespace App\Controllers\Api;
 
-use App\Base\Request;
-use App\Base\Response;
 use App\Enums\StatusCode;
 use App\FormRequests\RecordsApiRequest;
 use App\Models\Record;
@@ -19,9 +17,9 @@ class RecordsController extends AbstractApiController
         $this->records = new Record();
     }
 
-    public function actionRecords(Request $request, Response $response): void
+    public function actionRecords(): void
     {
-        $data = $request->getBody();
+        $data = $this->request->getBody();
 
         $date = $data['date'] ?? date('Y-m');
 
@@ -30,26 +28,26 @@ class RecordsController extends AbstractApiController
 
         $records = $this->records->getByRange($firstDay, $lastDay, 'date');
 
-        $response->json([
+        $this->response->json([
             'success' => true,
             'data' => $records
         ]);
     }
 
-    public function actionRecord(Request $request, Response $response): void
+    public function actionRecord(): void
     {
-        $data = $request->getBody();
+        $data = $this->request->getBody();
 
         $date = date('Y-m-d', strtotime($data['date']));
         $record = $this->records->find($date, 'date');
 
-        $response->json([
+        $this->response->json([
             'success' => true,
             'data' => $record
         ]);
     }
 
-    public function actionUpdateStatus(Request $request, Response $response): void
+    public function actionUpdateStatus(): void
     {
 
         $data = (new RecordsApiRequest)->validated();
@@ -57,7 +55,7 @@ class RecordsController extends AbstractApiController
         $errors = app()->session->get('errors');
 
         if ($errors) {
-            $response->json([
+            $this->response->json([
                 'success' => false,
                 'errors' => $errors
             ], StatusCode::BAD_REQUEST);
@@ -66,7 +64,7 @@ class RecordsController extends AbstractApiController
 
         $isUpdated = $this->records->update($data);
 
-        $response->json([
+        $this->response->json([
             'success' => !!$isUpdated,
             'message' => $isUpdated ? 'Запись обновлена' : 'Не удалось обновить запись'
         ], $isUpdated ? StatusCode::CREATED : StatusCode::INTERNAL_SERVER_ERROR);

@@ -13,7 +13,7 @@ class Request
     protected ?string $params;
     protected ?array $body;
     protected ?int $modelId;
-    protected bool $isApi;
+    public bool $isApi;
 
     private const URL_PATTERN = "#(api/)?(?P<controller>\w+(-[A-z]+)*)[/]?(?P<action>[A-z]+)?(?P<modelId>\d+)?[/]?[?]?(?P<params>.*)#ui";
 
@@ -54,11 +54,6 @@ class Request
     public function getAction(): ?string
     {
         return $this->action;
-    }
-    // Имя метода из REQUEST_URI
-    public function getIsApi(): ?string
-    {
-        return $this->isApi;
     }
 
     // Параметры из REQUEST_URI
