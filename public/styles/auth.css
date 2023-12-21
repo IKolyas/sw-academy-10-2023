@@ -66,8 +66,3 @@
     align-items: center;
     gap: 16px;
 }
-
-.error {
-    color: red;
-    font-size: 12px;
-}

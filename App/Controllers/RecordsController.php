@@ -90,6 +90,7 @@ class RecordsController extends AbstractController
             echo $this->render('record/edit', [
                 'record' => RecordResource::transformToShow($record->find($record->id)),
                 'errors' => $errors,
+                'statuses' => RecordStatusType::getList(),
             ]);
             return;
         }

@@ -43,8 +43,7 @@
                    disabled:border-0 disabled:bg-blue-gray-50">
                                 {% for status in statuses %}
                                     <option value="{{ status.value }}" {% if record.status == status.value %} selected
-                                            {%
-                                        endif %}>
+                                            {% endif %}>
                                         {{ status.label }}
                                     </option>
                                 {% endfor %}
@@ -83,12 +82,6 @@
                         </dd>
                     </div>
                 </dl>
-                <div class="my-8 mx-8">
-                    {% if errors.record %}
-                        <span class="error bg-red-200 p-1">{{ errors.record }}</span>
-                    {% endif %}
-                </div>
-
             </div>
             <div class="flex justify-end">
                 <input class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
@@ -97,7 +90,13 @@
                        value='Сохранить'>
             </div>
         </form>
+        {% if errors.record %}
+            <div class="border-1 border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                <span>{{ errors.record }}</span>
+            </div>
+        {% endif %}
     </div>
+
 {% endblock %}
 {% block scripts %}
 
