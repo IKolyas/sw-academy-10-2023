@@ -6,11 +6,21 @@
 
 {% block content %}
     <div class="overflow-hidden bg-white shadow sm:rounded-lg mx-auto max-w-2xl">
-        <form action="/profile/update" method="post">
+        <div class="flex align-center justify-between">
             <div class="px-4 py-6 sm:px-6">
                 <h3 class="text-base font-semibold leading-7 text-gray-900">Информация о пользователе</h3>
                 <input type="hidden" name="id" value="{{ user.id }}">
             </div>
+            <form class="flex items-center" method="get" action="/profile/changePassword">
+                <input class="cursor-pointer border border-blue-500 hover:bg-blue-700 text-blue-500 font-bold py-0
+                px-4 rounded-full
+                hover:text-white h-8 mr-6"
+                       type="submit"
+                       value="Изменить пароль">
+            </form>
+        </div>
+
+        <form action="/profile/update" method="post">
             <div class="border-t border-gray-100">
                 {% if errors.user %}
                     <span class="error">{{ errors.user }}</span>
@@ -28,7 +38,7 @@
                                        placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
                                        placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
                                        focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
-                                       disabled:border-0 disabled:bg-blue-gray-50" />
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
                             </div>
                             {% if errors.first_name %}
                                 <span class="error text-red-700">{{ errors.first_name }}</span>
@@ -47,7 +57,7 @@
                                        placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
                                        placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
                                        focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
-                                       disabled:border-0 disabled:bg-blue-gray-50" />
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
                             </div>
                             {% if errors.last_name %}
                                 <span class="error text-red-700">{{ errors.last_name }}</span>
@@ -66,7 +76,7 @@
                                        placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
                                        placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
                                        focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
-                                       disabled:border-0 disabled:bg-blue-gray-50" />
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
                             </div>
                             {% if errors.email %}
                                 <span class="error text-red-700">{{ errors.email }}</span>
@@ -85,7 +95,7 @@
                                        placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
                                        placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
                                        focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
-                                       disabled:border-0 disabled:bg-blue-gray-50" />
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
                             </div>
                             {% if errors.login %}
                                 <span class="error text-red-700">{{ errors.login }}</span>
@@ -100,20 +110,33 @@
                         <dt class="text-sm font-medium text-gray-900">Дата обновления</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.updated_at|e }}</dd>
                     </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Статус</dt>
+                        <div class="relative h-10 w-full min-w-[200px] ">
+                            <select id="status" name="status" class="peer  rounded-[7px]  !border  !border-gray-300
+                                       border-t-transparent
+                                       bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                                       shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                                       placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                                       placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                                       focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                                       disabled:border-0 disabled:bg-blue-gray-50">
+                                {% for status in statuses %}
+                                    <option value="{{ status.value }}" {% if user.status == status.value %} selected {% endif %}>
+                                        {{ status.label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                 </dl>
             </div>
             <div class="flex justify-end">
                 <input class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
-                mr-5 mb-5"
+                mr-6 mb-5 mt-10"
                        type="submit"
                        value="Сохранить изменения">
             </div>
-        </form>
-        <form method="get" action="/profile/changePassword">
-            <input class="cursor-pointer border border-blue-500 hover:bg-blue-700 text-blue-500 font-bold py-2 px-4 rounded-full
-                ml-5 mb-5"
-                   type="submit"
-                   value="Изменить пароль">
         </form>
     </div>
 {% endblock %}
