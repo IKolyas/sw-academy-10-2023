@@ -1,5 +1,5 @@
 .env
 vendor/
 composer.lock
-# public/uploads/*
-# !public/uploads/.gitkeep
+public/uploads/*
+!public/uploads/.gitkeep
