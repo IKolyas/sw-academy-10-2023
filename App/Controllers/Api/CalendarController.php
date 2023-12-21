@@ -12,14 +12,13 @@ class CalendarController extends AbstractApiController
     {
         $data = $request->getBody();
 
-        $date = $data['date'] ?? date('Y-m');
+        $date = date('Y-m', strtotime($data['date'])) ?? date('Y-m');
 
         $calendar = new Calendar();
 
         $result = $calendar->getFilledMonth($date);
 
         $response->json([
-            'status' => 200,
             'success' => true,
             'data' => $result
         ]);
