@@ -22,12 +22,9 @@ class Files
     move_uploaded_file($this->file['tmp_name'], $uploadFile);  
   }
 
-  public function updatePhotoInDataBase($user, $uploadName)
+  public function updatePhotoInDataBase($user, $uploadName): void
   {
-    $token = app()->cookie->getCookie('token');
-    $user = (new User())->find($token,'access_token');        
-    $user->photo = $uploadName;  
-
     $user->update(['photo' => $uploadName, 'id' => $user->id]);
+    $user->photo = $uploadName;
   }
 }

@@ -95,7 +95,6 @@ class ProfileController extends AbstractController
             return;
         }
 
-        $user->photo = $uploadName;
         $files->uploadFile($uploadName);
         $files->updatePhotoInDataBase($user, $uploadName);
 

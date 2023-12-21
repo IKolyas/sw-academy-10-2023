@@ -14,7 +14,7 @@ class UserPhotoRequest extends Request
     if (!UserPhotoValidator::validateUserPhoto($file)) {
       app()->session->addToArray('errors', ['photo' => 'Фото не загружено, произошла ошибка!']);
 
-    return null;    
+      return null;
     }
 
     app()->session->addToArray('errors', ['photo' => 'Фото загружено.']);

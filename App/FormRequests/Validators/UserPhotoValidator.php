@@ -4,15 +4,15 @@ namespace App\FormRequests\Validators;
 
 class UserPhotoValidator extends AbstractValidator
 {
-    public static function validateUserPhoto(mixed $file): int | bool //мой валидатор
+    public static function validateUserPhoto(mixed $file): int|bool
     {
         $allowFormat = array('jpeg', 'png', 'jpg');
         $fileExt = pathinfo($file['name'], PATHINFO_EXTENSION);
 
-        if(!in_array($fileExt, $allowFormat)) {    
+        if (!in_array($fileExt, $allowFormat)) {
             return false;
-        } 
+        }
 
-        return true;    
-    }       
+        return true;
+    }
 }
