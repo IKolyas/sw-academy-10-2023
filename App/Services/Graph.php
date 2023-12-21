@@ -20,15 +20,8 @@ class Graph
         }
 
         $oldDutyOfficers = $this->countOldRecords($dates);
-
         $newListDuty = $this->createGeneralListDuty($oldDutyOfficers, $arrayIdDuty);
-
         $datesСurrentMonth = $this->getDatesСurrentMonth($dates);
-
-        $maximumNumberDuty = ceil(count($datesСurrentMonth)/count($newListDuty));
-        
-
-        //var_dump($maximumNumberDuty);die;
 
         //сортировка дежурных по кол-ву дежурств
         usort($newListDuty, function($a, $b){
@@ -40,51 +33,8 @@ class Graph
                 continue;
             }
 
-            $isBreak = false;
-
-            /* foreach ($newListDuty as &$duty) {
-
-                //var_dump($duty['id']);
-                if ($duty['count'] == $maximumNumberDuty) {
-                    //$isBreak = true;
-                    echo "EYYY";
-                    continue;
-                }
-                    
-                //генерация пользователя на первый день месяца
-                $latsDuty = $this->getLastDuty($dates);
-                if ($latsDuty !== null && preg_match('/\d{4}-\d{2}-01/', $day['value']) && ($latsDuty['id'] === $duty['id'])) {
-
-                    continue;
-                }
-
-                $record = new Record();
-                $newRecord = [
-                    'user_id' => $duty['id'],
-                    'date' => $day['value'],
-                ];
-                $record->create($newRecord);
-                $duty['count'] += 1;
-
-                //сортировка дежурных по кол-ву дежурств
-                usort($newListDuty, function($a, $b){
-                    return ($a['count'] - $b['count']);
-                });
-
-                $day['records'] = $newRecord;
-
-            } */
-
-            /* if ($isBreak) {
-                continue;
-            } */
-
             foreach ($newListDuty as $key=>$duty) {
                     
-                /* if ($duty['count'] == $maximumNumberDuty) {
-                    break;
-                } */
-
                 //генерация пользователя на первый день месяца
                 $latsDuty = $this->getLastDuty($dates);
                 if ($latsDuty !== null && preg_match('/\d{4}-\d{2}-01/', $day['value']) && ($latsDuty['id'] === $duty['id'])) {
@@ -110,9 +60,6 @@ class Graph
                 break;
             }
         }
-        /* var_dump($newListDuty);die;
-        var_dump($datesСurrentMonth);die; */
-        
     }
 
     function deleteGraph(array $dates)
