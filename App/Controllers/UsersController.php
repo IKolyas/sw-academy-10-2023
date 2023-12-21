@@ -28,6 +28,7 @@ class UsersController extends AbstractController
 
         echo $this->render('users/show', [
             'user' => UserResource::transformToShow($user),
+            'attendant' => $this->attendant,
             'page' => 'users'
         ]);
     }

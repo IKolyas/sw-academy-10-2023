@@ -26,7 +26,10 @@ class ProfileController extends AbstractController
 
     public function actionEdit(): void
     {
-        echo $this->render('profile/edit', ['user' => UserResource::transformToShow($this->user)]);
+        echo $this->render('profile/edit', [
+            'user' => UserResource::transformToShow($this->user),
+            'attendant' => $this->attendant,
+        ]);
     }
 
     public function actionUpdate(?UserEditRequest $request): void
@@ -49,7 +52,7 @@ class ProfileController extends AbstractController
             [
                 'user' => $user,
                 // 'user' => UserResource::transformToShow($user->find($user->id)),
-
+                'attendant' => $this->attendant,
                 'errors' => app()->session->get('errors'),
             ]
         );
@@ -90,6 +93,7 @@ class ProfileController extends AbstractController
                 [
                     'user' => $user,
                     'errors' => app()->session->get('errors'),
+                    'attendant' => $this->attendant,
                     'feedback' => app()->session->get('feedback'),
                     ]
                 );
@@ -105,6 +109,7 @@ class ProfileController extends AbstractController
             [
                 'user' => $user,
                 'errors' => app()->session->get('errors'),
+                'attendant' => $this->attendant,
                 'feedback' => app()->session->get('feedback'),
             ]
         );         
