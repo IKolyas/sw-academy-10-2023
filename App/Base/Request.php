@@ -26,6 +26,7 @@ class Request
         $this->uri = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->parseRequest();
+        $this->parseBody();
     }
 
     protected function parseRequest(): void
@@ -61,7 +62,7 @@ class Request
     }
 
     // Параметры из REQUEST_URI
-    public function getParams(): ?array
+    public function getParams(): ?string
     {
         return $this->params;
     }
