@@ -4,20 +4,19 @@ namespace App\Controllers\Api;
 
 use App\Base\Request;
 use App\Base\Response;
-use App\FormRequests\Validators\RecordValidator;
+use App\Enums\StatusCode;
+use App\FormRequests\RecordsApiRequest;
 use App\Models\Record;
 
 class RecordsController extends AbstractApiController
 {
     protected Record $records;
-    protected RecordValidator $recordValidator;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->records = new Record();
-        $this->recordValidator = new RecordValidator();
     }
 
     public function actionRecords(Request $request, Response $response): void
@@ -32,7 +31,6 @@ class RecordsController extends AbstractApiController
         $records = $this->records->getByRange($firstDay, $lastDay, 'date');
 
         $response->json([
-            'status' => 200,
             'success' => true,
             'data' => $records
         ]);
@@ -46,7 +44,6 @@ class RecordsController extends AbstractApiController
         $record = $this->records->find($date, 'date');
 
         $response->json([
-            'status' => 200,
             'success' => true,
             'data' => $record
         ]);
@@ -54,31 +51,24 @@ class RecordsController extends AbstractApiController
 
     public function actionUpdateStatus(Request $request, Response $response): void
     {
-        $data = $request->getBody();
 
-        $this->recordValidator->validateId($data['id']);
-        $this->recordValidator->validateStatus($data['status']);
+        $data = (new RecordsApiRequest)->validated();
 
         $errors = app()->session->get('errors');
 
         if ($errors) {
             $response->json([
-                'status' => 400,
                 'success' => false,
                 'errors' => $errors
-            ]);
-            return;
+            ], StatusCode::BAD_REQUEST);
+            exit();
         }
 
-        $isUpdated = $this->records->update([
-            'id' => $data['id'],
-            'status' => $data['status']
-        ]);
+        $isUpdated = $this->records->update($data);
 
         $response->json([
-            'status' => $isUpdated ? 200 : 500,
             'success' => !!$isUpdated,
             'message' => $isUpdated ? 'Запись обновлена' : 'Не удалось обновить запись'
-        ]);
+        ], $isUpdated ? StatusCode::CREATED : StatusCode::INTERNAL_SERVER_ERROR);
     }
 }
