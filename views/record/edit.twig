@@ -4,12 +4,12 @@
 {% block page %}Дежурство на {{ record.date|e }}{% endblock %}
 
 {% block content %}
-    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+    <div class="overflow-hidden bg-white shadow sm:rounded-lg mx-auto max-w-2xl">
         <form action="/records/edit" method="post">
             <div class="border-t border-gray-100">
                 <dl class="divide-y divide-gray-100">
                     <input class="pl-1 bg-gray-200 hidden" type="text" name="id" value="{{ record.id|e }}" readonly>
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
                         <dt class="text-sm font-medium text-gray-900 align-middle my-3">id пользователя</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <div class="relative h-10 w-full min-w-[200px] ">
@@ -24,13 +24,13 @@
                             </div>
                         </dd>
                     </div>
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900 my-3">Дата</dt>
                         <dd class="flex mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <input class="pl-1 " type="date" name="date" value="{{ record.date }}" readonly>
                         </dd>
                     </div>
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900 my-3">Продежурил</dt>
                         <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <input type="hidden" name="status" value="0">
@@ -38,7 +38,7 @@
                         </dd>
                     </div>
 
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900 my-3">Тип</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 ">
                             <div class="relative h-10 w-full min-w-[200px] ">
@@ -53,7 +53,7 @@
                             </div>
                         </dd>
                     </div>
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-900 my-3">Комментарий</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <div class="relative h-10 w-full min-w-[200px] ">
