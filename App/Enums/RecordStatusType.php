@@ -2,14 +2,14 @@
 
 namespace App\Enums;
 
-class RecordStatusType
+enum RecordStatusType: int
 {
-    public const WAITING_FOR_DUTY = 0;
-    public const DUTY_COMPLETED = 1;
+    case WAITING_FOR_DUTY = 0;
+    case DUTY_COMPLETED = 1;
 
-    public static function getRecordStatus(int $status): string
+    public function label(): string
     {
-        return match ($status) {
+        return match ($this) {
             self::WAITING_FOR_DUTY => 'Ожидает дежурства',
             self::DUTY_COMPLETED => 'Продежурил',
         };
@@ -17,15 +17,9 @@ class RecordStatusType
 
     public static function getList(): array
     {
-        return [
-            [
-                'value' => self::WAITING_FOR_DUTY,
-                'label' => 'Ожидает дежурства',
-            ],
-            [
-                'value' => self::DUTY_COMPLETED,
-                'label' => 'Продежурил',
-            ]
-        ];
+        return array_map(fn($status) => [
+            'value' => $status->value,
+            'label' => $status->label(),
+        ], self::cases());
     }
 }

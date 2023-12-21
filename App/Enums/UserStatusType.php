@@ -2,30 +2,24 @@
 
 namespace App\Enums;
 
-class UserStatusType
+enum UserStatusType: int
 {
-    public const ACTIVE_USER = 1;
-    public const INACTIVE_USER = 0;
+    case ACTIVE_USER = 1;
+    case INACTIVE_USER = 0;
 
-    public static function getStatusName(int $status): int
+    public function label(): string
     {
-        return match ($status) {
+        return match ($this) {
             self::ACTIVE_USER => 'Доступен для установки в график',
             self::INACTIVE_USER => 'Не доступен для установки в график',
         };
     }
 
-    public static function getList(): array
+    public static  function getList(): array
     {
-        return [
-            [
-                'value' => self::ACTIVE_USER,
-                'label' => 'Доступен для установки в график',
-            ],
-            [
-                'value' => self::INACTIVE_USER,
-                'label' => 'Не доступен для установки в график',
-            ]
-        ];
+        return array_map(fn ($status) => [
+            'value' => $status->value,
+            'label' => $status->label(),
+        ], self::cases());
     }
 }

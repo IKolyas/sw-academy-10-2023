@@ -27,9 +27,8 @@ class RecordsController extends AbstractController
      */
     public function actionShow(?Record $record, ?RecordRequest $request): void
     {
-        $user = $this->user;
 
-        if ($user->is_admin !== 1) {
+        if ($this->user->is_admin !== 1) {
             app()->response->redirect('/forbidden');
             return;
         }
@@ -66,7 +65,7 @@ class RecordsController extends AbstractController
 
         if (!empty($errors)) {
             echo $this->render('record/create', [
-                'record' => ['date' => $date],
+                'record' => compact('date'),
                 'errors' => $errors,
             ]);
             return;
@@ -88,7 +87,7 @@ class RecordsController extends AbstractController
 
         if (!empty($errors)) {
             echo $this->render('record/edit', [
-                'record' => RecordResource::transformToShow($record->find($record->id)),
+                'record' => RecordResource::transformToShow($record),
                 'errors' => $errors,
                 'statuses' => RecordStatusType::getList(),
             ]);
@@ -107,8 +106,6 @@ class RecordsController extends AbstractController
         }
 
         $record->delete($record->id);
-
-        //TODO: Заменить на шаблон
-        var_dump("Пользователь с id:{$record->id} удалён");
+        app()->response->redirect('/calendar');
     }
 }

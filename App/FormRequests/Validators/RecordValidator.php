@@ -54,7 +54,7 @@ class RecordValidator extends AbstractValidator
 
     public static function validateStatus(mixed $status): int | bool
     {
-        if ($status != RecordStatusType::WAITING_FOR_DUTY && $status != RecordStatusType::DUTY_COMPLETED) {
+        if ($status != RecordStatusType::WAITING_FOR_DUTY->value && $status != RecordStatusType::DUTY_COMPLETED->value) {
 
             app()->session->addToArray('errors', ['record' => 'Некорректный статус']);
             return false;
