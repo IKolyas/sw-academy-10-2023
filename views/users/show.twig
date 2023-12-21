@@ -34,6 +34,18 @@
                         </dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
+                        <dt class="text-sm font-medium text-gray-900">Статус</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <p class="pl-1">
+                                {% for status in statuses %}
+                                    {% if status.value == user.status %}
+                                        {{ status.label }}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </dd>
+                    </div>
+                    <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
                         <dt class="text-sm font-medium text-gray-900">Дата добавления</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.created_at|e }}</dd>
                     </div>

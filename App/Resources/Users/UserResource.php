@@ -17,6 +17,7 @@ final class UserResource
             'login' => $user->login,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
+            'status' => $user->status,
             'email' => $user->email,
         ];
     }
