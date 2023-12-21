@@ -21,6 +21,7 @@ return [
     'CONTROLLER_NAMESPACE' => 'App\Controllers\\',
     'COOKIE_TIME' => env('COOKIE_TIME', 3600),
     'VIEWS_DIR' => __DIR__ . '/../views/',
+    'UPLOADS_DIR' => __DIR__ . '/../public/uploads/',
     'COMPONENTS' => [
         'request' => [
             'class' => Request::class,

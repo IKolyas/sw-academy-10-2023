@@ -25,6 +25,16 @@
   color: red;
 }
 
+.preshow__image {
+  margin-bottom: 20px;
+}
+
+.preshow__desc {
+
+  font-size: 12px;
+  color: red;
+}
+
 .photo {
   padding: 20px;
 }

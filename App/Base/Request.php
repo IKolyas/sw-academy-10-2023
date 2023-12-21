@@ -12,6 +12,7 @@ class Request
     protected ?string $action;
     protected ?string $params;
     protected ?int $modelId;
+    protected ?array $files;
 
     private const URL_PATTERN = "#(?P<controller>\w+(-[A-z]+)*)[/]?(?P<action>[A-z]+)?(?P<modelId>\d+)?[/]?[?]?(?P<params>.*)#ui";
 
@@ -24,6 +25,7 @@ class Request
         $this->uri = $_SERVER['REQUEST_URI'];
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->parseRequest();
+        $this->files = $_FILES;
     }
 
     protected function parseRequest(): void
@@ -104,5 +106,17 @@ class Request
     {
         return RequestMethodType::tryFrom($this->method);
     }
+
+    public function getFiles(): ?array
+    {
+        return $this->files;
+    }
+
+    public function getFile(string $key): ?array
+    {
+        return $this->files[$key] ?? null;
+    }
+
+
 
 }

@@ -5,7 +5,8 @@ namespace App\Controllers;
 use App\FormRequests\UserEditRequest;
 use App\Models\User;
 use App\Resources\Users\UserResource;
-
+use App\FormRequests\UserPhotoRequest;
+use App\Services\Files;
 
 class ProfileController extends AbstractController
 {
@@ -51,45 +52,34 @@ class ProfileController extends AbstractController
         );
     }
 
-    public function actionUpload(?User $user): void
+    public function actionUpload(?User $user, ?UserPhotoRequest $request, Files $files): void
     {
-
+        $file = $request->validated();
         $token = app()->cookie->getCookie('token');
         $user = $user?->find($token,'access_token');
-        $file = $_FILES['userfile'];
-        $name = $file['name'];
-        $ext = pathinfo($name, PATHINFO_EXTENSION);
-        $uploaddir = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'uploads/';
-        $uploadfile = $uploaddir . $user->id . '_' . basename($file['name']);
-        $uploadFileInDb = $user->id . '_' . basename($file['name']);
+        $uploadName = $user?->id . '_' . basename($file['name']);
 
-        if( $ext == 'jpeg' || $ext == 'png' || $ext == 'jpg' ) {
-
-            move_uploaded_file($file['tmp_name'], $uploadfile);
-
-            $user->update(['photo' => $uploadFileInDb, 'id' => $user->id]); //Сохраняем в БД
-            $user = UserResource::transformToShow($user->find($user->id)); //Переводим в ресурс           
-            var_dump($user);
-
+        if (!$file) {
             echo $this->render(
                 'profile/edit',
                 [
-                    'user' => ['photo' => $uploadFileInDb],
-                    'errors' => app()->session->get('errors'),
-                ]
-            ); 
-
-        } else {
-
-            echo 'Данный формат файла не поддерживается';
-            
-            echo $this->render(
-                'profile/edit',
-                [
-                    'user' => ['photo' => $uploadFileInDb],
+                    'user' => $user,
                     'errors' => app()->session->get('errors'),
                 ]
             );
+            return;
         }
-    }
+
+        $user->photo = $uploadName;
+        $files->uploadFile($uploadName);
+        $files->updatePhotoInDataBase($user, $uploadName);
+
+        echo $this->render(
+            'profile/edit',
+            [
+                'user' => $user,
+                'errors' => app()->session->get('errors'),
+            ]
+        );         
+    }    
 }
