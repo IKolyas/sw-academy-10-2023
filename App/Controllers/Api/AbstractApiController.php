@@ -4,11 +4,13 @@ namespace App\Controllers\Api;
 
 use App\Base\Request;
 use App\Base\Response;
+use App\Enums\StatusCode;
 use App\Models\AbstractModel;
 
 abstract class AbstractApiController
 {
     protected string $action;
+    protected bool $requireAuth = true;
 
     protected const DEFAULT_ACTION = 'index';
 
@@ -16,6 +18,20 @@ abstract class AbstractApiController
     {
         header('Content-Type: application/json');
         app()->session->remove('errors');
+
+        $isAuthorized = app()->auth->isAuthorized();
+
+        if ($this->requireAuth && $isAuthorized) {
+            return;
+        }
+
+        if ($this->requireAuth) {
+            (new Response())->json([
+                'success' => false,
+                'message' => 'Необходима авторизация'
+            ], StatusCode::UNAUTHORIZED);
+            exit();
+        }
     }
 
     public function runAction(?string $action = null): void
@@ -30,24 +46,21 @@ abstract class AbstractApiController
 
         if (!$request->isPost()) {
             $response->json([
-                'status' => 405,
                 'success' => false,
                 'message' => 'Метод недоступен'
-            ]);
+            ], StatusCode::METHOD_NOT_ALLOWED);
             return;
         }
 
 
         if (method_exists($this, $method)) {
-            $request->parseBody();
             $this->$method($request, $response);
             return;
         }
 
         $response->json([
-            'status' => 404,
             'success' => false,
             'message' => 'Метод не существует'
-        ]);
+        ], StatusCode::NOT_FOUND);
     }
 }
