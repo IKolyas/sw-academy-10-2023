@@ -17,6 +17,7 @@ class User extends AbstractModel
     public bool $status;
     public string $created_at;
     public string $updated_at;
+    public ?string $photo;
 
     public function __construct()
     {
@@ -31,5 +32,11 @@ class User extends AbstractModel
         parent::update($fields);
 
         return true;
+    }
+
+    public function updatePassword($fields): int
+    {
+        $fields['password'] = password_hash($fields['password'], PASSWORD_DEFAULT);
+        return parent::update($fields);
     }
 }

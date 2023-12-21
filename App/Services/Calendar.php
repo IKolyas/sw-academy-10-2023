@@ -32,6 +32,24 @@ class Calendar
         return $this->dates;
     }
 
+    public function getFilledMonth(string $month): array
+    {
+        for ($day = 1; $day <= date('t', strtotime($month)); $day++) {
+            $timestamp = strtotime($month . '-' . $day);
+            $dayToWrite = date('Y-m-d', $timestamp);
+
+            $date = [
+                'value' => $dayToWrite
+            ];
+
+            $this->addDate($date);
+        }
+
+        $this->fillDatesRecords();
+
+        return $this->dates;
+    }
+
     private function fillDatesRecords(): void
     {
         $record = new Record();

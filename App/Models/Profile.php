@@ -18,6 +18,7 @@ class Profile extends AbstractModel
     public string $created_at;
     public string $updated_at;
     public int $status;
+    public ?string $photo;
 
     public function __construct()
     {
@@ -35,6 +36,7 @@ class Profile extends AbstractModel
             'email' => $this->email,
             'login' => $this->login,
             'updated_at' => $this->updated_at,
+            'photo' => $this->photo,
         ];
 
         $this->update($params);
