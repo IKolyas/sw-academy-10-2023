@@ -80,7 +80,7 @@ class Graph
     }
 
     /**Получить даты этого месяца */
-    function getDatesСurrentMonth(array $dates): array
+    private function getDatesСurrentMonth(array $dates): array
     {
         $datesСurrentMonth = null;
 
@@ -95,7 +95,7 @@ class Graph
     }
 
     /**Создаем новый список с учетом старых записей */
-    function createGeneralListDuty(?array $oldList, array $arrayIdDuty): array
+    private function createGeneralListDuty(?array $oldList, array $arrayIdDuty): array
     {
         $newListDuty = is_null($oldList) ? [] : $oldList;
 
@@ -126,7 +126,7 @@ class Graph
     }
 
     /**Получаем массив id пользователей со статусом = 1 */
-    function getIdDuty(?array $users): ?array
+    private function getIdDuty(?array $users): ?array
     {
         $arrayId = null;
         foreach ($users as $user) {
@@ -136,7 +136,7 @@ class Graph
     }
 
     /**Получаем последнего дежурного пред. месяца */
-    function getLastDuty(array $dates): ?array
+    private function getLastDuty(array $dates): ?array
     {
         $latsDuty = null;
 
@@ -165,7 +165,7 @@ class Graph
     }
 
     /** создаем список старых пользователей с счетчиком их дежурств */
-    function countOldRecords(array $dates): ?array
+    private function countOldRecords(array $dates): ?array
     {
         $userRepository = new UserRepository();
         $oldDutyOfficers = [];
