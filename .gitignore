@@ -1,6 +1,5 @@
 .env
 vendor/
 composer.lock
-uploads/*.jpg
-uploads/*.jpeg
-uploads/*.png
+public/uploads/*
+!public/uploads/.gitkeep

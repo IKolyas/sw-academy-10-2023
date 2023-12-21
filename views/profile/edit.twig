@@ -27,18 +27,18 @@
             <div id="preshow" class="visually-hidden preshow">
                 <h3 class="preshow__title">Предпросмотр фото:</h3>
                 <img class="preshow__image" id="blah" src="#" alt="your image" />
-                <p class="preshow__desc">Подсказка: Изображение должо быть в формате jpeg / jpg / png. Максимальный размер файла = 3 Мб</p>
+                <p class="preshow__desc">Важно! Изображение должо быть в формате jpeg / jpg / png. Максимальный размер файла = 3 Мб</p>
             </div>
                 <input class="photo-form__btn visually-hidden cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
             type="submit"
             value="Отправить файл"/>
             {% if errors.photo %}
                 <span class="error">{{ errors.photo }}</span>
+            {% else  %}
+                <span class="feedback">{{ feedback.photo }}</span>
             {% endif %}
         </form>
 
-    </div>
-    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
         <form class="table" action="/profile/update" method="post">
             <div class="px-4 py-6 sm:px-6">
                 <h3 class="text-base font-semibold leading-7 text-gray-900">Информация о пользователе</h3>

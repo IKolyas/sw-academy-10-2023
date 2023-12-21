@@ -82,19 +82,21 @@ class ProfileController extends AbstractController
         $file = $request->validated();
         $token = app()->cookie->getCookie('token');
         $user = $user?->find($token,'access_token');
-        $uploadName = $user?->id . '_' . basename($file['name']);
-
+        
+        
         if (!$file) {
             echo $this->render(
                 'profile/edit',
                 [
                     'user' => $user,
                     'errors' => app()->session->get('errors'),
-                ]
-            );
-            return;
-        }
-
+                    'feedback' => app()->session->get('feedback'),
+                    ]
+                );
+                return;
+            }
+            
+        $uploadName = $user?->id . '_' . basename($file['name']);
         $files->uploadFile($uploadName);
         $files->updatePhotoInDataBase($user, $uploadName);
 
@@ -103,6 +105,7 @@ class ProfileController extends AbstractController
             [
                 'user' => $user,
                 'errors' => app()->session->get('errors'),
+                'feedback' => app()->session->get('feedback'),
             ]
         );         
     }    

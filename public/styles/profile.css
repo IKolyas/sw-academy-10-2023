@@ -16,13 +16,13 @@
   margin-bottom: 20px;
   width: 100%;
   max-width: 300px;
-  border: 2px solid red;
+  border: 2px solid cornflowerblue;
 }
 
 .preshow__title {
   margin-bottom: 20px;
   font-size: 20px;
-  color: red;
+  color: cornflowerblue;
 }
 
 .preshow__image {
@@ -32,7 +32,7 @@
 .preshow__desc {
 
   font-size: 12px;
-  color: red;
+  color: cornflowerblue;
 }
 
 .photo {
@@ -75,4 +75,14 @@
   margin-bottom: 25px;
   width: 200px;
   text-align: center;
+}
+
+.feedback {
+  font-size: 20px;
+  color: green;
+}
+
+.error {
+  font-size: 20px;
+  color: red;
 }
