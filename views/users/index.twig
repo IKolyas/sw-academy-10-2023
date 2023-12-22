@@ -51,6 +51,7 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                     <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Фото</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Имя</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Фамилия</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
@@ -63,10 +64,17 @@
                     {% for user in users %}
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
+                                {% if not user.photo %}
+                                    <img class="photo__image" width="50" height="50" src="/src/images/orig.jpeg" alt="фото профиля"/>
+                                {% else %}
+                                    <img class="photo__image" width="50" height="50" src="/uploads/{{ user.photo }}" alt="фото профиля"/>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm font-semibold leading-6 text-gray-900">{{ user.first_name }}</p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <p class="text-sm leading-5 text-gray-500"">{{ user.last_name }}</p>
+                                <p class="text-sm leading-5 text-gray-500">{{ user.last_name }}</p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm leading-5 text-gray-500">{{ user.email }}</p>

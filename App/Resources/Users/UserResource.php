@@ -13,6 +13,7 @@ final class UserResource
         }
 
         return [
+            'photo' => $user->photo,
             'id' => $user->id,
             'login' => $user->login,
             'first_name' => $user->first_name,
@@ -37,6 +38,7 @@ final class UserResource
             'status' => $user->status,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
+            'photo' => $user->photo,
         ];
     }
 }
