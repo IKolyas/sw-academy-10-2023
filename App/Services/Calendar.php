@@ -9,10 +9,8 @@ class Calendar
     private array $dates = [];
     private array $records = [];
 
-    public function getFilledDates(string $monthsFromNow): array
+    public function getFilledDates(string $yearMonth): array
     {
-        $yearMonth = $monthsFromNow;
-
         $this->getCurrentMonth($yearMonth);
         $this->addPrevDays($yearMonth);
         $this->addNextDays($yearMonth);
@@ -79,9 +77,9 @@ class Calendar
         return $this->dates;
     }
 
-    private function addPrevDays(string $monthsFromNow): void
+    private function addPrevDays(string $yearMonth): void
     {
-        $yearMonth = date('Y-m', strtotime("$monthsFromNow -1 month"));
+        $yearMonth = date('Y-m', strtotime("$yearMonth -1 month"));
         $lastDay = date('t', strtotime($yearMonth));
 
         for ($day = $lastDay; $day >= 24; $day--) {
@@ -100,9 +98,9 @@ class Calendar
         }
     }
 
-    private function addNextDays(string $monthsFromNow): void
+    private function addNextDays(string $yearMonth): void
     {
-        $yearMonth = date('Y-m', strtotime("$monthsFromNow +1 month"));
+        $yearMonth = date('Y-m', strtotime("$yearMonth +1 month"));
 
         for ($day = 1; $day <= 6; $day++) {
 
@@ -121,9 +119,9 @@ class Calendar
         }
     }
 
-    private function getDate(int $monthsFromNow, string $format = 'Y-m'): string
+    private function getDate(int $yearMonth, string $format = 'Y-m'): string
     {
-        return date($format, strtotime($monthsFromNow . ' month'));
+        return date($format, strtotime($yearMonth . ' month'));
     }
 
     private function addDate(array $date, string $method = 'add'): void

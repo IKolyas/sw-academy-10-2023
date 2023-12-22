@@ -78,7 +78,7 @@ class RecordsController extends AbstractController
         }
 
         $record->create($validated);
-        app()->response->redirect('/calendar/index?' . 'monthsFromNow=' . date('Y-m', strtotime($date)));
+        app()->response->redirect('/calendar/index?' . 'yearMonth=' . date('Y-m', strtotime($date)));
     }
 
     /**
@@ -104,7 +104,7 @@ class RecordsController extends AbstractController
 
         $record->update($validated);
         app()->response->redirect(
-            '/calendar/index?' . 'monthsFromNow=' . date('Y-m', strtotime($request->getParam('date')))
+            '/calendar/index?' . 'yearMonth=' . date('Y-m', strtotime($request->getParam('date')))
         );
     }
 
