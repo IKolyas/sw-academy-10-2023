@@ -6,6 +6,7 @@ use App\Models\User;
 
 class Auth
 {
+    public ?User $user;
 
     public function isAuthorized(): bool
     {
@@ -16,9 +17,9 @@ class Auth
         }
 
         $users = new User();
-        $user = $users->find($token, 'access_token');
+        $this->user = $users->find($token, 'access_token');
 
-        if (!$user) {
+        if (!$this->user) {
             app()->cookie->removeCookie('token');
             return false;
         }
