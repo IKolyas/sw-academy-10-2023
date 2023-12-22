@@ -16,7 +16,7 @@
             <span></span>
             <div class="flex items-center">
                 <div class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
-                    
+
                     <button onclick="goPrev()" type="button"
                             class="flex h-9 w-12 items-center justify-center rounded-l-md border-y border-l border-gray-300 pr-1 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:pr-0 md:hover:bg-gray-200">
                         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -41,6 +41,10 @@
                             class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
                         Сгенерировать график
                     </button>
+                    <a href="/calendar/schedulerGenerate?date={{ date }}" type="button"
+                            class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
+                        Сгенерировать график
+                    </a>
                     <button onclick="deleteGraph()" type="button"
                             class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
                         Очистить график
@@ -87,7 +91,10 @@
                                 {% if day.isCurrentMonth %}
                                     href="/records/show?date={{ day.value }}"
                                 {% endif %}
-                                class="relative flex flex-col justify-end {{ day.isCurrentMonth ? 'bg-white' : 'bg-gray-200' }} {{ day.isCurrentMonth ? 'currentMonthDay' : '' }} h-32 px-3 py-2 group"
+                                class="relative flex flex-col
+                                justify-end {{ day.isCurrentMonth ? day.isHoliday ? 'bg-red-100' : 'bg-white' : 'bg-gray-200' }} {{ day.isCurrentMonth ? 'currentMonthDay' : '' }}
+                                h-32 px-3 py-2 group
+                                "
                         >
                             <time class="absolute top-2 left-2 font-semibold {{ day.value|date('Y-m-d') == "now"|date('Y-m-d') ? 'flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-white' : '' }}"
                                   datetime="{{ day.value }}">
@@ -123,7 +130,9 @@
                                 {% if day.isCurrentMonth %}
                                     href="/records/show?date={{ day.value }}"
                                 {% endif %}
-                                class="relative flex flex-col justify-end {{ day.isCurrentMonth ? 'bg-white' : 'bg-gray-200' }} {{ day.isCurrentMonth ? 'currentMonthDay' : '' }} h-24 px-3 py-2 group"
+                                class="relative flex flex-col
+                                justify-end {{ day.isCurrentMonth ? 'bg-white' : 'bg-gray-200' }} {{ day.isCurrentMonth ? 'currentMonthDay' : '' }}
+                                h-24 px-3 py-2 group  {{ day.isHoliday ? 'bg-red-100' : '' }}"
                         >
                             <time class="absolute top-2 left-2 font-semibold {{ day.value|date('Y-m-d') == "now"|date('Y-m-d') ? 'flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-white' : '' }}"
                                   datetime="{{ day.value }}">

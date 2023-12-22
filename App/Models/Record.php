@@ -26,6 +26,7 @@ class Record extends AbstractModel
         if (!empty($result)) {
             return $result[0];
         }
+
         return null;
     }
 

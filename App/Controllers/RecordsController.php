@@ -21,6 +21,7 @@ class RecordsController extends AbstractController
         $token = app()->cookie->getCookie('token');
         $this->user = (new User())->find($token, 'access_token');
     }
+
     /**
      * GET-запросы
      * @throws Exception
@@ -42,7 +43,7 @@ class RecordsController extends AbstractController
                 'record' => $foundRecord,
                 'statuses' => RecordStatusType::getList(),
                 'users' => $users,
-                ]);
+            ]);
         }
 
         if (!$foundRecord) {
@@ -77,7 +78,7 @@ class RecordsController extends AbstractController
         }
 
         $record->create($validated);
-        app()->response->redirect('/calendar');
+        app()->response->redirect('/calendar/index?' . 'monthsFromNow=' . date('Y-m', strtotime($date)));
     }
 
     /**
@@ -102,7 +103,9 @@ class RecordsController extends AbstractController
         }
 
         $record->update($validated);
-        app()->response->redirect('/calendar');
+        app()->response->redirect(
+            '/calendar/index?' . 'monthsFromNow=' . date('Y-m', strtotime($request->getParam('date')))
+        );
     }
 
     public function actionDelete(?Record $record): void

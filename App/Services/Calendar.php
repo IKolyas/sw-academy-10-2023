@@ -34,9 +34,7 @@ class Calendar
 
             $currDay = date('D', $timestamp);
 
-            if ($currDay === 'Sun' || $currDay === 'Sat') {
-                $date['isHoliday'] = true;
-            }
+            $date['isHoliday'] = $currDay === 'Sun' || $currDay === 'Sat';
 
             $this->addDate($date);
         }

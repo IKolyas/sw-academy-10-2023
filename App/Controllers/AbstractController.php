@@ -61,7 +61,8 @@ abstract class AbstractController
      */
     protected function render(string $template, array $params = []): string
     {
-        return $this->renderer->render($template, $params);
+        $errors = app()->session->get('errors');
+        return $this->renderer->render($template, $params + compact('errors'));
     }
 
     /**
@@ -81,7 +82,7 @@ abstract class AbstractController
 
         foreach ($reflectionParameters as $parameter) {
             $typeName = $parameter->getType()?->getName() ?? '';
-            
+
             if ($typeName === 'array') {
                 $params[$parameter->getName()] = $data;
                 continue;
@@ -100,7 +101,7 @@ abstract class AbstractController
 
             $params[$parameter->getName()] = $class->find($modelId ?: $data['id']);
         }
-        
+
         $data = $params;
     }
 }

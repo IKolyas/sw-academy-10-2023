@@ -39,6 +39,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
     public function create(array $params): int
     {
+
         $paramsList = [];
         $columns = [];
 
@@ -53,7 +54,13 @@ abstract class AbstractRepository implements RepositoryInterface
         $columns = implode(',', $columns);
 
         $sql = "INSERT INTO {$this->tableName} ({$columns}) VALUES ({$paramsValue})";
+
         return $this->save($sql, $paramsList);
+    }
+
+    public function createMany(array $items): int
+    {
+//        TODO: реализовать вставку одним запросом
     }
 
     public function update(array $params): int
