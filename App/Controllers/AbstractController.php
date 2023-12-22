@@ -18,15 +18,12 @@ abstract class AbstractController
     protected int $totalDuties;
     protected int $totalMissedDuties;
     protected int $totalDoneDuties;
-    // protected int $totalDaysInMonth;
     protected bool $requireAuth = true;
 
     public function __construct(RendererInterface $renderer)
     {
         $this->renderer = $renderer;
         app()->session->remove('errors');
-        // $this->totalDaysInMonth = date('t', mktime(0, 0, 0, date('m'), 1, date('Y'))); ;
-
         $isAuthorized = app()->auth->isAuthorized();
 
         if ($this->requireAuth && $isAuthorized) {
@@ -56,7 +53,6 @@ abstract class AbstractController
             $this->bindParams($params, $method, $modelId);
             $this->attendant = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0]; 
             $this->totalDutiesArrey = (new Record())->getByRange(date('Y-m') . '-01', date('Y-m') . '-' . date('d') - 1, 'date');
-            // $this->totalDutiesArrey = (new Record())->getByRange(date('Y-m') . '-01', date('Y-m') . '-' . $this->totalDaysInMonth, 'date');
             $this->totalDuties = count($this->totalDutiesArrey);
             $this->totalDoneDuties = array_sum(array_column($this->totalDutiesArrey, 'status'));
             $this->totalMissedDuties = $this->totalDuties - $this->totalDoneDuties;
