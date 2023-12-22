@@ -65,6 +65,9 @@ class RecordsController extends AbstractController
         if (!empty($errors)) {
             echo $this->render('record/edit', [
                 'record' => RecordResource::transformToShow($record->find($record->id)),
+                'attendant' => $this->attendant,
+                'totalDuties' => $this->totalDuties,
+                'totalMissedDuties' => $this->totalMissedDuties,
                 'errors' => $errors,
             ]);
             return;

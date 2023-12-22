@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AbstractModel;
+use App\Models\Record;
 use App\Services\Renderers\RendererInterface;
 use ReflectionException;
 
@@ -12,14 +13,17 @@ abstract class AbstractController
     protected const NOT_FOUND_PAGE_NAME = '404';
     protected string $action;
     protected RendererInterface $renderer;
-
+    protected array $attendant;
+    protected array $totalDutiesArrey;
+    protected int $totalDuties;
+    protected int $totalMissedDuties;
+    protected int $totalDoneDuties;
     protected bool $requireAuth = true;
 
     public function __construct(RendererInterface $renderer)
     {
         $this->renderer = $renderer;
         app()->session->remove('errors');
-
         $isAuthorized = app()->auth->isAuthorized();
 
         if ($this->requireAuth && $isAuthorized) {
@@ -47,6 +51,11 @@ abstract class AbstractController
 
         if (method_exists($this, $method)) {
             $this->bindParams($params, $method, $modelId);
+            $this->attendant = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0]; 
+            $this->totalDutiesArrey = (new Record())->getByRange(date('Y-m') . '-01', date('Y-m') . '-' . date('d') - 1, 'date');
+            $this->totalDuties = count($this->totalDutiesArrey);
+            $this->totalDoneDuties = array_sum(array_column($this->totalDutiesArrey, 'status'));
+            $this->totalMissedDuties = $this->totalDuties - $this->totalDoneDuties;
             $this->$method(...$params);
         } else {
             echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);

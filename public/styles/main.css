@@ -1,3 +1,15 @@
 .btn-view:hover{
     color: #4e4edc;
 }
+
+.statistics {
+    margin-right: 15px;
+}
+
+.statistics__total {
+    color: white;
+}
+
+.statistics__missed {
+    color: rgb(255, 58, 58);
+}
