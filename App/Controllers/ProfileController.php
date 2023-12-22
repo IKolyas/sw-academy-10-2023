@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Enums\UserStatusType;
 use App\FormRequests\UserEditRequest;
-use App\FormRequests\UserRegisterRequest;
 use App\Models\User;
 use App\Resources\Users\UserResource;
 use App\FormRequests\UserPhotoRequest;
@@ -26,7 +26,10 @@ class ProfileController extends AbstractController
 
     public function actionEdit(): void
     {
-        echo $this->render('profile/edit', ['user' => UserResource::transformToShow($this->user)]);
+        echo $this->render('profile/edit', [
+            'user' => UserResource::transformToShow($this->user),
+            'statuses' => UserStatusType::getList(),
+        ]);
     }
 
     public function actionUpdate(?UserEditRequest $request): void
@@ -47,9 +50,8 @@ class ProfileController extends AbstractController
 
         echo $this->render('profile/edit',
             [
-                'user' => $user,
-                // 'user' => UserResource::transformToShow($user->find($user->id)),
-
+                'user' => UserResource::transformToShow($user->find($user->id)),
+                'statuses' => UserStatusType::getList(),
                 'errors' => app()->session->get('errors'),
             ]
         );
@@ -82,8 +84,8 @@ class ProfileController extends AbstractController
         $file = $request->validated();
         $token = app()->cookie->getCookie('token');
         $user = $user?->find($token,'access_token');
-        
-        
+
+
         if (!$file) {
             echo $this->render(
                 'profile/edit',
@@ -95,7 +97,7 @@ class ProfileController extends AbstractController
                 );
                 return;
             }
-            
+
         $uploadName = $user?->id . '_' . basename($file['name']);
         $files->uploadFile($uploadName);
         $files->updatePhotoInDataBase($user, $uploadName);
@@ -107,6 +109,6 @@ class ProfileController extends AbstractController
                 'errors' => app()->session->get('errors'),
                 'feedback' => app()->session->get('feedback'),
             ]
-        );         
-    }    
+        );
+    }
 }

@@ -1,50 +1,80 @@
 {% extends "layouts/main.twig" %}
 
 {% block stylesheets %}{% endblock %}
-{% block title %}Запись{% endblock %}
+{% block page %}Запись на {{ record.date|e }}{% endblock %}
 
 {% block content %}
-    <div class="overflow-hidden bg-white shadow sm:rounded-lg">
-        <form class="table" action="/records/add" method="post">
-            <div class="px-4 py-6 sm:px-6">
-                <h3 class="text-base font-semibold leading-7 text-gray-900">Запись на {{ record.date|e }} </h3>
-            </div>
+    <div class="overflow-hidden bg-white shadow sm:rounded-lg mx-auto max-w-2xl">
+        <form action="/records/add" method="post">
             <div class="border-t border-gray-100">
                 <dl class="divide-y divide-gray-100">
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900">id пользователя</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <input class="pl-1 bg-gray-200" type="text" name="user_id" value="{{ record.user_id|e }}">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 my-3">Пользователь</dt>
+                        <div class="relative h-10 w-full min-w-[200px] ">
+                            <select  name="user_id" class="peer h-full w-full rounded-[7px]  !border  !border-gray-300
+                   border-t-transparent
+                   bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                   shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                   placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                   placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                   focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                   disabled:border-0 disabled:bg-blue-gray-50">
+                                {% for user in users %}
+                                    <option value="{{ user.value }}">
+                                        {{ user.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 my-3">Дата</dt>
+                        <dd class="flex mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <input class="pl-1 " type="date" name="date" value="{{ record.date }}" readonly>
                         </dd>
                     </div>
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900">Дата</dt>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 my-3">Тип</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <input class="pl-1" type="date" name="date" value="{{ record.date|e }}" readonly >
+                            <div class="relative h-10 w-full min-w-[200px] flex items-center">
+                                <input type="hidden" name="type" value="0">
+                                <input type="checkbox" name="type" value="1"
+                                        {% if record.type == 1 %} checked {% endif %}
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500
+                        dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700
+                        dark:border-gray-600"/>
+                            </div>
                         </dd>
                     </div>
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900">Тип</dt>
-                        <input class="pl-1 bg-gray-200" type="text" name="type" value="{{ record.type|e }}" >
-                    </div>
-                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900">Комментарий</dt>
-                        <input class="pl-1 bg-gray-200" type="text" name="note" value="{{ record.note|e }}">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 my-3">Комментарий</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <div class="relative h-10 w-full min-w-[200px] ">
+                                <input type="text" name="note" value="{{ record.note|e }}"
+                                       class="peer h-full w-full rounded-[7px]  !border  !border-gray-300 border-t-transparent
+                                       bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                                       shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                                       placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                                       placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                                       focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
+                            </div>
+                        </dd>
                     </div>
                 </dl>
-                <div class="my-8 mx-8">
-                    {% if errors.record %}
-                        <span class="error bg-red-200 p-1">{{ errors.record }}</span>
-                    {% endif %}
-                </div>
             </div>
-            <div>
+            <div class="flex justify-end">
                 <input class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
-                ml-5 mb-5"
+                m-5 mb-5"
                        type="submit"
-                       value= "Создать">
+                       value='Создать'>
             </div>
         </form>
+        {% if errors.record %}
+            <div class="border-1 border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                <span>{{ errors.record }}</span>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 {% block scripts %}

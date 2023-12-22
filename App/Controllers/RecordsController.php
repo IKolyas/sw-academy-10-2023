@@ -2,31 +2,57 @@
 
 namespace App\Controllers;
 
+use App\Enums\RecordStatusType;
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
+use App\Models\User;
 use App\Resources\Record\RecordResource;
+use App\Services\Renderers\RendererInterface;
 use Exception;
 
 class RecordsController extends AbstractController
 {
+    protected ?User $user;
 
+    public function __construct(RendererInterface $renderer)
+    {
+        parent::__construct($renderer);
+
+        $token = app()->cookie->getCookie('token');
+        $this->user = (new User())->find($token, 'access_token');
+    }
     /**
      * GET-запросы
      * @throws Exception
      */
     public function actionShow(?Record $record, ?RecordRequest $request): void
     {
+
+        if ($this->user->is_admin !== 1) {
+            app()->response->redirect('/forbidden');
+            return;
+        }
+
+        $users = $request->getUsersList();
         $date = $request->getParam('date');
         $foundRecord = $record->getByDate($date);
 
         if ($foundRecord) {
-            echo $this->renderer->render('record/edit', ['record' => $foundRecord]);
+            echo $this->renderer->render('record/edit', [
+                'record' => $foundRecord,
+                'statuses' => RecordStatusType::getList(),
+                'users' => $users,
+                ]);
         }
 
         if (!$foundRecord) {
             $record->date = $date;
             $foundRecord = $record;
-            echo $this->renderer->render('record/create', ['record' => $foundRecord]);
+            echo $this->renderer->render('record/create', [
+                'record' => $foundRecord,
+                'statuses' => RecordStatusType::getList(),
+                'users' => $users,
+            ]);
         }
     }
 
@@ -36,14 +62,16 @@ class RecordsController extends AbstractController
      */
     public function actionAdd(?RecordRequest $request, ?Record $record): void
     {
+        $users = $request->getUsersList();
         $date = $request->getParam('date');
         $validated = $request->validated();
         $errors = app()->session->get('errors');
 
         if (!empty($errors)) {
             echo $this->render('record/create', [
-                'record' => ['date' => $date],
+                'record' => compact('date'),
                 'errors' => $errors,
+                'users' => $users,
             ]);
             return;
         }
@@ -59,13 +87,16 @@ class RecordsController extends AbstractController
 
     public function actionEdit(?RecordRequest $request, ?Record $record): void
     {
+        $users = $request->getUsersList();
         $validated = $request->validated();
         $errors = app()->session->get('errors');
 
         if (!empty($errors)) {
             echo $this->render('record/edit', [
-                'record' => RecordResource::transformToShow($record->find($record->id)),
+                'record' => RecordResource::transformToShow($record),
                 'errors' => $errors,
+                'statuses' => RecordStatusType::getList(),
+                'users' => $users,
             ]);
             return;
         }
@@ -82,8 +113,6 @@ class RecordsController extends AbstractController
         }
 
         $record->delete($record->id);
-
-        //TODO: Заменить на шаблон
-        var_dump("Пользователь с id:{$record->id} удалён");
+        app()->response->redirect('/calendar');
     }
 }

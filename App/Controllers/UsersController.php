@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Enums\UserStatusType;
 use App\Models\User;
 use App\Resources\Users\UserResource;
 
@@ -13,7 +14,8 @@ class UsersController extends AbstractController
             'users/index',
             [
                 'users' => array_map(UserResource::transformToList(...), $users->findAll() ?? []),
-                'page' => 'users'
+                'page' => 'users',
+                'statuses' => UserStatusType::getList()
             ]
         );
     }
@@ -27,7 +29,8 @@ class UsersController extends AbstractController
 
         echo $this->render('users/show', [
             'user' => UserResource::transformToShow($user),
-            'page' => 'users'
+            'page' => 'users',
+            'statuses' => UserStatusType::getList()
         ]);
     }
 }

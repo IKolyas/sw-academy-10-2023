@@ -10,6 +10,7 @@ abstract class AbstractController
 {
     protected const DEFAULT_ACTION = 'index';
     protected const NOT_FOUND_PAGE_NAME = '404';
+    protected const FORBIDDEN_PAGE_NAME = '403';
     protected string $action;
     protected RendererInterface $renderer;
 
