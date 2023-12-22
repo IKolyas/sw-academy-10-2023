@@ -42,6 +42,6 @@ class User extends AbstractModel
 
     public function getВutyOfficersByDate(string $date) : ?array 
     {
-        return $this->getВutyOfficersByDate($date);
+        return $this->repository->getВutyOfficersByDate($date);
     }
 }

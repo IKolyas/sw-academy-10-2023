@@ -76,12 +76,12 @@ class Graph
         $lastDate = $datesСurrentMonth[count($datesСurrentMonth) - 1]['value'];
 
 
-        $recordRepository = new RecordRepository();
-        $listToDelete = $recordRepository->getByRange($firstDate, $lastDate, 'date');
+        $record = new Record();
+        $listToDelete = $record->getByRange($firstDate, $lastDate, 'date');
 
 
         foreach ($listToDelete as $date) {
-            $recordRepository->destroy($date->id);
+            $record->delete($date->id);
         }
     }
 
@@ -185,7 +185,6 @@ class Graph
                     
                     $user_id = ($user->getВutyOfficersByDate($record['date']))[0]->id;
 
-
                     if (empty($oldDutyOfficers)) {
                         $oldDutyOfficers[] = [
                             'id' => $user_id,
@@ -197,8 +196,8 @@ class Graph
                     
                     $isContinue = false;
                     if (!empty($oldDutyOfficers)) {
-                        foreach ($oldDutyOfficers as $key=>$user) {
-                            if ($user['id'] === $user_id) {
+                        foreach ($oldDutyOfficers as $key=>$duty) {
+                            if ($duty['id'] === $user_id) {
                                 $oldDutyOfficers[$key]['count'] += 1;
     
                                 $isContinue = true;

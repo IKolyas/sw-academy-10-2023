@@ -19,6 +19,12 @@ abstract class AbstractModel
 
     }
 
+    public function getBy($value, string $column = 'id'): ?array
+    {
+        return $this->repository->getBy($value, $column);
+
+    }
+
     public function findById(int $id): ?AbstractModel
     {
         return $this->repository->getOne($id);

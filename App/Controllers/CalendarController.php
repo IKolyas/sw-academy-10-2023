@@ -23,7 +23,7 @@ class CalendarController extends AbstractController
         $user = (new User())->find($token,'access_token');
 
         if (isset($params['generateGraph'])) {
-            if ($user->login === 'admin') {
+            if ($user->is_admin === 1) {
                 $params['generateGraph'] === 'true' ? $generateGraph->generateGraph($dates) : $generateGraph->deleteGraph($dates);
             }
             header('Location: /calendar?monthsFromNow=' . $monthsFromNow);
