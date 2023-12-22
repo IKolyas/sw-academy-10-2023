@@ -27,7 +27,7 @@
                 {% endif %}
                 <dl class="divide-y divide-gray-100">
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Имя</dt>
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Имя:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <div class="relative h-10 w-full min-w-[200px] ">
                                 <input type="text" name="first_name" value="{{ user.first_name|e }}"
@@ -46,7 +46,7 @@
                         </dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Отчество</dt>
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Отчество:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <div class="relative h-10 w-full min-w-[200px] ">
                                 <input type="text" name="last_name" value="{{ user.last_name|e }}"
@@ -65,7 +65,7 @@
                         </dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Email</dt>
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Email:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <div class="relative h-10 w-full min-w-[200px] ">
                                 <input type="text" name="email" value="{{ user.email|e }}"
@@ -84,7 +84,7 @@
                         </dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Логин</dt>
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Логин:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <div class="relative h-10 w-full min-w-[200px] ">
                                 <input type="text" name="login" value="{{ user.login|e }}"
@@ -103,15 +103,15 @@
                         </dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Дата добавления</dt>
+                        <dt class="text-sm font-medium text-gray-900">Дата добавления:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.created_at|e }}</dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Дата обновления</dt>
+                        <dt class="text-sm font-medium text-gray-900">Дата обновления:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.updated_at|e }}</dd>
                     </div>
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Статус</dt>
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Статус:</dt>
                         <div class="relative h-10 w-full min-w-[200px] ">
                             <select id="status" name="status" class="peer  rounded-[7px]  !border  !border-gray-300
                                        border-t-transparent

@@ -10,8 +10,8 @@ enum UserStatusType: int
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE_USER => 'Доступен для установки в график',
-            self::INACTIVE_USER => 'Не доступен для установки в график',
+            self::ACTIVE_USER => 'Доступен',
+            self::INACTIVE_USER => 'Не доступен',
         };
     }
 

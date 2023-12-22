@@ -10,31 +10,31 @@
             <div class="border-t border-gray-100">
                 <dl class="divide-y divide-gray-100">
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Имя</dt>
+                        <dt class="text-sm font-medium text-gray-900">Имя:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-0 ">
                             <p class="pl-1">{{ user.first_name|e }}</p>
                         </dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Отчество</dt>
+                        <dt class="text-sm font-medium text-gray-900">Отчество:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <p class="pl-1">{{ user.last_name|e }}</p>
                         </dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Email</dt>
+                        <dt class="text-sm font-medium text-gray-900">Email:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <p class="pl-1">{{ user.email|e }}</p>
                         </dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Логин</dt>
+                        <dt class="text-sm font-medium text-gray-900">Логин:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <p class="pl-1">{{ user.login|e }}</p>
                         </dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Статус</dt>
+                        <dt class="text-sm font-medium text-gray-900">Статус:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <p class="pl-1">
                                 {% for status in statuses %}
@@ -46,11 +46,11 @@
                         </dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Дата добавления</dt>
+                        <dt class="text-sm font-medium text-gray-900">Дата добавления:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.created_at|e }}</dd>
                     </div>
                     <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
-                        <dt class="text-sm font-medium text-gray-900">Дата обновления</dt>
+                        <dt class="text-sm font-medium text-gray-900">Дата обновления:</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.updated_at|e }}</dd>
                     </div>
                 </dl>
