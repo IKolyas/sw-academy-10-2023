@@ -4,7 +4,6 @@ namespace App\Services;
 
 use  App\Models\Record;
 use  App\Models\User;
-use  App\Repositories\RecordRepository;
 
 class Graph
 {
@@ -153,16 +152,16 @@ class Graph
         $lastDay = date('Y-m-t', $previousMonth);
 
         //поиск записей в последний день предыдущего месяца
-        $recordRepository = new RecordRepository();
-        $lastDayRecords = empty($recordRepository->getBy($lastDay, 'date')) ? 
-            null : $recordRepository->getBy($lastDay, 'date');
+        $record = new Record();
+        $lastDayRecords = empty($record->getBy($lastDay, 'date')) ? 
+            null : $record->getBy($lastDay, 'date');
 
         if (is_null($lastDayRecords)) {
             return $latsDuty;
         }
         //поиск дежурного
-        foreach ($lastDayRecords as $record) {
-            $latsDuty['id'] = $record->user_id;
+        foreach ($lastDayRecords as $val) {
+            $latsDuty['id'] = $val->user_id;
             break;
 
         }
