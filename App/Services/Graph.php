@@ -9,11 +9,14 @@ class Graph
 {
     function generateGraph(array $dates)
     {
+        //удаляем сб и вс
         foreach ($dates as $key=>$date) {
-            if (($key + 1) % 7 === 0) {
+            $currDate = date('D', strtotime($date['value']));
+            if ($currDate === 'Sun' || $currDate === 'Sat') {
                 unset($dates[$key]);
             }
         }
+
 
         $user = new User();
         $users = $user->getBy(1,'status'); //Все сотрудники, готовые дежурить
@@ -146,9 +149,8 @@ class Graph
         $latsDuty = null;
 
         //получаем последний день предыдущего месяца
-        $dateInTheMiddle = (int)(count($dates)/2);
-        $currentMonth = $dates[$dateInTheMiddle]['value'];
-        $previousMonth = strtotime("$currentMonth -1 month");
+        $currentMonth = $dates[0]['value'];
+        $previousMonth = strtotime($currentMonth . " -1 month");
         $lastDay = date('Y-m-t', $previousMonth);
 
         //поиск записей в последний день предыдущего месяца
