@@ -33,6 +33,7 @@ class RecordsController extends AbstractController
             return;
         }
 
+        $users = $request->getUsersList();
         $date = $request->getParam('date');
         $foundRecord = $record->getByDate($date);
 
@@ -40,6 +41,7 @@ class RecordsController extends AbstractController
             echo $this->renderer->render('record/edit', [
                 'record' => $foundRecord,
                 'statuses' => RecordStatusType::getList(),
+                'users' => $users,
                 ]);
         }
 
@@ -49,6 +51,7 @@ class RecordsController extends AbstractController
             echo $this->renderer->render('record/create', [
                 'record' => $foundRecord,
                 'statuses' => RecordStatusType::getList(),
+                'users' => $users,
             ]);
         }
     }
@@ -59,6 +62,7 @@ class RecordsController extends AbstractController
      */
     public function actionAdd(?RecordRequest $request, ?Record $record): void
     {
+        $users = $request->getUsersList();
         $date = $request->getParam('date');
         $validated = $request->validated();
         $errors = app()->session->get('errors');
@@ -67,6 +71,7 @@ class RecordsController extends AbstractController
             echo $this->render('record/create', [
                 'record' => compact('date'),
                 'errors' => $errors,
+                'users' => $users,
             ]);
             return;
         }
@@ -82,6 +87,7 @@ class RecordsController extends AbstractController
 
     public function actionEdit(?RecordRequest $request, ?Record $record): void
     {
+        $users = $request->getUsersList();
         $validated = $request->validated();
         $errors = app()->session->get('errors');
 
@@ -90,6 +96,7 @@ class RecordsController extends AbstractController
                 'record' => RecordResource::transformToShow($record),
                 'errors' => $errors,
                 'statuses' => RecordStatusType::getList(),
+                'users' => $users,
             ]);
             return;
         }

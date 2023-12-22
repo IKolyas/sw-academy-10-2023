@@ -5,6 +5,7 @@ namespace App\FormRequests;
 use App\Base\Request;
 use App\Enums\RequestMethodType;
 use App\FormRequests\Validators\RecordValidator;
+use App\Models\User;
 use Exception;
 
 class RecordRequest extends Request
@@ -45,5 +46,20 @@ class RecordRequest extends Request
         }
 
         return $correctFields;
+    }
+
+    public function getUsersList(): array
+    {
+        $users = new User();
+        $users = $users->getBy('1', 'status');
+
+        foreach ($users as $key => $user) {
+            $users[$key] = [
+                'value'=> $user->id,
+                'name'=> $user->first_name . ' ' . $user->last_name,
+            ];
+
+        }
+        return $users;
     }
 }
