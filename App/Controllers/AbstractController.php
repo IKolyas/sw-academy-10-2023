@@ -14,13 +14,18 @@ abstract class AbstractController
     protected string $action;
     protected RendererInterface $renderer;
     protected array $attendant;
-    protected array $statistics;
+    protected array $totalDutiesArrey;
+    protected int $totalDuties;
+    protected int $totalMissedDuties;
+    protected int $totalDoneDuties;
+    // protected int $totalDaysInMonth;
     protected bool $requireAuth = true;
 
     public function __construct(RendererInterface $renderer)
     {
         $this->renderer = $renderer;
         app()->session->remove('errors');
+        // $this->totalDaysInMonth = date('t', mktime(0, 0, 0, date('m'), 1, date('Y'))); ;
 
         $isAuthorized = app()->auth->isAuthorized();
 
@@ -49,8 +54,12 @@ abstract class AbstractController
 
         if (method_exists($this, $method)) {
             $this->bindParams($params, $method, $modelId);
-            $this->attendant = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0];  
-            // $this->statistics = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0];  
+            $this->attendant = (new Record())->getRecordsWithUsers(date('Y-m-d'), date('Y-m-d'))[0]; 
+            $this->totalDutiesArrey = (new Record())->getByRange(date('Y-m') . '-01', date('Y-m') . '-' . date('d') - 1, 'date');
+            // $this->totalDutiesArrey = (new Record())->getByRange(date('Y-m') . '-01', date('Y-m') . '-' . $this->totalDaysInMonth, 'date');
+            $this->totalDuties = count($this->totalDutiesArrey);
+            $this->totalDoneDuties = array_sum(array_column($this->totalDutiesArrey, 'status'));
+            $this->totalMissedDuties = $this->totalDuties - $this->totalDoneDuties;
             $this->$method(...$params);
         } else {
             echo $this->renderer->render(self::NOT_FOUND_PAGE_NAME);

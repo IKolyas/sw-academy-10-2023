@@ -29,6 +29,8 @@ class ProfileController extends AbstractController
         echo $this->render('profile/edit', [
             'user' => UserResource::transformToShow($this->user),
             'attendant' => $this->attendant,
+            'totalDuties' => $this->totalDuties,
+            'totalMissedDuties' => $this->totalMissedDuties,
         ]);
     }
 
@@ -53,6 +55,8 @@ class ProfileController extends AbstractController
                 'user' => $user,
                 // 'user' => UserResource::transformToShow($user->find($user->id)),
                 'attendant' => $this->attendant,
+                'totalDuties' => $this->totalDuties,
+                'totalMissedDuties' => $this->totalMissedDuties,
                 'errors' => app()->session->get('errors'),
             ]
         );
@@ -94,6 +98,8 @@ class ProfileController extends AbstractController
                     'user' => $user,
                     'errors' => app()->session->get('errors'),
                     'attendant' => $this->attendant,
+                    'totalDuties' => $this->totalDuties,
+                    'totalMissedDuties' => $this->totalMissedDuties,
                     'feedback' => app()->session->get('feedback'),
                     ]
                 );
@@ -110,6 +116,8 @@ class ProfileController extends AbstractController
                 'user' => $user,
                 'errors' => app()->session->get('errors'),
                 'attendant' => $this->attendant,
+                'totalDuties' => $this->totalDuties,
+                'totalMissedDuties' => $this->totalMissedDuties,
                 'feedback' => app()->session->get('feedback'),
             ]
         );         

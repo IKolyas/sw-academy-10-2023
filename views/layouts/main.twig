@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link href="/styles/main.css" type="text/css" rel="stylesheet" />
     {% block stylesheets %}
-        <link href="/styles/main.css" type="text/css" rel="stylesheet" />
     {% endblock %}
     <title>
         {% block title %}
@@ -42,6 +42,14 @@
                     <div class="ml-4 flex items-center md:ml-6">
 
                         {# вставить как блок, блок настроить на верстке нужнх страниц #}
+                        <div class="statistics bg-gray-500 text-white rounded-md px-3 py-2 text-sm font-medium flex flex-col"> 
+                            <span class="statistics__total">
+                                Дежурств в этом месяце: {{ totalDuties }}
+                            </span>
+                            <span class="statistics__missed">
+                                Пропущенных дежурств: {{ totalMissedDuties }}
+                            </span>
+                        </div>
                         <span class="bg-gray-500 text-white rounded-md px-3 py-2 text-sm font-medium">
                             Дежурит сегодня: {{ attendant.first_name }} {{ attendant.last_name }}
                         </span>

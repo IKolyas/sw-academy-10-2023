@@ -23,6 +23,8 @@ class CalendarController extends AbstractController
                 'days' => $dates,
                 'currentMonth' => date('F', strtotime($monthsFromNow . ' month')),
                 'attendant' => $this->attendant,
+                'totalDuties' => $this->totalDuties,
+                'totalMissedDuties' => $this->totalMissedDuties,
                 'page' => 'calendar'
             ]);
         } else {
