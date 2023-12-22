@@ -16,4 +16,10 @@ class UserRepository extends AbstractRepository
     {
         return User::class;
     }
+
+    public function getВutyOfficersByDate(string $date): ?array
+    {
+        $sql = "SELECT users.id FROM `users` INNER JOIN `records` ON records.user_id = users.id WHERE records.date = :dateRecords";
+        return ($this->getQuery($sql, [':dateRecords' => $date]));
+    }
 }

@@ -3,15 +3,21 @@
 namespace App\Services;
 
 use  App\Models\Record;
-use  App\Repositories\UserRepository;
+use  App\Models\User;
 use  App\Repositories\RecordRepository;
 
 class Graph
 {
     function generateGraph(array $dates)
     {
-        $userRepository = new UserRepository();
-        $users = $userRepository->getBy(1,'status'); //Все сотрудники, готовые дежурить
+        foreach ($dates as $key=>$date) {
+            if (($key + 1) % 7 === 0) {
+                unset($dates[$key]);
+            }
+        }
+
+        $user = new User();
+        $users = $user->getBy(1,'status'); //Все сотрудники, готовые дежурить
         $arrayIdDuty = $this->getIdDuty($users);
 
         //выход из генератора
@@ -167,7 +173,7 @@ class Graph
     /** создаем список старых пользователей с счетчиком их дежурств */
     private function countOldRecords(array $dates): ?array
     {
-        $userRepository = new UserRepository();
+        $user = new User();
         $oldDutyOfficers = [];
 
         foreach ($dates as $day) {
@@ -176,9 +182,8 @@ class Graph
                 $user_id = null;
                 //получение установленных ранее дежурных
                 foreach ($day['records'] as $record) {
-                    $sql = "SELECT users.id FROM `users` INNER JOIN `records` ON records.user_id = users.id WHERE records.date = :dateRecords";
                     
-                    $user_id = ($userRepository->getQuery($sql, [':dateRecords' => $record['date']]))[0]->id;
+                    $user_id = ($user->getВutyOfficersByDate($record['date']))[0]->id;
 
 
                     if (empty($oldDutyOfficers)) {
