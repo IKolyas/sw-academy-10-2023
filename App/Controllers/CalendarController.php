@@ -38,5 +38,17 @@ class CalendarController extends AbstractController
 
         app()->response->redirect('/calendar/index?' . 'yearMonth=' . $params['date']);
     }
+    public function actionClearMonth(array $params): void
+    {
+        $yearMonth = date('Y-m', strtotime($params['date']));
 
+
+        if (!$yearMonth) {
+            app()->response->redirect('/calendar/index?' . 'yearMonth=' . date('Y-m'));
+        }
+
+        Scheduler::deleteSchedule($yearMonth);
+
+        app()->response->redirect('/calendar/index?' . 'yearMonth=' . $params['date']);
+    }
 }

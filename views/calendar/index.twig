@@ -37,18 +37,14 @@
                                   clip-rule="evenodd"/>
                         </svg>
                     </button>
-                    <button onclick="generateGraph()" type="button"
-                            class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
-                        Сгенерировать график
-                    </button>
                     <a href="/calendar/schedulerGenerate?date={{ date }}" type="button"
-                            class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
+                            class="hidden items-center rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:flex">
                         Сгенерировать график
                     </a>
-                    <button onclick="deleteGraph()" type="button"
-                            class="hidden rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:block">
+                    <a href="/calendar/clearMonth?date={{ date }}" onclick="deleteSchedule()" type="button"
+                            class="hidden items-center rounded-md ml-2 border border-gray-300 px-3.5  text-sm font-semibold text-gray-900 hover:bg-gray-200 focus:relative md:flex">
                         Очистить график
-                    </button>
+                    </a>
                 </div>
             </div>
         </header>

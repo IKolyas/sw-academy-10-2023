@@ -91,4 +91,24 @@ class Scheduler
 
         }, $this->datesToGenerate);
     }
+
+    public static function deleteSchedule($currentMonth): void
+    {
+        $calendarService = new Calendar();
+        $calendarService->getCurrentMonth($currentMonth);
+
+        $dates = $calendarService->getDates();
+
+        $firstDate = $dates[0]['value'];
+        $lastDate = $dates[count($dates) - 1]['value'];
+
+        $record = new Record();
+        $listToDelete = $record->getByRange($firstDate, $lastDate, 'date');
+
+
+        foreach ($listToDelete as $date) {
+            $record->delete($date->id);
+        }
+    }
+
 }

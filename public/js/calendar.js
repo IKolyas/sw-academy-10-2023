@@ -24,15 +24,7 @@ const goPrev = () => {
     window.location.href = `/calendar?yearMonth=${oldDate.getFullYear() + '-' + month}`;
 }
 
-const generateGraph = () => {
-    if (!window.location.search) {
-        window.location.href ='/calendar?generateGraph=true';
-    } else if(window.location.search.indexOf('yearMonth') !== -1) {
-        window.location.href = `/calendar?generateGraph=true&yearMonth=${yearMonth}`;
-    }
-}
-
-const deleteGraph = () => {
+const deleteSchedule = () => {
     if (!window.location.search) {
         window.location.href ='/calendar?generateGraph=false';
     } else if(window.location.search.indexOf('yearMonth') !== -1) {
