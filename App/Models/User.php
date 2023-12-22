@@ -39,4 +39,9 @@ class User extends AbstractModel
         $fields['password'] = password_hash($fields['password'], PASSWORD_DEFAULT);
         return parent::update($fields);
     }
+
+    public function getВutyOfficersByDate(string $date) : ?array 
+    {
+        return $this->repository->getВutyOfficersByDate($date);
+    }
 }
