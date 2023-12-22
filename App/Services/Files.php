@@ -2,13 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\User;
-
 class Files
 {
   protected ?array $file;
   protected ?string $uploadDir;
-
 
   public function __construct()
   {

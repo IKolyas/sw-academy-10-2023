@@ -5,22 +5,11 @@ namespace App\Controllers;
 use App\Enums\RecordStatusType;
 use App\Models\Record;
 use App\FormRequests\RecordRequest;
-use App\Models\User;
 use App\Resources\Record\RecordResource;
-use App\Services\Renderers\RendererInterface;
 use Exception;
 
 class RecordsController extends AbstractController
 {
-    protected ?User $user;
-
-    public function __construct(RendererInterface $renderer)
-    {
-        parent::__construct($renderer);
-
-        $token = app()->cookie->getCookie('token');
-        $this->user = (new User())->find($token, 'access_token');
-    }
 
     /**
      * GET-запросы
@@ -28,8 +17,7 @@ class RecordsController extends AbstractController
      */
     public function actionShow(?Record $record, ?RecordRequest $request): void
     {
-
-        if ($this->user->is_admin !== 1) {
+        if (app()->auth->user->is_admin !== 1) {
             app()->response->redirect('/forbidden');
             return;
         }

@@ -8,33 +8,21 @@ use App\Models\User;
 use App\Resources\Users\UserResource;
 use App\FormRequests\UserPhotoRequest;
 use App\Services\Files;
-use App\Services\Renderers\RendererInterface;
 
 
 class ProfileController extends AbstractController
 {
-
-    protected ?User $user;
-
-    public function __construct(RendererInterface $renderer)
-    {
-        parent::__construct($renderer);
-
-        $token = app()->cookie->getCookie('token');
-        $this->user = (new User())->find($token, 'access_token');
-    }
-
     public function actionEdit(): void
     {
         echo $this->render('profile/edit', [
-            'user' => UserResource::transformToShow($this->user),
+            'user' => UserResource::transformToShow(app()->auth->user),
             'statuses' => UserStatusType::getList(),
         ]);
     }
 
     public function actionUpdate(?UserEditRequest $request): void
     {
-        $user = $this->user;
+        $user = app()->auth->user;
 
         if (!$user?->id) {
             $this->renderer->render(self::NOT_FOUND_PAGE_NAME);
@@ -64,7 +52,7 @@ class ProfileController extends AbstractController
             return;
         }
 
-        $user = $this->user;
+        $user = app()->auth->user;
         $password = $request->validatedPasswordChange($user);
         $errors = app()->session->get('errors');
 
@@ -82,9 +70,7 @@ class ProfileController extends AbstractController
     public function actionUpload(?User $user, ?UserPhotoRequest $request, Files $files): void
     {
         $file = $request->validated();
-        $token = app()->cookie->getCookie('token');
-        $user = $user?->find($token,'access_token');
-
+        $user = app()->auth->user;
 
         if (!$file) {
             echo $this->render(
