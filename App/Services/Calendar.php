@@ -13,6 +13,16 @@ class Calendar
     {
         $yearMonth = $monthsFromNow;
 
+        $this->getCurrentMonth($yearMonth);
+        $this->addPrevDays($yearMonth);
+        $this->addNextDays($yearMonth);
+
+        $this->fillDatesRecords();
+        return $this->dates;
+    }
+
+    public function getCurrentMonth(string $yearMonth): void
+    {
         for ($day = 1; $day <= date('t', strtotime($yearMonth)); $day++) {
             $timestamp = strtotime($yearMonth . '-' . $day);
             $dayToWrite = date('Y-m-d', $timestamp);
@@ -22,14 +32,14 @@ class Calendar
                 'isCurrentMonth' => true
             ];
 
+            $currDay = date('D', $timestamp);
+
+            if ($currDay === 'Sun' || $currDay === 'Sat') {
+                $date['isHoliday'] = true;
+            }
+
             $this->addDate($date);
         }
-
-        $this->addPrevDays($yearMonth);
-        $this->addNextDays($yearMonth);
-
-        $this->fillDatesRecords();
-        return $this->dates;
     }
 
     public function getFilledMonth(string $month): array
@@ -64,6 +74,11 @@ class Calendar
                 $date['records'] = $dateRecords;
             }
         }
+    }
+
+    public function getDates(): array
+    {
+        return $this->dates;
     }
 
     private function addPrevDays(string $monthsFromNow): void
