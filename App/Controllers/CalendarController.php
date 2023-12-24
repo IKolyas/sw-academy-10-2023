@@ -8,9 +8,8 @@ use Exception;
 
 class CalendarController extends AbstractController
 {
-    /**
-     * @throws Exception
-     */
+    protected string $page = 'calendar';
+
     public function actionIndex(array $params, ?Calendar $calendar): void
     {
         $yearMonth = date('Y-m', strtotime($params['yearMonth'] ?? date('Y-m')));
@@ -19,7 +18,6 @@ class CalendarController extends AbstractController
         echo $this->render('calendar/index', [
             'days' => $dates,
             'currentMonth' => date('F', strtotime($yearMonth)),
-            'page' => 'calendar',
             'date' => date('Y-m', strtotime($yearMonth)),
         ]);
     }

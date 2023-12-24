@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AbstractModel;
+use App\Resources\Users\UserResource;
 use App\Services\Renderers\RendererInterface;
 use ReflectionException;
 
@@ -13,6 +14,8 @@ abstract class AbstractController
     protected const FORBIDDEN_PAGE_NAME = '403';
     protected string $action;
     protected RendererInterface $renderer;
+    protected array $sharedData = ['errors', 'user', 'userPhoto'];
+    protected string $page = '';
 
     protected bool $requireAuth = true;
 
@@ -61,8 +64,26 @@ abstract class AbstractController
      */
     protected function render(string $template, array $params = []): string
     {
-        $errors = app()->session->get('errors');
-        return $this->renderer->render($template, $params + compact('errors'));
+        return $this->renderer->render($template,
+            $params + $this->getSharedData()
+        );
+    }
+
+    protected function getSharedData(): array
+    {
+        $result = [];
+        foreach ($this->sharedData as $key) {
+            match ($key) {
+                'errors' => $result[$key] = app()->session->get('errors'),
+                'user' => $result[$key] = app()->auth->user,
+                'userPhoto' => $result[$key] = app()->auth->user->photo,
+                'userShow' => $result['user'] = UserResource::transformToShow(app()->auth->user),
+                default => $result[$key] = $key
+            };
+        }
+        $result['page'] = $this->page;
+
+        return $result;
     }
 
     /**

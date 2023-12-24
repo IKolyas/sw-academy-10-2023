@@ -7,6 +7,7 @@ use App\FormRequests\UserRegisterRequest;
 
 class AuthController extends AbstractController
 {
+    protected array $sharedData = [];
     protected bool $requireAuth = false;
 
     public function actionIndex(): void
