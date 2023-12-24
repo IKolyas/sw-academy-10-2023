@@ -5,17 +5,18 @@ namespace App\Controllers;
 use App\Enums\UserStatusType;
 use App\FormRequests\UserEditRequest;
 use App\Models\User;
-use App\Resources\Users\UserResource;
 use App\FormRequests\UserPhotoRequest;
 use App\Services\Files;
 
 
 class ProfileController extends AbstractController
 {
+    protected string $page = 'profile';
+    protected array $sharedData = ['errors', 'userShow', 'userPhoto'];
+
     public function actionEdit(): void
     {
         echo $this->render('profile/edit', [
-            'user' => UserResource::transformToShow(app()->auth->user),
             'statuses' => UserStatusType::getList(),
         ]);
     }
@@ -36,13 +37,7 @@ class ProfileController extends AbstractController
             $user->update($data + ['id' => $user->id]);
         }
 
-        echo $this->render('profile/edit',
-            [
-                'user' => UserResource::transformToShow($user->find($user->id)),
-                'statuses' => UserStatusType::getList(),
-                'errors' => app()->session->get('errors'),
-            ]
-        );
+        echo $this->render('profile/edit', ['statuses' => UserStatusType::getList()]);
     }
 
     public function actionChangePassword(?UserEditRequest $request): void
@@ -57,9 +52,7 @@ class ProfileController extends AbstractController
         $errors = app()->session->get('errors');
 
         if (!empty($errors)) {
-            echo $this->render('profile/changePassword', [
-                'errors' => app()->session->get('errors'),
-            ]);
+            echo $this->render('profile/changePassword');
             return;
         }
 
@@ -73,27 +66,17 @@ class ProfileController extends AbstractController
         $user = app()->auth->user;
 
         if (!$file) {
-            echo $this->render(
-                'profile/edit',
-                [
-                    'user' => $user,
-                    'errors' => app()->session->get('errors'),
-                    'feedback' => app()->session->get('feedback'),
-                    ]
-                );
-                return;
-            }
+            echo $this->render('profile/edit');
+            return;
+        }
 
         $uploadName = $user?->id . '_' . basename($file['name']);
         $files->uploadFile($uploadName);
         $files->updatePhotoInDataBase($user, $uploadName);
 
         echo $this->render(
-            'profile/edit',
-            [
-                'user' => $user,
-                'errors' => app()->session->get('errors'),
-                'feedback' => app()->session->get('feedback'),
+            'profile/edit', [
+                'feedback' => app()->session->get('feedback')
             ]
         );
     }
