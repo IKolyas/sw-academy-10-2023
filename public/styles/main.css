@@ -1,3 +1,9 @@
 .btn-view:hover{
     color: #4e4edc;
 }
+
+.photo__image {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
