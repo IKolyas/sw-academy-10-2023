@@ -1,0 +1,190 @@
+{% extends "layouts/main.twig" %}
+
+{% block stylesheets %}
+    <link href="/styles/profile.css" type="text/css" rel="stylesheet"/>
+{% endblock %}
+{% block title %}Профиль{% endblock %}
+{% block page %}Редактирование профиля{% endblock %}
+
+{% block content %}
+    <div class="overflow-hidden bg-white shadow sm:rounded-lg mx-auto max-w-2xl">
+        <div class="flex align-center justify-between">
+            <div class="px-4 py-6 sm:px-6">
+                <h3 class="text-base font-semibold leading-7 text-gray-900">Информация о пользователе</h3>
+            </div>
+        </div>
+        <div class="photo">
+            <h3 class="photo__title">Фото профиля:</h3>
+            <div class="photo__border">
+                {% if not user.photo %}
+                    <img class="photo__image" width="160" height="160" src="/src/images/orig.jpeg" alt="фото профиля"/>
+                {% else %}
+                    <img class="photo__image" width="160" height="160" src="/uploads/{{ user.photo }}"
+                         alt="фото профиля"/>
+                {% endif %}
+            </div>
+        </div>
+
+        <form class="photo-form" enctype="multipart/form-data" action="/profile/upload" method="POST">
+            <input type="hidden" name="MAX_FILE_SIZE" value="3145728"/>
+            <label class="photo-form__label cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                   for="userfile">Загрузить фото</label>
+            <input class="photo-form__input" id="userfile" name="userfile" type="file"/>
+            <div id="preshow" class="visually-hidden preshow">
+                <h3 class="preshow__title">Предпросмотр фото:</h3>
+                <img class="preshow__image" id="blah" src="#" alt="your image"/>
+                <p class="preshow__desc">Важно! Изображение должо быть в формате jpeg / jpg / png. Максимальный размер
+                    файла = 3 Мб</p>
+            </div>
+            <input class="photo-form__btn visually-hidden cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                   type="submit"
+                   value="Отправить файл"/>
+            {% if errors.photo %}
+                <span class="error">{{ errors.photo }}</span>
+            {% else %}
+                <span class="feedback">{{ feedback.photo }}</span>
+            {% endif %}
+        </form>
+
+        <form action="/users/update" method="post">
+            <input type="hidden" name="id" value="{{ user.id }}">
+            <div class="border-t border-gray-100">
+                {% if errors.user %}
+                    <span class="error">{{ errors.user }}</span>
+                {% endif %}
+                <dl class="divide-y divide-gray-100">
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Имя:</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <div class="relative h-10 w-full min-w-[200px] ">
+                                <input type="text" name="first_name" value="{{ user.first_name|e }}"
+                                       class="peer h-full w-full rounded-[7px]  !border  !border-gray-300
+                                       border-t-transparent
+                                       bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                                       shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                                       placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                                       placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                                       focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
+                            </div>
+                            {% if errors.first_name %}
+                                <span class="error text-red-700">{{ errors.first_name }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Отчество:</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <div class="relative h-10 w-full min-w-[200px] ">
+                                <input type="text" name="last_name" value="{{ user.last_name|e }}"
+                                       class="peer h-full w-full rounded-[7px]  !border  !border-gray-300
+                                       border-t-transparent
+                                       bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                                       shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                                       placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                                       placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                                       focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
+                            </div>
+                            {% if errors.last_name %}
+                                <span class="error text-red-700">{{ errors.last_name }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Email:</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <div class="relative h-10 w-full min-w-[200px] ">
+                                <input type="text" name="email" value="{{ user.email|e }}"
+                                       class="peer h-full w-full rounded-[7px]  !border  !border-gray-300
+                                       border-t-transparent
+                                       bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                                       shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                                       placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                                       placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                                       focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
+                            </div>
+                            {% if errors.email %}
+                                <span class="error text-red-700">{{ errors.email }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Логин:</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            <div class="relative h-10 w-full min-w-[200px] ">
+                                <input type="text" name="login" value="{{ user.login|e }}"
+                                       class="peer h-full w-full rounded-[7px]  !border  !border-gray-300
+                                       border-t-transparent
+                                       bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                                       shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                                       placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                                       placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                                       focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                                       disabled:border-0 disabled:bg-blue-gray-50"/>
+                            </div>
+                            {% if errors.login %}
+                                <span class="error text-red-700">{{ errors.login }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
+                        <dt class="text-sm font-medium text-gray-900">Дата добавления:</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.created_at|e }}</dd>
+                    </div>
+                    <div class="flex items-center px-4 py-6 grid grid-cols-2 gap-4 sm:px-6 sm:grid-cols-3">
+                        <dt class="text-sm font-medium text-gray-900">Дата обновления:</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.updated_at|e }}</dd>
+                    </div>
+                    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-900 align-middle my-3">Статус:</dt>
+                        <div class="relative h-10 w-full min-w-[200px] ">
+                            <select id="status" name="status" class="peer  rounded-[7px]  !border  !border-gray-300
+                                       border-t-transparent
+                                       bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700
+                                       shadow-lg shadow-gray-900/5 outline outline-0 ring-4 ring-transparent transition-all
+                                       placeholder:text-gray-500 placeholder-shown:border placeholder-shown:border-blue-gray-200
+                                       placeholder-shown:border-t-blue-gray-200 focus:border-2  focus:!border-gray-900
+                                       focus:border-t-transparent focus:!border-t-gray-900 focus:outline-0 focus:ring-gray-900/10
+                                       disabled:border-0 disabled:bg-blue-gray-50">
+                                {% for status in statuses %}
+                                    <option value="{{ status.value }}" {% if user.status == status.value %} selected {% endif %}>
+                                        {{ status.label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </dl>
+            </div>
+            <div class="flex justify-end">
+                <input class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
+                mr-6 mb-5 mt-10"
+                       type="submit"
+                       value="Сохранить изменения">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        let photoFormBtn = document.querySelector('.photo-form__btn');
+        let imgInp = document.getElementById('userfile');
+        let blah = document.getElementById('blah')
+        let preshow = document.getElementById('preshow');
+        let photoFormLabel = document.querySelector('.photo-form__label');
+        let photoBorder = document.querySelector('.photo__border');
+
+        imgInp.onchange = evt => {
+            const [file] = imgInp.files
+            if (file) {
+                photoFormBtn.classList.remove("visually-hidden");
+                preshow.classList.remove("visually-hidden");
+                photoBorder.classList.add("visually-hidden");
+                photoFormLabel.classList.add("visually-hidden");
+                blah.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+{% endblock %}
